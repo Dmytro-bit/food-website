@@ -1,0 +1,70 @@
+# Node.js
+node_modules/
+
+# Webpack
+/dist/
+
+# Compiled files
+*.compiled
+
+# Logs and databases
+*.log
+*.sqlite
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+
+# Dependency directories
+jspm_packages/
+bower_components/
+
+# Environment variables
+.env
+
+# Visual Studio Code
+.vscode/
+
+# Editor-specific files
+*.sublime-project
+*.sublime-workspace
+*.komodoproject
+.komodotools/
+.idea/
+
+# Compiled Python files
+__pycache__/
+*.pyc
+
+# Compiled Java files
+*.class
+
+# Compiled Ruby files
+*.rb[co]
+
+# Compiled TypeScript files
+*.tsbuildinfo
+
+# Configuration files
+*.config.js
+*.ini
+*.env
+
+# macOS
+.AppleDouble
+.AppleDesktop
+.AppleDB
+.AppleDesktopNetwork
+
+# Thumbnails
+._*
+
+# Windows
+Thumbs.db
+ehthumbs.db
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# Temporary directories
+/tmp/
