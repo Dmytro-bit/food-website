@@ -60,7 +60,7 @@
     position: relative;
     width: 100%;
     height: 100vh;
-    background: linear-gradient(rgba(0, 0, 0, 0.505), rgba(0, 0, 0, 0.505)), url('../Image/bg.jpg') no-repeat center / cover;
+    background: linear-gradient(rgba(0, 0, 0, 0.505), rgba(0, 0, 0, 0.505)), url('../image/bg.jpg') no-repeat center / cover;
     color: white;
 }
 
@@ -73,4 +73,9 @@
     margin: 0 auto;
     align-items: center;
     justify-content: center;
+}
+
+#main
+{
+    width : 100%;
 }
