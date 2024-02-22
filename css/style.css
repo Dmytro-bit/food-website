@@ -61,7 +61,7 @@
     color: white;
 }
 
-.container, .content
+.container
 {
     width: 90%;
     height: 100%;
@@ -70,6 +70,15 @@
     margin: 0 auto;
     align-items: center;
     justify-content: center;
+}
+
+.content
+{
+    width: 90%;
+    height: 100%;
+    display: flex;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 #main_data
