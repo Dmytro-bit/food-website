@@ -15,7 +15,7 @@ window.onload = () => {
 };
 
 function displayTable() {
-    let roll = 5 // how many products in the roll
+    let roll = 4 // how many products in the roll
 
 
     let htmlString = `<table><tr>`;
