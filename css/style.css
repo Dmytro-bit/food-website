@@ -33,23 +33,20 @@
 
 .account
 {  
+    font-family: "Montserrat", sans-serif;
+    font-size: 1.5vw;
+    max-width: 50%;
     background-color: transparent ;
     border: 2px solid orange;  
     color: orange;
     margin-right: 1vw;
     width: 20%;
     height: 5vh;
-    transition: background-color .7s ease, color .7s ease;
-    /*color: orange;
-    padding: 10px 20px;
-    transition: background-color 0.5s ease, color 0.5s ease; */
+    transition: background-color .7s ease, color .7s ease;  
 }
 
 .account:hover
 {
-    /* background: linear-gradient(rgba(83, 50, 0, 1), rgba(220, 133, 31, 1));
-    box-shadow: 0 5px 15px rgba(255, 200, 0, .4);
-    border-color: rgb(255, 200, 0);  */
     background-color: orange;
     color: white;
     box-shadow: -10px 10px 15px rgba(87, 57, 0, 0.7);
@@ -96,24 +93,31 @@ table tr
 .element_photo
 {
     position: relative;
-    width: 16vw;
-    height: 16vw; 
+    width: 14vw;
+    height: 14vw; 
     max-width: 18vw;
     border-radius:50%; 
     background:rgb(158, 158, 158);  
+    box-shadow: -5px 10px 15px rgba(122, 79, 0, 0.8); 
+    border: 2px solid orange;
+    transition: width .7s ease, height .7s ease, box-shadow, 0.7s ease;
     z-index: 1;
 }
 
 .element_info
 {
     position: relative;
-    width: 16vw;
-    height: 14vw;
+    width: 14vw;
+    height: 15vw;
     top: -8vw;
     border-radius: 10%;
     max-width: 18vw;
     text-align: center;
-    background:grey;  
+    background: rgb(233, 233, 233);
+    box-shadow: -5px 10px 15px rgba(122, 79, 0, 0.8); 
+    border: 2px solid orange;
+    color: orange;
+    transition: background-color .5s ease, color .5s ease, width .5s ease, height .5s ease, box-shadow, .5s ease;
     z-index: 0;
 }
 
@@ -126,6 +130,22 @@ table tr
     bottom: 0;
     left: 50%;
     transform: translateX(-50%);
+}
+
+.element:hover > .element_info      /*Interact with a child element (.element_info) of .element*/
+{
+    background-color: orange;
+    color: white;
+    width: 15vw;
+    height: 15.5vw;
+    box-shadow: -10px 15px 25px rgba(150, 97, 0, 0.8);
+}
+
+.element:hover > .element_photo     /*Interact with a child element (.element_info) of .element*/
+{
+    width: 15vw;
+    height: 15vw;
+    box-shadow: -10px 15px 25px rgba(150, 97, 0, 0.8);
 }
 
 
