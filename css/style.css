@@ -66,7 +66,7 @@
     width: 90%;
     height: 100%;
     display: flex;
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
     align-items: center;
     justify-content: center;
@@ -77,14 +77,14 @@
     width: 90%;
     height: 100%;
     display: flex;
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
     flex-direction: column;
 }
 
 #main_data
 {
-    padding-top: 10vh;
+    /* padding-top: 10vh; */
     width: 100%;
 }
 
@@ -97,7 +97,7 @@ table tr
 {
     display: flex;
     justify-content: space-between;
-    padding-top: 10vh;
+    padding-bottom: 10vh;
 }
 
 .element_photo
@@ -158,6 +158,29 @@ table tr
     box-shadow: -10px 15px 25px rgba(150, 97, 0, 0.8);
 }
 
+.functional
+{
+    display: flex;
+    width: 100%;
+    max-width: 1400px;
+    padding: 10vh 0 10vh 0;
+}
+
+#search
+{
+    width: 50%;
+    height: 5vh;
+    font-size: 3vh;
+    border: 2px solid orange;  
+    border-radius: 25px;
+    transition: box-shadow .7s ease;
+}
+
+#search:hover
+{
+    box-shadow: 0px 0px 15px rgba(255, 173, 20, 0.7);
+}
+
 
 #main
 {
@@ -166,12 +189,6 @@ table tr
 
 @media only screen and (max-width: 480px)
 {
-    /* .hero_data
-    {
-        display: flex;
-        justify-content: center;
-        flex-direction: column;
-    } */
     .container
     {
         width: 100%;
@@ -213,15 +230,6 @@ table tr
 
     .account
     {  
-        font-family: "Montserrat", sans-serif;
-        font-size: 4vw;
-        /* max-width: 50%; */
-        background-color: transparent ;
-        border: 2px solid orange;  
-        color: orange;
-        margin-right: 1vw;
-        width: 30vw;
-        height: 5vh;
-        transition: background-color .7s ease, color .7s ease;  
+        max-width: none;
     }
 }
