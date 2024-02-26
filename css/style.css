@@ -164,11 +164,18 @@ table tr
     width: 100%;
     max-width: 1400px;
     padding: 10vh 0 10vh 0;
+    justify-content: space-between;
+}
+
+#sbar
+{
+    width: 50%;
+    display: flex;
 }
 
 #search
 {
-    width: 50%;
+    width: 100%;
     height: 5vh;
     font-size: 3vh;
     border: 2px solid orange;  
@@ -179,6 +186,32 @@ table tr
 #search:hover
 {
     box-shadow: 0px 0px 15px rgba(255, 173, 20, 0.7);
+}
+
+#sort, #filter
+{
+    width: 20%;
+    position: relative;
+    display: inline-block;
+}
+
+.functional_button
+{
+    width: 100%;
+    height: 5vh;
+    font-size: 3vh;
+    border: 2px solid orange;  
+    color: orange;
+    background-color: transparent;
+    border-radius: 25px;
+    transition: background-color .5s ease, color .5s ease, box-shadow .7s ease;
+}
+
+.functional_button:hover
+{
+    background-color: orange;
+    color: white;
+    box-shadow: -5px 5px 15px rgba(87, 57, 0, 0.7);
 }
 
 
