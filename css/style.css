@@ -34,14 +34,15 @@
 .account
 {  
     font-family: "Montserrat", sans-serif;
-    font-size: 1.5vw;
+    font-size: 2.5vh;
     max-width: 50%;
     background-color: transparent ;
     border: 2px solid orange;  
     color: orange;
     margin-right: 1vw;
-    width: 10vw;
-    height: 5vh;
+    width: 20%;
+    /* height: 20%; */
+    height: auto;
     transition: background-color .7s ease, color .7s ease;  
 }
 
@@ -223,7 +224,7 @@ ul
 {
     list-style: none;
     text-align: center;
-    /* display: none; */
+    display: none;
 }
 
 li
@@ -292,6 +293,68 @@ li:hover
 
     .account
     {  
+        width: 40%;
         max-width: none;
     }
+
+    table tr
+    {
+        justify-content: center;
+    }
+
+    .element_photo
+    {
+        width: 50vw;
+        height: 50vw; 
+        max-width: none;
+    }
+
+    .element_info
+    {
+        width: 50vw;
+        height: 45vw;
+        top: -25vw;
+        max-width: none;
+    }
+
+    .element:hover > .element_info      /*Interact with a child element (.element_info) of .element*/
+    {
+        width: 51vw;
+        height: 46vw;
+        box-shadow: -10px 15px 25px rgba(150, 97, 0, 0.8);
+    }
+
+    .element:hover > .element_photo     /*Interact with a child element (.element_info) of .element*/
+    {
+        width: 51vw;
+        height: 51vw;
+        box-shadow: -10px 15px 25px rgba(150, 97, 0, 0.8);
+    }
+
+    .element_info h1
+    {
+        max-width: none;
+        font-size: 5vw;
+    }
+
+    .functional
+    {
+        flex-direction: column;
+    }
+
+    #sbar
+    {
+        width: 100%;
+        display: flex;
+        margin-bottom: 1vh; 
+    }
+
+    #sort, #filter
+    {
+        width: 100%;
+        margin-bottom: 1vh;
+    }
+
+
+    
 }
