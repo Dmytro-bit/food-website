@@ -4,6 +4,9 @@ let sort = 1
 let roll = 4 // how many products in the roll
 const window_width = window.screen.availWidth
 let searchValue = ""
+let all_tags = []
+let tagCheckBoxes
+
 
 window.onload = () => {
     let url = "../data/foods.json";
@@ -13,9 +16,17 @@ window.onload = () => {
         .then(jsonData => {
 
             foods = jsonData
-            displayTable()
+            main()
         });
 };
+
+function main() {
+    foods.forEach(food => food[`tags`] !== undefined ? food[`tags`].forEach(tag => all_tags.push(tag)) : null)
+    tagCheckBoxes = [...new Set(all_tags)].sort()
+    displayTable()
+
+}
+
 
 function displayTable() {
 
@@ -25,6 +36,13 @@ function displayTable() {
 
     let searched_foods = searchValue !== "" ? foods.filter(food => food.name.toLowerCase().includes(searchValue)) ||
         foods.filter(food => food.id.toLowerCase().includes(searchValue)) : foods
+
+
+    // Uncomment when tag Check Boxes will be done
+    // let filteredTags = tagCheckBoxes.filter(tag => document.getElementById(tag).checked)
+    // if (filteredTags !== 0) {
+    //     searched_foods = searched_foods.filter(food => filteredTags.includes(food.tag))
+    // }
 
 
     searched_foods.forEach(food => {
