@@ -36,7 +36,7 @@ function displayTable() {
     let htmlString = `<table><tr>`;
     let counter = 0
     elementDisplay()
-    foods.forEach(food => {
+
     let searched_foods = searchValue !== "" ? foods.filter(food => food.name.toLowerCase().includes(searchValue)) ||
         foods.filter(food => food.id.toLowerCase().includes(searchValue)) : foods
 
@@ -52,7 +52,7 @@ function displayTable() {
 
         if (counter < roll) {
             htmlString += `<td><div class="element"><div class="element_photo"></div>
-                                <div class="element_info"><h1 style="padding: ${food.name.length <= 10 ? `0vw 0vw ${padding}vw 0vw; ` : `0vw 0vw ${padding*0.85}vw 0vw; `} font-size: 
+                                <div class="element_info"><h1 style="padding: ${food.name.length <= 10 ? `0vw 0vw ${padding}vw 0vw; ` : `0vw 0vw ${padding * 0.85}vw 0vw; `} font-size: 
                                 ${food.name.length >= 17 ? `${font_size}vw` : ''}">${food.name}</h1></div></div></td>`;
             counter++
         } else {
