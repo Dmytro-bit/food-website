@@ -3,6 +3,7 @@ let sort_field = "name"
 let sort = 1
 let roll = 4 // how many products in the roll
 const window_width = window.screen.availWidth
+let searchValue = ""
 
 window.onload = () => {
     let url = "../data/foods.json";
@@ -22,7 +23,11 @@ function displayTable() {
     let htmlString = `<table><tr>`;
     let counter = 0
 
-    foods.forEach(food => {
+    let searched_foods = searchValue !== "" ? foods.filter(food => food.name.toLowerCase().includes(searchValue)) ||
+        foods.filter(food => food.id.toLowerCase().includes(searchValue)) : foods
+
+
+    searched_foods.forEach(food => {
 
         if (counter < elementDisplay(roll)) {
             htmlString += `<td><div class="element"><div class="element_photo"></div>
@@ -51,4 +56,9 @@ function elementDisplay(roll) {
         return roll / 2
     }
     return roll
+}
+
+function search(value) {
+    searchValue = value.toLowerCase()
+    displayTable()
 }

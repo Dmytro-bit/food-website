@@ -10,41 +10,43 @@
     <script type="text/javascript" src="./js/script.js"></script>
 </head>
 <body>
-    <div id="content">
-        <section id="hero">
-            <div class="container">
-                <div class="hero_data">
-                    <h1 id="heading">HEADING</h1>
-                    <p id="sub_heading">Lorem ipsum dolor sit amet.</p>
-                    <p id="hero_text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet dolor corporis qui laudantium maxime harum officiis, nemo dolores excepturi, tempora fugit hic facilis sunt fugiat dolore minus repellendus perspiciatis quas.</p>
-                    <button class="account">SIGN UP</button>
-                    <button class="account">LOG IN</button>
-                </div>
+<div id="content">
+    <section id="hero">
+        <div class="container">
+            <div class="hero_data">
+                <h1 id="heading">HEADING</h1>
+                <p id="sub_heading">Lorem ipsum dolor sit amet.</p>
+                <p id="hero_text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet dolor corporis qui
+                    laudantium maxime harum officiis, nemo dolores excepturi, tempora fugit hic facilis sunt fugiat
+                    dolore minus repellendus perspiciatis quas.</p>
+                <button class="account">SIGN UP</button>
+                <button class="account">LOG IN</button>
             </div>
-        </section>
-        <section id="main">
-            <div class="content">
-                <div class="functional">
-                    <div id="sbar"><input type="search" id="search"></div>
-                    <div id="sort">
-                        <input type="button" class="functional_button" value="SORT">
-                        <div class="sort_list">
-                            <ul>
-                                <li>Name</li>
-                                <li>Nutrition</li>
-                                <li>Protein</li>
-                                <li>Carbs</li>
-                            </ul>
-                        </div>
+        </div>
+    </section>
+    <section id="main">
+        <div class="content">
+            <div class="functional">
+                <div id="sbar"><input type="search" id="search" oninput="search(this.value)"></div>
+                <div id="sort">
+                    <input type="button" class="functional_button" value="SORT">
+                    <div class="sort_list">
+                        <ul>
+                            <li>Name</li>
+                            <li>Nutrition</li>
+                            <li>Protein</li>
+                            <li>Carbs</li>
+                        </ul>
                     </div>
-                    <div id="filter"><input type="button" class="functional_button" value="FILTER"></div>
                 </div>
-                
-                <div id="main_data">
-
-                </div>
+                <div id="filter"><input type="button" class="functional_button" value="FILTER"></div>
             </div>
-        </section>
-    </div>
+
+            <div id="main_data">
+
+            </div>
+        </div>
+    </section>
+</div>
 </body>
 </html>
