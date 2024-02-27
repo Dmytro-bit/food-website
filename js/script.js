@@ -8,6 +8,7 @@ const window_width = window.screen.availWidth
 let searchValue = ""
 let all_tags = []
 let tagCheckBoxes
+let filter_displayed = false;
 
 
 window.onload = () => {
@@ -25,6 +26,16 @@ window.onload = () => {
 function main() {
     foods.forEach(food => food[`tags`] !== undefined ? food[`tags`].forEach(tag => all_tags.push(tag)) : null)
     tagCheckBoxes = [...new Set(all_tags)].sort()
+
+    let filter_content = ``
+    tagCheckBoxes.forEach(checkbox => 
+    {
+
+        filter_content += `<li><input type="checkbox" id="${checkbox}" oninput="displayTable()">${checkbox}</li>`
+        // console.log(htmlString)
+
+        document.getElementById("filter_list").innerHTML = filter_content
+    })
     displayTable()
 
 }
@@ -42,10 +53,12 @@ function displayTable() {
 
 
     // Uncomment when tag Check Boxes will be done
-    // let filteredTags = tagCheckBoxes.filter(tag => document.getElementById(tag).checked)
-    // if (filteredTags !== 0) {
-    //     searched_foods = searched_foods.filter(food => filteredTags.includes(food.tag))
-    // }
+    let filteredTags = tagCheckBoxes.filter(tag => document.getElementById(tag).checked)
+    console.log(filteredTags)
+    if (filteredTags.length !== 0) {
+        // console.log("Hello World")
+        searched_foods = searched_foods.filter(food => filteredTags.includes(food.tag))
+    }
 
 
     searched_foods.forEach(food => {
@@ -82,4 +95,17 @@ function elementDisplay() {
 function search(value) {
     searchValue = value.toLowerCase()
     displayTable()
+}
+
+function displayFilter() {
+    if(!filter_displayed)
+    {
+        document.getElementById("filter_list").style.display = 'block';
+        filter_displayed = true;
+    }
+    else
+    {
+        document.getElementById("filter_list").style.display = 'none';
+        filter_displayed = false;
+    }
 }

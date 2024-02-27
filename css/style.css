@@ -215,11 +215,6 @@ table tr
     box-shadow: -5px 5px 15px rgba(87, 57, 0, 0.7);
 }
 
-#sort_list
-{   
-    display: flex; 
-}
-
 ul
 {
     list-style: none;
