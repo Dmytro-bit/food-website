@@ -96,10 +96,11 @@ function displayTable() {
             htmlString += `<tr>`
             counter = 0
         }
-        htmlString += `<td><div class="element"><div class="element_buttons_menu" id="${food.id}_buttons">
-                                    <div class="element_button" id="view"></div>
-                                    <div class="element_button" id="edit"></div>
-                                    <div class="element_button" id="delete"></div>
+        htmlString +=   `<td>
+                            <div class="element"><div class="element_buttons_menu" id="${food.id}_buttons">
+                                    <div class="element_button" id="view"><img src="../icons/info.png" class="element_button_icon"></div>
+                                    <div class="element_button" id="edit"><img src="../icons/pencil.png" class="element_button_icon"></div>
+                                    <div class="element_button" id="delete"><img src="../icons/bin.png" class="element_button_icon"></div>
                                 </div>
                                 <div class="element_object" onclick="displayMenuButtons('${food.id}')">
                                     <div class="element_photo"></div>
@@ -108,7 +109,8 @@ function displayTable() {
                                         ${food.name.length >= 17 ? `${adaptive_font_size}vw` : ''}">${food.name}</h1>
                                     </div>
                                 </div>
-                            </div></td>`;
+                            </div>
+                        </td>`;
         counter++
 
     })
