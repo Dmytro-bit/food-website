@@ -8,6 +8,7 @@ let tagCheckBoxes
 let filter_displayed = false;
 let sort_displayed = false;
 let menu_displayed = false;
+let last_menu_id_displayed
 let unique_nutrition_values
 let nutrition_values = []
 let order = 1;
@@ -157,9 +158,19 @@ function displaySort() {
 
 
 function displayMenuButtons(id) {
+    console.log(last_menu_id_displayed)
+    console.log(id)
+
+    if (menu_displayed === true && id !== last_menu_id_displayed) {
+        if (document.getElementById(last_menu_id_displayed + "_buttons") !== null) {
+            document.getElementById(last_menu_id_displayed + "_buttons").style.margin = `15vh 0 0 10rem`
+        }
+        menu_displayed = false
+    }
     if (!menu_displayed) {
         document.getElementById(id + "_buttons").style.margin = `15vh 0 0 -4rem`
         menu_displayed = true
+        last_menu_id_displayed = id
     } else {
         document.getElementById(id + "_buttons").style.margin = `15vh 0 0 10rem`
         menu_displayed = false
@@ -195,8 +206,7 @@ function foodInfo(id) {
     return searchedFood
 }
 
-function viewModal(food)
-{
+function viewModal(food) {
     let objKeys = Object.keys(food)
     let nutrKeys = Object.keys(food["nutrition-per-100g"])
     let content = ``
@@ -213,6 +223,7 @@ function viewModal(food)
             content += `</ul>`
         }
         content += `<li><label><b>${key}</b></label><input type="text" value="${food[key]}"></li>`
+
     })
 
     document.getElementById("view_content").innerHTML = content
