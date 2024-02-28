@@ -6,7 +6,6 @@ let font_size = 1.3
 let padding = 2.5
 const window_width = window.screen.availWidth
 let searchValue = ""
-let all_tags = []
 let tagCheckBoxes
 let filter_displayed = false;
 let menu_displayed = false;
@@ -25,6 +24,7 @@ window.onload = () => {
 };
 
 function main() {
+    let all_tags = []
     foods.forEach(food => food[`tags`] !== undefined ? food[`tags`].forEach(tag => all_tags.push(tag)) : null)
     tagCheckBoxes = [...new Set(all_tags)].sort()
 
@@ -61,16 +61,18 @@ function displayTable() {
             for (let tag of filteredTags) {
                 if (food.tags !== undefined && food.tags.includes(tag)) {
                     final_foods.push(food)
+                    console.log(food)
                 }
             }
         }
     }
 
-
     final_foods.forEach(food => {
-
-        if (counter < roll) {
-            htmlString += `<td><div class="element"><div class="element_buttons_menu" id="${food.id}_buttons">
+        if (counter >= roll) {
+            htmlString += `<tr>`
+            counter = 0
+        }
+        htmlString += `<td><div class="element"><div class="element_buttons_menu" id="${food.id}_buttons">
                                     <div class="element_button" id="view"></div>
                                     <div class="element_button" id="edit"></div>
                                     <div class="element_button" id="delete"></div>
@@ -83,11 +85,8 @@ function displayTable() {
                                     </div>
                                 </div>
                             </div></td>`;
-            counter++
-        } else {
-            htmlString += `<tr>`
-            counter = 0
-        }
+        counter++
+
     })
     htmlString += `</tr></table>`;
     document.getElementById("main_data").innerHTML = htmlString; // Fix: Set innerHTML property
@@ -114,29 +113,23 @@ function search(value) {
 }
 
 function displayFilter() {
-    if(!filter_displayed)
-    {
+    if (!filter_displayed) {
         document.getElementById("filter_list").style.display = 'block'
         filter_displayed = true
-    }
-    else
-    {
+    } else {
         document.getElementById("filter_list").style.display = 'none'
         filter_displayed = false
     }
 }
 
-function displayMenuButtons(id){
-    document.getElementById(id+"_buttons").style.margin = '10% 0 0 -3%'
+function displayMenuButtons(id) {
+    document.getElementById(id + "_buttons").style.margin = '10% 0 0 -3%'
     console.log(id)
-    if(!menu_displayed)
-    {
-        document.getElementById(id+"_buttons").style.margin = '10% 0 0 -3%'        
+    if (!menu_displayed) {
+        document.getElementById(id + "_buttons").style.margin = '10% 0 0 -3%'
         menu_displayed = true
-    }
-    else
-    {
-        document.getElementById(id+"_buttons").style.margin = '10% 0 0 0'        
+    } else {
+        document.getElementById(id + "_buttons").style.margin = '10% 0 0 0'
         menu_displayed = false
     }
 }
