@@ -57,7 +57,7 @@ function main() {
     let sort_content = ``
     unique_nutrition_values.forEach(checkbox =>
         {
-            sort_content += `<li><div class="sort_option" id="${checkbox}">${checkbox}</div></li>`
+            sort_content += `<li><div class="sort_option" id="${checkbox}" onclick="sortNutrition()">${checkbox}</div></li>`
             document.getElementById("sort_list").innerHTML = sort_content
         })
     displayTable()
