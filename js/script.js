@@ -10,7 +10,9 @@ let searchValue = ""
 let tagCheckBoxes
 let filter_displayed = false;
 let menu_displayed = false;
-
+let unique_nutrition_values
+let   nutrition_values = []
+let order = 1;
 
 window.onload = () => {
     let url = "../data/foods.json";
@@ -28,6 +30,19 @@ function main() {
     let all_tags = []
     foods.forEach(food => food[`tags`] !== undefined ? food[`tags`].forEach(tag => all_tags.push(tag)) : null)
     tagCheckBoxes = [...new Set(all_tags)].sort()
+
+    foods.forEach(element => {
+        let nutrition_key_g = element["nutrition-per-100g"]
+        if(nutrition_key_g){
+            Object.keys(nutrition_key_g).forEach(key => {
+                nutrition_values.push(key)
+            })
+        }
+    })        
+    unique_nutrition_values = [...new Set(nutrition_values)].sort()
+    
+    console.log(nutrition_values)
+    console.log(unique_nutrition_values)
 
     let filter_content = ``
     tagCheckBoxes.forEach(checkbox => {
@@ -94,11 +109,12 @@ function displayTable() {
 }
 
 
-function Sort(field) {
-    sort_field = field
-    sort *= -1;
-    foods.sort((a, b) => a[field] < b[field] ? -sort : sort);
-    displayTable();
+function sortNutrition(){
+    
+    let ascendingOrder = unique_nutrition_values.sort((a, b) => (order === 1 ? a - b : b - a));
+    order *= -1
+    
+    displayTable()
 }
 
 function elementDisplay() {
