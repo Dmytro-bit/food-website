@@ -8,6 +8,7 @@ let tagCheckBoxes
 let filter_displayed = false;
 let sort_displayed = false;
 let menu_displayed = false;
+let last_menu_id_displayed
 let unique_nutrition_values
 let nutrition_values = []
 let order = 1;
@@ -157,9 +158,15 @@ function displaySort() {
 
 
 function displayMenuButtons(id) {
+    console.log(menu_displayed)
+    if (last_menu_id_displayed !== undefined && id !== last_menu_id_displayed) {
+        document.getElementById(last_menu_id_displayed + "_buttons").style.margin = `15vh 0 0 10rem`
+        menu_displayed=false
+    }
     if (!menu_displayed) {
         document.getElementById(id + "_buttons").style.margin = `15vh 0 0 -4rem`
         menu_displayed = true
+        last_menu_id_displayed = id
     } else {
         document.getElementById(id + "_buttons").style.margin = `15vh 0 0 10rem`
         menu_displayed = false
@@ -195,14 +202,12 @@ function foodInfo(id) {
     return searchedFood
 }
 
-function viewModal(food)
-{
+function viewModal(food) {
     let objKeys = Object.keys(food)
     console.log(objKeys)
     let htmlString = ``
-    objKeys.forEach(key => 
-    {
-            htmlString += `<li><label><b>${key}</b></label><input type="text"></li>`
+    objKeys.forEach(key => {
+        htmlString += `<li><label><b>${key}</b></label><input type="text"></li>`
     })
     htmlString += `<input type="button" value="Add Nutrition/100g" id="add_nutrition">`
     htmlString += `<input type="button" value="Add Tag" id="add_tag">`
