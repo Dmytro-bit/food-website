@@ -29,8 +29,7 @@ function main() {
     tagCheckBoxes = [...new Set(all_tags)].sort()
 
     let filter_content = ``
-    tagCheckBoxes.forEach(checkbox => 
-    {
+    tagCheckBoxes.forEach(checkbox => {
 
         filter_content += `<li><input type="checkbox" class="filter_option" id="${checkbox}" oninput="displayTable()">${checkbox}</li>`
         // console.log(htmlString)
@@ -43,8 +42,6 @@ function main() {
 
 
 function displayTable() {
-
-
     let htmlString = `<table><tr>`;
     let counter = 0
     elementDisplay()
@@ -55,14 +52,22 @@ function displayTable() {
 
     // Uncomment when tag Check Boxes will be done
     let filteredTags = tagCheckBoxes.filter(tag => document.getElementById(tag).checked)
+    let final_foods = [...searched_foods]
     console.log(filteredTags)
+
     if (filteredTags.length !== 0) {
-        // console.log("Hello World")
-        searched_foods = searched_foods.filter(food => filteredTags.includes(food.tags))
+        final_foods = []
+        for (let food of searched_foods) {
+            for (let tag of filteredTags) {
+                if (food.tags !== undefined && food.tags.includes(tag)) {
+                    final_foods.push(food)
+                }
+            }
+        }
     }
 
 
-    searched_foods.forEach(food => {
+    final_foods.forEach(food => {
 
         if (counter < roll) {
             htmlString += `<td><div class="element"><div class="element_buttons_menu" id="${food.name}_buttons">
