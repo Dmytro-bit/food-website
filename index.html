@@ -30,16 +30,20 @@
                 <div id="sbar"><input type="search" id="search" oninput="search(this.value)" placeholder="Search..."></div>
                 <div id="sort">
                     <input type="button" class="functional_button" value="SORT">
-                    <div class="sort_list">
-                        <ul>
-                            <li>Name</li>
-                            <li>Nutrition</li>
-                            <li>Protein</li>
-                            <li>Carbs</li>
+                    <div>
+                        <ul id="sort_list">
+
                         </ul>
                     </div>
                 </div>
-                <div id="filter"><input type="button" class="functional_button" value="FILTER"></div>
+                <div id="filter">
+                    <input type="button" class="functional_button" value="FILTER" onclick="displayFilter()">
+                    <div>
+                        <ul id="filter_list">
+
+                        </ul>
+                    </div>
+                </div>
             </div>
 
             <div id="main_data">
