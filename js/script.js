@@ -177,3 +177,14 @@ function deleteFood(id) {
     })
     foods.splice(selectedIndex, 1)
 }
+
+function foodInfo(id) {
+    let searchedFood
+    for (let food of foods) {
+        if (food.id === id) {
+            searchedFood = food
+            break
+        }
+    }
+    return searchedFood
+}
