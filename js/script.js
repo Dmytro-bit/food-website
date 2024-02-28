@@ -12,7 +12,7 @@ let filter_displayed = false;
 let sort_displayed = false;
 let menu_displayed = false;
 let unique_nutrition_values
-let   nutrition_values = []
+let nutrition_values = []
 let order = 1;
 
 window.onload = () => {
@@ -169,7 +169,7 @@ function displayMenuButtons(id){
     }
     else
     {
-        document.getElementById(id+"_buttons").style.margin = `15vh 0 0 10rem`        
+        document.getElementById(id+"_buttons").style.margin = `15vh 0 0 10rem`
         menu_displayed = false
     }
 }
