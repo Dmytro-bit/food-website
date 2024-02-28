@@ -213,6 +213,7 @@ table tr
     background-color: orange;
     color: white;
     box-shadow: -5px 5px 15px rgba(87, 57, 0, 0.7);
+    cursor: pointer;
 }
 
 ul
@@ -220,6 +221,7 @@ ul
     list-style: none;
     text-align: center;
     display: none;
+    cursor: pointer;
 }
 
 li
@@ -244,6 +246,7 @@ li:hover
 {
     position: absolute;
     margin-top: 15vh;
+    margin-left: 10rem;
 }
 
 .element_button
@@ -254,7 +257,7 @@ li:hover
     border-radius: 25px;
     background: transparent;
     border: 1px solid orange;  
-    box-shadow: -5px 5px 15px rgba(87, 57, 0, 0.7); 
+    box-shadow: -5px 5px 10px rgba(87, 57, 0, 0.7); 
 }
 
 .element_button:hover
@@ -262,6 +265,7 @@ li:hover
     background-color: orange;
     color: white;
     transition: background-color .5s ease, color .5s ease, box-shadow .7s ease;
+    box-shadow: -5px 5px 15px rgba(109, 71, 0, 0.7);
 }
 
 #main

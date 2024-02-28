@@ -9,6 +9,7 @@ const window_width = window.screen.availWidth
 let searchValue = ""
 let tagCheckBoxes
 let filter_displayed = false;
+let sort_displayed = false;
 let menu_displayed = false;
 let unique_nutrition_values
 let nutrition_values = []
@@ -33,14 +34,14 @@ function main() {
 
     foods.forEach(element => {
         let nutrition_key_g = element["nutrition-per-100g"]
-        if (nutrition_key_g) {
+        if(nutrition_key_g){
             Object.keys(nutrition_key_g).forEach(key => {
                 nutrition_values.push(key)
             })
         }
-    })
+    })        
     unique_nutrition_values = [...new Set(nutrition_values)].sort()
-
+    
     console.log(nutrition_values)
     console.log(unique_nutrition_values)
 
@@ -52,6 +53,13 @@ function main() {
 
         document.getElementById("filter_list").innerHTML = filter_content
     })
+
+    let sort_content = ``
+    unique_nutrition_values.forEach(checkbox =>
+        {
+            sort_content += `<li><div class="sort_option" id="${checkbox}">${checkbox}</div></li>`
+            document.getElementById("sort_list").innerHTML = sort_content
+        })
     displayTable()
 
 }
@@ -102,17 +110,18 @@ function displayTable() {
                                 </div>
                             </div></td>`;
         counter++
+
     })
     htmlString += `</tr></table>`;
     document.getElementById("main_data").innerHTML = htmlString; // Fix: Set innerHTML property
 }
 
 
-function sortNutrition() {
-
+function sortNutrition(){
+    
     let ascendingOrder = unique_nutrition_values.sort((a, b) => (order === 1 ? a - b : b - a));
     order *= -1
-
+    
     displayTable()
 }
 
@@ -138,13 +147,27 @@ function displayFilter() {
     }
 }
 
-function displayMenuButtons(id) {
-    console.log(id)
-    if (!menu_displayed) {
-        document.getElementById(id + "_buttons").style.margin = `15vh 0 0 -4rem`
-        menu_displayed = true
+function displaySort() {
+    if (!sort_displayed) {
+        document.getElementById("sort_list").style.display = 'block'
+        sort_displayed = true
     } else {
-        document.getElementById(id + "_buttons").style.margin = `15vh 0 0 0`
+        document.getElementById("sort_list").style.display = 'none'
+        sort_displayed = false
+    }
+}
+
+
+function displayMenuButtons(id){
+    console.log(id)
+    if(!menu_displayed)
+    {
+        document.getElementById(id+"_buttons").style.margin = `15vh 0 0 -4rem`        
+        menu_displayed = true
+    }
+    else
+    {
+        document.getElementById(id+"_buttons").style.margin = `15vh 0 0 10rem`
         menu_displayed = false
     }
 }
