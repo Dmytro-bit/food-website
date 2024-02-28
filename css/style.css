@@ -170,7 +170,7 @@ table tr
 
 #sbar
 {
-    width: 50%;
+    width: 40%;
     display: flex;
 }
 
@@ -196,6 +196,32 @@ table tr
     display: inline-block;
 }
 
+#add
+{
+    width: 10%;
+    /* position: inherit; */
+}
+
+#add_button
+{
+    width: 5vh;
+    height: 5vh;
+    font-size: 3vh;
+    border: 2px solid orange;  
+    background-color: transparent;
+    border-radius: 25px;
+    color: orange;
+    transition: background-color .3s ease, color .3s ease, box-shadow .3s ease;
+}
+
+#add_button:hover
+{
+    background-color: orange;
+    color: white;
+    box-shadow: -5px 5px 15px rgba(87, 57, 0, 0.7);
+    cursor: pointer;
+}
+
 .functional_button
 {
     width: 100%;
@@ -205,7 +231,7 @@ table tr
     color: orange;
     background-color: transparent;
     border-radius: 25px;
-    transition: background-color .5s ease, color .5s ease, box-shadow .7s ease;
+    transition: background-color .3s ease, color .3s ease, box-shadow .3s ease;
 }
 
 .functional_button:hover
