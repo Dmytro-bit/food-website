@@ -158,10 +158,14 @@ function displaySort() {
 
 
 function displayMenuButtons(id) {
-    console.log(menu_displayed)
-    if (last_menu_id_displayed !== undefined && id !== last_menu_id_displayed) {
-        document.getElementById(last_menu_id_displayed + "_buttons").style.margin = `15vh 0 0 10rem`
-        menu_displayed=false
+    console.log(last_menu_id_displayed)
+    console.log(id)
+
+    if (menu_displayed === true && id !== last_menu_id_displayed) {
+        if (document.getElementById(last_menu_id_displayed + "_buttons") !== null) {
+            document.getElementById(last_menu_id_displayed + "_buttons").style.margin = `15vh 0 0 10rem`
+        }
+        menu_displayed = false
     }
     if (!menu_displayed) {
         document.getElementById(id + "_buttons").style.margin = `15vh 0 0 -4rem`
