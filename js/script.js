@@ -1,6 +1,4 @@
 let foods = []
-let sort_field = "name"
-let sort = 1
 let roll = 4 // how many products in the roll
 let adaptive_font_size = 1.3
 let adaptive_padding = 2.5
@@ -34,14 +32,14 @@ function main() {
 
     foods.forEach(element => {
         let nutrition_key_g = element["nutrition-per-100g"]
-        if(nutrition_key_g){
+        if (nutrition_key_g) {
             Object.keys(nutrition_key_g).forEach(key => {
                 nutrition_values.push(key)
             })
         }
-    })        
+    })
     unique_nutrition_values = [...new Set(nutrition_values)].sort()
-    
+
     console.log(nutrition_values)
     console.log(unique_nutrition_values)
 
@@ -55,11 +53,10 @@ function main() {
     })
 
     let sort_content = ``
-    unique_nutrition_values.forEach(checkbox =>
-        {
-            sort_content += `<li><div class="sort_option" id="${checkbox}" onclick="sortNutrition()">${checkbox}</div></li>`
-            document.getElementById("sort_list").innerHTML = sort_content
-        })
+    unique_nutrition_values.forEach(checkbox => {
+        sort_content += `<li><div class="sort_option" id="${checkbox}" onclick="sortNutrition()">${checkbox}</div></li>`
+        document.getElementById("sort_list").innerHTML = sort_content
+    })
     displayTable()
 
 }
@@ -96,11 +93,11 @@ function displayTable() {
             htmlString += `<tr>`
             counter = 0
         }
-        htmlString +=   `<td>
+        htmlString += `<td>
                             <div class="element"><div class="element_buttons_menu" id="${food.id}_buttons">
-                                    <div class="element_button" id="view"><img src="../icons/info.png" class="element_button_icon"></div>
-                                    <div class="element_button" id="edit"><img src="../icons/pencil.png" class="element_button_icon"></div>
-                                    <div class="element_button" id="delete"><img src="../icons/bin.png" class="element_button_icon"></div>
+                                    <div class="element_button" id="view"><img src="../icons/info.png" class="element_button_icon" alt="view"></div>
+                                    <div class="element_button" id="edit"><img src="../icons/pencil.png" class="element_button_icon" alt="edit"></div>
+                                    <div class="element_button" id="delete"><img src="../icons/bin.png" class="element_button_icon" alt="delete"></div>
                                 </div>
                                 <div class="element_object" onclick="displayMenuButtons('${food.id}')">
                                     <div class="element_photo"></div>
@@ -119,11 +116,11 @@ function displayTable() {
 }
 
 
-function sortNutrition(){
-    
+function sortNutrition() {
+
     let ascendingOrder = unique_nutrition_values.sort((a, b) => (order === 1 ? a - b : b - a));
     order *= -1
-    
+
     displayTable()
 }
 
@@ -160,16 +157,23 @@ function displaySort() {
 }
 
 
-function displayMenuButtons(id){
+function displayMenuButtons(id) {
     console.log(id)
-    if(!menu_displayed)
-    {
-        document.getElementById(id+"_buttons").style.margin = `15vh 0 0 -4rem`        
+    if (!menu_displayed) {
+        document.getElementById(id + "_buttons").style.margin = `15vh 0 0 -4rem`
         menu_displayed = true
-    }
-    else
-    {
-        document.getElementById(id+"_buttons").style.margin = `15vh 0 0 10rem`
+    } else {
+        document.getElementById(id + "_buttons").style.margin = `15vh 0 0 10rem`
         menu_displayed = false
     }
+}
+
+function deleteFood(id) {
+    let selectedIndex
+    foods.forEach((food, index) => {
+        if (food.id === id) {
+            selectedIndex = index
+        }
+    })
+    foods.splice(selectedIndex, 1)
 }
