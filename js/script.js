@@ -70,12 +70,12 @@ function displayTable() {
     final_foods.forEach(food => {
 
         if (counter < roll) {
-            htmlString += `<td><div class="element"><div class="element_buttons_menu" id="${food.name}_buttons">
+            htmlString += `<td><div class="element"><div class="element_buttons_menu" id="${food.id}_buttons">
                                     <div class="element_button" id="view"></div>
                                     <div class="element_button" id="edit"></div>
                                     <div class="element_button" id="delete"></div>
                                 </div>
-                                <div class="element_object" onclick="displayMenuButtons('${food.name}')">
+                                <div class="element_object" onclick="displayMenuButtons('${food.id}')">
                                     <div class="element_photo"></div>
                                     <div class="element_info">
                                         <h1 style="padding: ${food.name.length <= 10 ? `0vw 0vw ${padding}vw 0vw; ` : `0vw 0vw ${padding * 0.85}vw 0vw; `} font-size: 
