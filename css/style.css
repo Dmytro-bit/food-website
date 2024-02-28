@@ -243,7 +243,7 @@ li:hover
 .element_buttons_menu
 {
     position: absolute;
-    margin-top:10%;
+    margin-top: 15vh;
     /* margin-left: ; */
 }
 
@@ -366,6 +366,8 @@ li:hover
         width: 100%;
         margin-bottom: 1vh;
     }
+
+    
 
 
     
