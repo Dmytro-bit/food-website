@@ -244,7 +244,7 @@ table tr
     cursor: pointer;
 }
 
-ul
+#sort_list, #filter_list
 {
     list-style: none;
     text-align: center;
@@ -252,7 +252,7 @@ ul
     cursor: pointer;
 }
 
-li
+#sort_list li, #filter_list li
 {
     border: 1px solid;
     border-radius: 25px;
@@ -310,7 +310,7 @@ li:hover
 {
     display: flex;
     justify-content: center;
-    display: none;
+    /* display: none; */
 }
 
 #modal
@@ -321,8 +321,6 @@ li:hover
     height: 50vh;
     background-color: white;
     border: 2px solid orange;
-    
-    z-index: 100;
     margin-bottom: 25vh;
 }
 

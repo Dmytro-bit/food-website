@@ -94,7 +94,7 @@ function displayTable() {
         }
         htmlString += `<td>
                             <div class="element"><div class="element_buttons_menu" id="${food.id}_buttons">
-                                    <div class="element_button" id="view"><img src="../icons/info.png" class="element_button_icon" alt="view"></div>
+                                    <div class="element_button" id="view" onclick="viewModal(foodInfo('${food.id}'))"><img src="../icons/info.png" class="element_button_icon" alt="view"></div>
                                     <div class="element_button" id="edit"><img src="../icons/pencil.png" class="element_button_icon" alt="edit"></div>
                                     <div class="element_button" id="delete"><img src="../icons/bin.png" class="element_button_icon" alt="delete"></div>
                                 </div>
@@ -187,4 +187,20 @@ function foodInfo(id) {
         }
     }
     return searchedFood
+}
+
+function viewModal(food)
+{
+    let objKeys = Object.keys(food)
+    console.log(objKeys)
+    let htmlString = ``
+    objKeys.forEach(key => 
+    {
+            htmlString += `<li><label><b>${key}</b></label><input type="text"></li>`
+    })
+    htmlString += `<input type="button" value="Add Nutrition/100g" id="add_nutrition">`
+    htmlString += `<input type="button" value="Add Tag" id="add_tag">`
+    document.getElementById("view_content").innerHTML = htmlString
+    console.log(htmlString)
+
 }
