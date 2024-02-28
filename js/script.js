@@ -4,7 +4,6 @@ let sort = 1
 let roll = 4 // how many products in the roll
 let adaptive_font_size = 1.3
 let adaptive_padding = 2.5
-// let adaptive_margin;
 const window_width = window.screen.availWidth
 let searchValue = ""
 let tagCheckBoxes
@@ -172,4 +171,9 @@ function displayMenuButtons(id){
         document.getElementById(id+"_buttons").style.margin = `15vh 0 0 10rem`
         menu_displayed = false
     }
+}
+
+function displayModal()
+{
+    
 }
