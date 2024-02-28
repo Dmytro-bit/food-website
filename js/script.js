@@ -9,6 +9,7 @@ let searchValue = ""
 let all_tags = []
 let tagCheckBoxes
 let filter_displayed = false;
+let menu_displayed = false;
 
 
 window.onload = () => {
@@ -31,7 +32,7 @@ function main() {
     tagCheckBoxes.forEach(checkbox => 
     {
 
-        filter_content += `<li><input type="checkbox" id="${checkbox}" oninput="displayTable()">${checkbox}</li>`
+        filter_content += `<li><input type="checkbox" class="filter_option" id="${checkbox}" oninput="displayTable()">${checkbox}</li>`
         // console.log(htmlString)
 
         document.getElementById("filter_list").innerHTML = filter_content
@@ -57,16 +58,26 @@ function displayTable() {
     console.log(filteredTags)
     if (filteredTags.length !== 0) {
         // console.log("Hello World")
-        searched_foods = searched_foods.filter(food => filteredTags.includes(food.tag))
+        searched_foods = searched_foods.filter(food => filteredTags.includes(food.tags))
     }
 
 
     searched_foods.forEach(food => {
 
         if (counter < roll) {
-            htmlString += `<td><div class="element"><div class="element_photo"></div>
-                                <div class="element_info"><h1 style="padding: ${food.name.length <= 10 ? `0vw 0vw ${padding}vw 0vw; ` : `0vw 0vw ${padding * 0.85}vw 0vw; `} font-size: 
-                                ${food.name.length >= 17 ? `${font_size}vw` : ''}">${food.name}</h1></div></div></td>`;
+            htmlString += `<td><div class="element"><div class="element_buttons_menu" id="${food.name}_buttons">
+                                    <div class="element_button" id="view"></div>
+                                    <div class="element_button" id="edit"></div>
+                                    <div class="element_button" id="delete"></div>
+                                </div>
+                                <div class="element_object" onclick="displayMenuButtons('${food.name}')">
+                                    <div class="element_photo"></div>
+                                    <div class="element_info">
+                                        <h1 style="padding: ${food.name.length <= 10 ? `0vw 0vw ${padding}vw 0vw; ` : `0vw 0vw ${padding * 0.85}vw 0vw; `} font-size: 
+                                        ${food.name.length >= 17 ? `${font_size}vw` : ''}">${food.name}</h1>
+                                    </div>
+                                </div>
+                            </div></td>`;
             counter++
         } else {
             htmlString += `<tr>`
@@ -100,12 +111,27 @@ function search(value) {
 function displayFilter() {
     if(!filter_displayed)
     {
-        document.getElementById("filter_list").style.display = 'block';
-        filter_displayed = true;
+        document.getElementById("filter_list").style.display = 'block'
+        filter_displayed = true
     }
     else
     {
-        document.getElementById("filter_list").style.display = 'none';
-        filter_displayed = false;
+        document.getElementById("filter_list").style.display = 'none'
+        filter_displayed = false
+    }
+}
+
+function displayMenuButtons(id){
+    document.getElementById(id+"_buttons").style.margin = '10% 0 0 -3%'
+    console.log(id)
+    if(!menu_displayed)
+    {
+        document.getElementById(id+"_buttons").style.margin = '10% 0 0 -3%'        
+        menu_displayed = true
+    }
+    else
+    {
+        document.getElementById(id+"_buttons").style.margin = '10% 0 0 0'        
+        menu_displayed = false
     }
 }
