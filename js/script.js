@@ -97,7 +97,7 @@ function displayTable() {
                             <div class="element"><div class="element_buttons_menu" id="${food.id}_buttons">
                                     <div class="element_button" id="view"><img src="../icons/info.png" class="element_button_icon" alt="view"></div>
                                     <div class="element_button" id="edit"><img src="../icons/pencil.png" class="element_button_icon" alt="edit"></div>
-                                    <div class="element_button" id="delete"><img src="../icons/bin.png" class="element_button_icon" alt="delete"></div>
+                                    <div class="element_button" id="delete"><img src="../icons/bin.png" class="element_button_icon" alt="delete" onclick="deleteFood('${food.id}')"></div>
                                 </div>
                                 <div class="element_object" onclick="displayMenuButtons('${food.id}')">
                                     <div class="element_photo"></div>
@@ -158,7 +158,6 @@ function displaySort() {
 
 
 function displayMenuButtons(id) {
-    console.log(id)
     if (!menu_displayed) {
         document.getElementById(id + "_buttons").style.margin = `15vh 0 0 -4rem`
         menu_displayed = true
@@ -170,12 +169,19 @@ function displayMenuButtons(id) {
 
 function deleteFood(id) {
     let selectedIndex
+    let foodName
     foods.forEach((food, index) => {
         if (food.id === id) {
             selectedIndex = index
+            foodName = food.name
         }
     })
-    foods.splice(selectedIndex, 1)
+    if (window.confirm(`Do you want to delete: ${foodName}`)) {
+        foods.splice(selectedIndex, 1)
+        displayTable()
+    }
+
+
 }
 
 function foodInfo(id) {
