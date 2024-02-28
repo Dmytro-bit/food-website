@@ -7,11 +7,12 @@ let adaptive_padding = 2.5
 // let adaptive_margin;
 const window_width = window.screen.availWidth
 let searchValue = ""
-let all_tags = []
 let tagCheckBoxes
 let filter_displayed = false;
 let menu_displayed = false;
-
+let unique_nutrition_values
+let nutrition_values = []
+let order = 1;
 
 window.onload = () => {
     let url = "../data/foods.json";
@@ -26,8 +27,22 @@ window.onload = () => {
 };
 
 function main() {
+    let all_tags = []
     foods.forEach(food => food[`tags`] !== undefined ? food[`tags`].forEach(tag => all_tags.push(tag)) : null)
     tagCheckBoxes = [...new Set(all_tags)].sort()
+
+    foods.forEach(element => {
+        let nutrition_key_g = element["nutrition-per-100g"]
+        if (nutrition_key_g) {
+            Object.keys(nutrition_key_g).forEach(key => {
+                nutrition_values.push(key)
+            })
+        }
+    })
+    unique_nutrition_values = [...new Set(nutrition_values)].sort()
+
+    console.log(nutrition_values)
+    console.log(unique_nutrition_values)
 
     let filter_content = ``
     tagCheckBoxes.forEach(checkbox => {
@@ -62,16 +77,18 @@ function displayTable() {
             for (let tag of filteredTags) {
                 if (food.tags !== undefined && food.tags.includes(tag)) {
                     final_foods.push(food)
+                    console.log(food)
                 }
             }
         }
     }
 
-
     final_foods.forEach(food => {
-
-        if (counter < roll) {
-            htmlString += `<td><div class="element"><div class="element_buttons_menu" id="${food.id}_buttons">
+        if (counter >= roll) {
+            htmlString += `<tr>`
+            counter = 0
+        }
+        htmlString += `<td><div class="element"><div class="element_buttons_menu" id="${food.id}_buttons">
                                     <div class="element_button" id="view"></div>
                                     <div class="element_button" id="edit"></div>
                                     <div class="element_button" id="delete"></div>
@@ -84,22 +101,19 @@ function displayTable() {
                                     </div>
                                 </div>
                             </div></td>`;
-            counter++
-        } else {
-            htmlString += `<tr>`
-            counter = 0
-        }
+        counter++
     })
     htmlString += `</tr></table>`;
     document.getElementById("main_data").innerHTML = htmlString; // Fix: Set innerHTML property
 }
 
 
-function Sort(field) {
-    sort_field = field
-    sort *= -1;
-    foods.sort((a, b) => a[field] < b[field] ? -sort : sort);
-    displayTable();
+function sortNutrition() {
+
+    let ascendingOrder = unique_nutrition_values.sort((a, b) => (order === 1 ? a - b : b - a));
+    order *= -1
+
+    displayTable()
 }
 
 function elementDisplay() {
@@ -115,28 +129,22 @@ function search(value) {
 }
 
 function displayFilter() {
-    if(!filter_displayed)
-    {
+    if (!filter_displayed) {
         document.getElementById("filter_list").style.display = 'block'
         filter_displayed = true
-    }
-    else
-    {
+    } else {
         document.getElementById("filter_list").style.display = 'none'
         filter_displayed = false
     }
 }
 
-function displayMenuButtons(id){
+function displayMenuButtons(id) {
     console.log(id)
-    if(!menu_displayed)
-    {
-        document.getElementById(id+"_buttons").style.margin = `15vh 0 0 -4rem`        
+    if (!menu_displayed) {
+        document.getElementById(id + "_buttons").style.margin = `15vh 0 0 -4rem`
         menu_displayed = true
-    }
-    else
-    {
-        document.getElementById(id+"_buttons").style.margin = `15vh 0 0 0`        
+    } else {
+        document.getElementById(id + "_buttons").style.margin = `15vh 0 0 0`
         menu_displayed = false
     }
 }
