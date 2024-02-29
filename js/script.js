@@ -1,4 +1,5 @@
 let foods = []
+let sort = 1
 let roll = 4 // how many products in the roll
 let adaptive_font_size = 1.3
 let adaptive_padding = 2.5
@@ -54,7 +55,7 @@ function main() {
 
     let sort_content = ``
     unique_nutrition_values.forEach(checkbox => {
-        sort_content += `<li><div class="sort_option" id="${checkbox}" onclick="sortNutrition()">${checkbox}</div></li>`
+        sort_content += `<li><div class="sort_option" id="${checkbox}" onclick="sortNutrition('${checkbox}')">${checkbox}</div></li>`
         document.getElementById("sort_list").innerHTML = sort_content
     })
     displayTable()
@@ -116,12 +117,17 @@ function displayTable() {
 }
 
 
-function sortNutrition() {
+function sortNutrition(value) {
+    foods.sort((a, b) => {
+        const aValue = (a["nutrition-per-100g"] && a["nutrition-per-100g"][value]) || 0; //if key and value exist aValue equals to value either it iqoals to 0
+        const bValue = (b["nutrition-per-100g"] && b["nutrition-per-100g"][value]) || 0;
 
-    let ascendingOrder = unique_nutrition_values.sort((a, b) => (order === 1 ? a - b : b - a));
-    order *= -1
+        return order * (aValue - bValue); //implicite comparsion in brackets, modifier 'order' changes the order of values by multipl.
+    });
+    console.log(foods.map(food => food.name));
 
-    displayTable()
+    order *= -1;
+    displayTable();
 }
 
 function elementDisplay() {
