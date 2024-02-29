@@ -27,13 +27,14 @@
     <section id="main">
         <div class="content">
             <div class="functional">
-                <div id="sbar"><input type="search" id="search" oninput="search(this.value)" placeholder="Search...">
+                <div id="sbar"><label for="search"></label><input type="search" id="search" oninput="search(this.value)"
+                                                                  placeholder="Search...">
                 </div>
                 <div id="sort">
                     <input type="button" class="functional_button" value="SORT" onclick="displaySort()">
                     <div>
                         <ul id="sort_list">
-                            
+
                         </ul>
                     </div>
                 </div>
@@ -41,11 +42,12 @@
                     <input type="button" class="functional_button" value="FILTER" onclick="displayFilter()">
                     <div>
                         <ul id="filter_list">
-                            
+
                         </ul>
                     </div>
                 </div>
-                <div id="add"><input type="button" id="add_button" value="+" oninput="add()" placeholder="Search..."></div>
+                <div id="add"><input type="button" id="add_button" value="+" oninput="add()" placeholder="Search...">
+                </div>
             </div>
 
             <div id="main_data"></div>
@@ -54,7 +56,7 @@
                     <ul id="view_content">
                     </ul>
                 </div>
-            <div>
+            </div>
         </div>
     </section>
 </div>
