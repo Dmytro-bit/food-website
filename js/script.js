@@ -12,6 +12,7 @@ let last_menu_id_displayed
 let unique_nutrition_values
 let nutrition_values = []
 let order = 1;
+let executableID
 
 window.onload = () => {
     let url = "../data/foods.json";
@@ -91,7 +92,7 @@ function displayTable() {
         htmlString += `<td>
                             <div class="element"><div class="element_buttons_menu" id="${food.id}_buttons">
                                     <div class="element_button" id="view" onclick="viewModal(foodInfo('${food.id}'))"><img src="../icons/info.png" class="element_button_icon" alt="view"></div>
-                                    <div class="element_button" id="edit"><img src="../icons/pencil.png" class="element_button_icon" alt="edit"></div>
+                                    <div class="element_button" id="edit" onclick="editModal(foodInfo('${food.id}'))"><img src="../icons/pencil.png" class="element_button_icon" alt="edit"></div>
                                     <div class="element_button" id="delete"><img src="../icons/bin.png" class="element_button_icon" alt="delete" onclick="deleteFood('${food.id}')"></div>
                                 </div>
                                 <div class="element_object" onclick="displayMenuButtons('${food.id}')">
@@ -157,6 +158,7 @@ function displaySort() {
 
 
 function displayMenuButtons(id) {
+    executableID = id;
     if (menu_displayed === true && id !== last_menu_id_displayed) {
         if (document.getElementById(last_menu_id_displayed + "_buttons") !== null) {
             document.getElementById(last_menu_id_displayed + "_buttons").style.margin = `15vh 0 0 10rem`
@@ -204,11 +206,98 @@ function foodInfo(id) {
 
 function viewModal(food) {
     let objKeys = Object.keys(food)
-    let htmlString = ``
-    objKeys.forEach(key => {
-        htmlString += `<li><label><b>${key}</b></label><input type="text"></li>`
+    let nutrKeys = Object.keys(food["nutrition-per-100g"])
+    let content = ``
+
+    objKeys.forEach(key =>
+    {
+        if(key === "nutrition-per-100g")
+        {
+            content += `<ul>`
+            nutrKeys.forEach(key =>
+            {
+                content += `<li><label><b>${key}</b></label><input type="text" readonly="readonly" value="${food["nutrition-per-100g"][key]}"></li>`
+            })
+            content += `</ul>`
+        }
+        else
+        {
+            content += `<li><label><b>${key}</b></label><input type="text" value="${food[key]}" readonly="readonly"></li>`
+        }
+
     })
-    htmlString += `<input type="button" value="Add Nutrition/100g" id="add_nutrition">`
-    htmlString += `<input type="button" value="Add Tag" id="add_tag">`
-    document.getElementById("view_content").innerHTML = htmlString
+
+    document.getElementById("view_content").innerHTML = content
+
+}
+
+function editModal(food)
+{
+    let objKeys = Object.keys(food)
+    let nutrKeys = Object.keys(food["nutrition-per-100g"])
+    let content = ``
+
+    objKeys.forEach(key =>
+    {
+        if(key === "nutrition-per-100g" || key === "nutrition-per-100ml")
+        {
+            content += `<ul>`
+            nutrKeys.forEach(key =>
+            {
+                content += `<li><label><b>${key}</b></label><input type="text" id="${food.id}_${key}_edit" value="${food["nutrition-per-100g"][key]}"></li>`
+            })
+            content += `</ul>`
+        }
+        else
+        {
+            content += `<li><label><b>${key}</b></label><input type="text" id="${food.id}_${key}_edit" value="${food[key]}"></li>`
+        }
+    })
+
+
+    document.getElementById("view_content").innerHTML = content
+    // document.getElementById("edit_save").onclick = saveEdit(food)
+}
+
+function saveEdit()
+{
+
+    foods.forEach(food =>
+    {
+        if(food.id === executableID)
+        {
+            let objKeys = Object.keys(food)
+            let nutrKeys = Object.keys(food["nutrition-per-100g"])
+            console.log(nutrKeys)
+            objKeys.forEach(key =>
+            {
+                    if(key !== "nutrition-per-100g" && key !== "nutrition-per-100ml")
+                    {
+                        food[key] = document.getElementById(food.id+"_"+key+"_edit").value
+                        document.getElementById(food.id+"_"+key+"_edit").value = null
+                    }
+                    else if(key === "nutrition-per-100g")
+                    {
+                        nutrKeys.forEach(key =>
+                        {
+                            console.log(document.getElementById(food.id+"_"+key+"_edit"))
+                            food["nutrition-per-100g"][key] = document.getElementById(food.id+"_"+key+"_edit").value
+                            document.getElementById(food.id+"_"+key+"_edit").value = null
+                        })
+                    }
+                    else
+                    {
+                        nutrKeys.forEach(key =>
+                        {
+                            food["nutrition-per-100ml"][key] = document.getElementById(food.id+"_"+key+"_edit").value
+                            console.log(document.getElementById(food.id+"_"+key+"_edit"))
+                            document.getElementById(food.id+"_"+key+"_edit").value = null
+                        })
+                    }
+
+            })
+        }
+    })
+    displayTable()
+
 }
