@@ -1,5 +1,4 @@
 let foods = []
-let sort_field = "name"
 let sort = 1
 let roll = 4 // how many products in the roll
 let adaptive_font_size = 1.3
@@ -48,7 +47,7 @@ function main() {
     let filter_content = ``
     tagCheckBoxes.forEach(checkbox => {
 
-        filter_content += `<li><input type="checkbox" class="filter_option" id="${checkbox}" oninput="displayTable()">${checkbox}</li>`
+        filter_content += `<li><input type="checkbox" class="filter_option" id="${checkbox}" oninput="displayTable(${checkbox})">${checkbox}</li>`
         // console.log(htmlString)
 
         document.getElementById("filter_list").innerHTML = filter_content
@@ -57,9 +56,10 @@ function main() {
     let sort_content = ``
     unique_nutrition_values.forEach(checkbox =>
         {
-            sort_content += `<li><div class="sort_option" id="${checkbox}" onclick="sortNutrition()">${checkbox}</div></li>`
+            sort_content += `<li><div class="sort_option" id="${checkbox}" onclick="sortNutrition('${checkbox}')">${checkbox}</div></li>`
             document.getElementById("sort_list").innerHTML = sort_content
         })
+        
     displayTable()
 
 }
@@ -77,8 +77,7 @@ function displayTable() {
     // Uncomment when tag Check Boxes will be done
     let filteredTags = tagCheckBoxes.filter(tag => document.getElementById(tag).checked)
     let final_foods = [...searched_foods]
-    console.log(filteredTags)
-
+    
     if (filteredTags.length !== 0) {
         final_foods = []
         for (let food of searched_foods) {
@@ -119,20 +118,29 @@ function displayTable() {
 }
 
 
-function sortNutrition(){
-    
-    let ascendingOrder = unique_nutrition_values.sort((a, b) => (order === 1 ? a - b : b - a));
-    order *= -1
-    
-    displayTable()
+
+
+function sortNutrition(value) {
+    foods.sort((a, b) => {
+        const aValue = (a["nutrition-per-100g"] && a["nutrition-per-100g"][value]) || 0; //if key and value exist aValue equals to value either it iqoals to 0
+        const bValue = (b["nutrition-per-100g"] && b["nutrition-per-100g"][value]) || 0;
+
+        return order * (aValue - bValue); //implicite comparsion in brackets, modifier 'order' changes the order of values by multipl.
+    });
+    console.log(foods.map(food => food.name));
+   
+    order *= -1;
+    displayTable();
 }
+    
+
 
 function elementDisplay() {
     if (window_width <= 480) {
         roll = 1
         adaptive_font_size = 5
     }
-}
+} 
 
 function search(value) {
     searchValue = value.toLowerCase()
