@@ -41,14 +41,11 @@ function main() {
     })
     unique_nutrition_values = [...new Set(nutrition_values)].sort()
 
-    console.log(nutrition_values)
-    console.log(unique_nutrition_values)
 
     let filter_content = ``
     tagCheckBoxes.forEach(checkbox => {
 
         filter_content += `<li><input type="checkbox" class="filter_option" id="${checkbox}" oninput="displayTable()">${checkbox}</li>`
-        // console.log(htmlString)
 
         document.getElementById("filter_list").innerHTML = filter_content
     })
@@ -75,7 +72,6 @@ function displayTable() {
     // Uncomment when tag Check Boxes will be done
     let filteredTags = tagCheckBoxes.filter(tag => document.getElementById(tag).checked)
     let final_foods = [...searched_foods]
-    console.log(filteredTags)
 
     if (filteredTags.length !== 0) {
         final_foods = []
@@ -83,7 +79,6 @@ function displayTable() {
             for (let tag of filteredTags) {
                 if (food.tags !== undefined && food.tags.includes(tag)) {
                     final_foods.push(food)
-                    console.log(food)
                 }
             }
         }
@@ -124,7 +119,6 @@ function sortNutrition(value) {
 
         return order * (aValue - bValue); //implicite comparsion in brackets, modifier 'order' changes the order of values by multipl.
     });
-    console.log(foods.map(food => food.name));
 
     order *= -1;
     displayTable();
@@ -164,9 +158,6 @@ function displaySort() {
 
 
 function displayMenuButtons(id) {
-    console.log(last_menu_id_displayed)
-    console.log(id)
-
     if (menu_displayed === true && id !== last_menu_id_displayed) {
         if (document.getElementById(last_menu_id_displayed + "_buttons") !== null) {
             document.getElementById(last_menu_id_displayed + "_buttons").style.margin = `15vh 0 0 10rem`
@@ -214,7 +205,6 @@ function foodInfo(id) {
 
 function viewModal(food) {
     let objKeys = Object.keys(food)
-    console.log(objKeys)
     let htmlString = ``
     objKeys.forEach(key => {
         htmlString += `<li><label><b>${key}</b></label><input type="text"></li>`
@@ -222,6 +212,4 @@ function viewModal(food) {
     htmlString += `<input type="button" value="Add Nutrition/100g" id="add_nutrition">`
     htmlString += `<input type="button" value="Add Tag" id="add_tag">`
     document.getElementById("view_content").innerHTML = htmlString
-    console.log(htmlString)
-
 }
