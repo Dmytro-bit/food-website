@@ -206,22 +206,17 @@ function foodInfo(id) {
 
 function viewModal(food) {
     let objKeys = Object.keys(food)
-    let nutrKeys = Object.keys(food["nutrition-per-100g"])
+    let nutrKeys = food["nutrition-per-100g"] !== undefined ? Object.keys(food["nutrition-per-100g"]) : Object.keys(food["nutrition-per-100ml"])
     let content = ``
 
-    objKeys.forEach(key =>
-    {
-        if(key === "nutrition-per-100g")
-        {
+    objKeys.forEach(key => {
+        if (key === "nutrition-per-100g") {
             content += `<ul>`
-            nutrKeys.forEach(key =>
-            {
+            nutrKeys.forEach(key => {
                 content += `<li><label><b>${key}</b></label><input type="text" readonly="readonly" value="${food["nutrition-per-100g"][key]}"></li>`
             })
             content += `</ul>`
-        }
-        else
-        {
+        } else {
             content += `<li><label><b>${key}</b></label><input type="text" value="${food[key]}" readonly="readonly"></li>`
         }
 
@@ -231,25 +226,19 @@ function viewModal(food) {
 
 }
 
-function editModal(food)
-{
+function editModal(food) {
     let objKeys = Object.keys(food)
     let nutrKeys = Object.keys(food["nutrition-per-100g"])
     let content = ``
 
-    objKeys.forEach(key =>
-    {
-        if(key === "nutrition-per-100g" || key === "nutrition-per-100ml")
-        {
+    objKeys.forEach(key => {
+        if (key === "nutrition-per-100g" || key === "nutrition-per-100ml") {
             content += `<ul>`
-            nutrKeys.forEach(key =>
-            {
+            nutrKeys.forEach(key => {
                 content += `<li><label><b>${key}</b></label><input type="text" id="${food.id}_${key}_edit" value="${food["nutrition-per-100g"][key]}"></li>`
             })
             content += `</ul>`
-        }
-        else
-        {
+        } else {
             content += `<li><label><b>${key}</b></label><input type="text" id="${food.id}_${key}_edit" value="${food[key]}"></li>`
         }
     })
@@ -259,45 +248,170 @@ function editModal(food)
     // document.getElementById("edit_save").onclick = saveEdit(food)
 }
 
-function saveEdit()
-{
+function saveEdit() {
 
-    foods.forEach(food =>
-    {
-        if(food.id === executableID)
-        {
+    foods.forEach(food => {
+        if (food.id === executableID) {
             let objKeys = Object.keys(food)
             let nutrKeys = Object.keys(food["nutrition-per-100g"])
             console.log(nutrKeys)
-            objKeys.forEach(key =>
-            {
-                    if(key !== "nutrition-per-100g" && key !== "nutrition-per-100ml")
-                    {
-                        food[key] = document.getElementById(food.id+"_"+key+"_edit").value
-                        document.getElementById(food.id+"_"+key+"_edit").value = null
-                    }
-                    else if(key === "nutrition-per-100g")
-                    {
-                        nutrKeys.forEach(key =>
-                        {
-                            console.log(document.getElementById(food.id+"_"+key+"_edit"))
-                            food["nutrition-per-100g"][key] = document.getElementById(food.id+"_"+key+"_edit").value
-                            document.getElementById(food.id+"_"+key+"_edit").value = null
-                        })
-                    }
-                    else
-                    {
-                        nutrKeys.forEach(key =>
-                        {
-                            food["nutrition-per-100ml"][key] = document.getElementById(food.id+"_"+key+"_edit").value
-                            console.log(document.getElementById(food.id+"_"+key+"_edit"))
-                            document.getElementById(food.id+"_"+key+"_edit").value = null
-                        })
-                    }
+            objKeys.forEach(key => {
+                if (key !== "nutrition-per-100g" && key !== "nutrition-per-100ml") {
+                    food[key] = document.getElementById(food.id + "_" + key + "_edit").value
+                    document.getElementById(food.id + "_" + key + "_edit").value = null
+                } else if (key === "nutrition-per-100g") {
+                    nutrKeys.forEach(key => {
+                        console.log(document.getElementById(food.id + "_" + key + "_edit"))
+                        food["nutrition-per-100g"][key] = document.getElementById(food.id + "_" + key + "_edit").value
+                        document.getElementById(food.id + "_" + key + "_edit").value = null
+                    })
+                } else {
+                    nutrKeys.forEach(key => {
+                        food["nutrition-per-100ml"][key] = document.getElementById(food.id + "_" + key + "_edit").value
+                        console.log(document.getElementById(food.id + "_" + key + "_edit"))
+                        document.getElementById(food.id + "_" + key + "_edit").value = null
+                    })
+                }
 
             })
         }
     })
     displayTable()
+
+}
+
+function addNutrition() { // change list.children.length
+    let listItem = document.createElement("li");  //https://www.w3schools.com/jsref/dom_obj_li.asp or https://www.w3schools.com/jsref/tryit.asp?filename=tryjsref_li_create
+    let list = document.getElementById("nutrition_ul")
+    listItem.innerHTML = `
+        <li><label><b>Name</b></label><input type="text" value="" id="add_nutrition_name_${list.children.length}">
+                       <label><b>Value</b></label><input type="text" value="" id="add_nutrition_value_${list.children.length}">
+                       <input type="button" value="Add" onclick="addNutrition()">
+                       <input type="button" value="Delete" onclick="deleteNutrition()"></li>
+    `// https://www.w3schools.com/jsref/prop_element_childelementcount.asp
+    list.appendChild(listItem);
+}
+
+function deleteNutrition() { // https://www.w3schools.com/jsref/met_node_removechild.asp
+    let nutritionList = document.getElementById("nutrition_ul")
+
+    if (nutritionList.children.length > 0) {
+        nutritionList.removeChild(nutritionList.lastElementChild); //change when the ID is implemented
+    }
+}
+
+function addTags() {
+    let itemLIst = document.createElement("li")
+    let list = document.getElementById("tags_ul")
+    let tagsAvailable = ["None"]
+    tagCheckBoxes.forEach(tag => tagsAvailable.push(tag))
+
+    let htmlString = `<li><label><b>Choose tag: </b></label><select name="tags" id="add_food_tag_${list.children.length}">`
+
+    tagsAvailable.forEach(tag => htmlString += `<option value="${tag}">${tag}</option>`)
+
+    htmlString += `</select><input type="button" value="Add" onclick="addTags()"><input type="button" value="Delete" onclick="deleteTags()"></li>`
+    itemLIst.innerHTML = htmlString
+    list.appendChild(itemLIst)
+
+}
+
+function deleteTags() {
+    let tags = document.getElementById("tags_ul")
+    tags.removeChild(tags.lastElementChild)
+}
+
+
+function displayAdd() {
+    let tagsAvailable = ["None"]
+    tagCheckBoxes.forEach(tag => tagsAvailable.push(tag))
+    let htmlString = ``
+
+    htmlString += `<ul><li><label><b>Name</b></label><input type="text" id="add_food_name"></li></ul>`
+    htmlString += `<ul id="nutrition_ul"><b>Nutrition</b>`
+
+
+    htmlString += `<li><label><b>Name</b></label><input type="text" value="" id="add_nutrition_name_1">
+                       <label><b>Value</b></label><input type="text" value="" id="add_nutrition_value_1">
+                       <input type="button" value="Add" onclick="addNutrition()">
+                       <input type="button" value="Delete" onclick="deleteNutrition()"></li>
+                       `
+    htmlString += `</ul>`
+
+    htmlString += `<ul id="tags_ul"><b>Tags</b>`
+
+    // for (let i = 0; i < num_tags; i++) {
+    //     htmlString += `<li><label><b>Name</b></label><input type="text">
+    //                    <label><b>Value</b></label><input type="text">
+    //                    `
+    // }
+
+    htmlString += `<li><label><b>Choose tag: </b></label><select name="tags" id="add_food_tag_1">`
+
+    tagsAvailable.forEach(tag => htmlString += `<option value="${tag}">${tag}</option>`)
+
+    htmlString += `</select><input type="button" value="Add" onclick="addTags()"><input type="button" value="Delete" onclick="deleteTags()"></li></ul>`
+
+    htmlString += `<ul><li><label><b>Is liquid: </b></label><input type="checkbox" id="is_liquid"></li></ul>`
+
+    document.getElementById("add_content").innerHTML = htmlString
+}
+
+function AddSave() {
+    let name = document.getElementById("add_food_name")
+    let nutrition_type = document.getElementById("is_liquid")
+    let tags = []
+    let dict_nutrition = {}
+    let i = 1
+    let nutrition_name = ""
+    let nutrition_value = ""
+    let tag = ""
+    let food = {}
+
+    while (true) {
+        nutrition_name = document.getElementById(`add_nutrition_name_${i}`)
+
+        if (nutrition_name === null) {
+            break
+        }
+        nutrition_value = document.getElementById(`add_nutrition_value_${i}`)
+        dict_nutrition[nutrition_name.value] = nutrition_value.value
+        nutrition_name.value = null
+        nutrition_value.value = null
+        i++
+    }
+    i = 1
+    while (i <= 10) {
+
+        tag = document.getElementById(`add_food_tag_${i}`)
+        console.log(tag)
+        if (tag === null) {
+            console.log("Break")
+            break
+        }
+        tags.push(tag.value)
+        tag.value = null
+        i++
+    }
+
+    food["id"] = `${foods.length + 1}`
+    food["name"] = name.value
+
+    if (nutrition_type.checked === false) {
+        food["nutrition-per-100g"] = dict_nutrition
+    } else {
+        food["nutrition-per-100ml"] = dict_nutrition
+    }
+    if (tags.length !== 0) {
+        food["tags"] = tags
+    }
+    console.log(food)
+    console.log(foods)
+
+    foods.push(food)
+    name.value = null
+    nutrition_type.checked = false
+    displayTable()
+
 
 }

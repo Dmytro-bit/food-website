@@ -33,7 +33,7 @@
                     <input type="button" class="functional_button" value="SORT" onclick="displaySort()">
                     <div>
                         <ul id="sort_list">
-                            
+
                         </ul>
                     </div>
                 </div>
@@ -41,24 +41,26 @@
                     <input type="button" class="functional_button" value="FILTER" onclick="displayFilter()">
                     <div>
                         <ul id="filter_list">
-                            
+
                         </ul>
                     </div>
                 </div>
-                <div id="add"><input type="button" id="add_button" value="+" oninput="add()" placeholder="Search..."></div>
+                <div id="add"><input type="button" id="add_button" value="+" onclick="displayAdd()">
+                </div>
             </div>
 
             <div id="main_data"></div>
+
             <div id="modal_container">
                 <div id="modal">
-                    <ul id="view_content">
-                    </ul>
-                    
-                    <ul id="edit_content">
-                    </ul>
+                    <ul id="view_content"></ul>
+                    <ul id="edit_content"></ul>
+                    <ul id="add_content" style="background: aqua"></ul>
                 </div>
                 <input type="submit" value="Save" id="save_edit" onclick="saveEdit()">
-            <div>
+                <input type="submit" value="Add" id="save_add" onclick="AddSave()">
+            </div>
+
         </div>
     </section>
 </div>
