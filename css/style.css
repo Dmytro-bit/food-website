@@ -321,6 +321,12 @@ li:hover
     background-color: white;
     border: 2px solid orange;
     margin-bottom: 25vh;
+    display: none;
+}
+
+#save_edit
+{
+    display: none;
 }
 
 #main

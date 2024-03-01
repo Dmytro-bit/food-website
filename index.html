@@ -54,13 +54,14 @@
             <div id="modal_container">
                 <div id="modal">
                     <ul id="view_content"></ul>
+                    <input type="button" value="Close" id="close_view" class="modal_buttons" onclick="closeModal()">
+
                     <ul id="edit_content"></ul>
                     <ul id="add_content" style="background: aqua"></ul>
+                    <input type="submit" value="Save" id="save_edit" class="modal_buttons" onclick="saveEdit()">
+                    <input type="submit" value="Add" id="save_add" onclick="AddSave()">
                 </div>
-                <input type="submit" value="Save" id="save_edit" onclick="saveEdit()">
-                <input type="submit" value="Add" id="save_add" onclick="AddSave()">
             </div>
-
         </div>
     </section>
 </div>

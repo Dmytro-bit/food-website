@@ -13,6 +13,7 @@ let unique_nutrition_values
 let nutrition_values = []
 let order = 1;
 let executableID
+let modalActvie = false;
 
 window.onload = () => {
     let url = "../data/foods.json";
@@ -205,48 +206,68 @@ function foodInfo(id) {
 }
 
 function viewModal(food) {
-    let objKeys = Object.keys(food)
-    let nutrKeys = food["nutrition-per-100g"] !== undefined ? Object.keys(food["nutrition-per-100g"]) : Object.keys(food["nutrition-per-100ml"])
-    let content = ``
 
-    objKeys.forEach(key => {
-        if (key === "nutrition-per-100g") {
-            content += `<ul>`
-            nutrKeys.forEach(key => {
-                content += `<li><label><b>${key}</b></label><input type="text" readonly="readonly" value="${food["nutrition-per-100g"][key]}"></li>`
-            })
-            content += `</ul>`
-        } else {
-            content += `<li><label><b>${key}</b></label><input type="text" value="${food[key]}" readonly="readonly"></li>`
-        }
+    if(!modalActvie) {
+        modalActvie = true
+        document.getElementById("modal").style.display = 'flex'
 
-    })
+        let objKeys = Object.keys(food)
+        let nutrKeys = food["nutrition-per-100g"] !== undefined ? Object.keys(food["nutrition-per-100g"]) : Object.keys(food["nutrition-per-100ml"])
+        let content = ``
 
-    document.getElementById("view_content").innerHTML = content
+        objKeys.forEach(key =>
+        {
+            if(key === "nutrition-per-100g")
+            {
+                content += `<ul>`
+                nutrKeys.forEach(key =>
+                {
+                    content += `<li><label><b>${key}</b></label><input type="text" value="${food["nutrition-per-100g"][key]}"></li>`
+                })
+                content += `</ul>`
+            }
+            else
+            {
+                content += `<li><label><b>${key}</b></label><input type="text" value="${food[key]}" ></li>`
+            }
+
+        })
+
+        document.getElementById("view_content").innerHTML = content
+    }
 
 }
 
 function editModal(food) {
-    let objKeys = Object.keys(food)
-    let nutrKeys = Object.keys(food["nutrition-per-100g"])
-    let content = ``
+    if(!modalActvie) {
+        document.getElementById("modal").style.display = "flex"
+        document.getElementById("save_edit").style.display = "block"
+        modalActvie = true
 
-    objKeys.forEach(key => {
-        if (key === "nutrition-per-100g" || key === "nutrition-per-100ml") {
-            content += `<ul>`
-            nutrKeys.forEach(key => {
-                content += `<li><label><b>${key}</b></label><input type="text" id="${food.id}_${key}_edit" value="${food["nutrition-per-100g"][key]}"></li>`
-            })
-            content += `</ul>`
-        } else {
-            content += `<li><label><b>${key}</b></label><input type="text" id="${food.id}_${key}_edit" value="${food[key]}"></li>`
-        }
-    })
+        let objKeys = Object.keys(food)
+        let nutrKeys = food["nutrition-per-100g"] !== undefined ? Object.keys(food["nutrition-per-100g"]) : Object.keys(food["nutrition-per-100ml"])
+        let content = ``
 
+        objKeys.forEach(key =>
+        {
+            if(key === "nutrition-per-100g" || key === "nutrition-per-100ml")
+            {
+                content += `<ul>`
+                nutrKeys.forEach(key =>
+                {
+                    content += `<li><label><b>${key}</b></label><input type="text" id="${food.id}_${key}_edit" value="${food["nutrition-per-100g"][key]}"></li>`
+                })
+                content += `</ul>`
+            }
+            else
+            {
+                content += `<li><label><b>${key}</b></label><input type="text" id="${food.id}_${key}_edit" value="${food[key]}"></li>`
+            }
+        })
 
-    document.getElementById("view_content").innerHTML = content
-    // document.getElementById("edit_save").onclick = saveEdit(food)
-}
+        document.getElementById("view_content").innerHTML = content
+    }
+}   
 
 function saveEdit() {
 
@@ -275,9 +296,21 @@ function saveEdit() {
 
             })
         }
+        document.getElementById("modal").style.display = "none"
+        document.getElementById("save_edit").style.display = "none"
+        modalActvie = false;
     })
     displayTable()
 
+}
+function closeModal()
+{
+    if(modalActvie)
+    {
+        document.getElementById("modal").style.display = "none"
+        document.getElementById("save_edit").style.display = "none"
+    }
+    modalActvie = false
 }
 
 function addNutrition() { // change list.children.length
