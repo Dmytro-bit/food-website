@@ -33,7 +33,7 @@
                     <input type="button" class="functional_button" value="SORT" onclick="displaySort()">
                     <div>
                         <ul id="sort_list">
-                            
+
                         </ul>
                     </div>
                 </div>
@@ -41,25 +41,28 @@
                     <input type="button" class="functional_button" value="FILTER" onclick="displayFilter()">
                     <div>
                         <ul id="filter_list">
-                            
+
                         </ul>
                     </div>
                 </div>
-                <div id="add"><input type="button" id="add_button" value="+" oninput="add()" placeholder="Search..."></div>
+                <div id="add"><input type="button" id="add_button" value="+" onclick="displayAdd()">
+                </div>
             </div>
 
             <div id="main_data"></div>
+
             <div id="modal_container">
                 <div id="modal">
-                    <ul id="view_content">
-                    </ul>
-                    <input type="button" value="Close" id="close_view" class="modal_buttons" onclick="closeModal()">
-                    
-                    <ul id="edit_content">
-                    </ul>
-                    <input type="submit" value="Save" id="save_edit" class="modal_buttons" onclick="saveEdit()">
+                    <ul id="view_content" class="modal_content"></ul>
+                    <ul id="edit_content" class="modal_content"></ul>
+                    <ul id="add_content" class="modal_content"></ul>
+                    <div id="modal_buttons_container">
+                        <input type="submit" value="Save" id="save_edit" class="modal_buttons" onclick="saveEdit()">
+                        <input type="submit" value="Add" id="save_add" class="modal_buttons" onclick="AddSave()">
+                        <input type="button" value="Close" id="close_view" class="modal_buttons" onclick="closeModal()">
+                    </div>
                 </div>
-            <div>
+            </div>
         </div>
     </section>
 </div>
