@@ -305,14 +305,12 @@ function saveEdit() {
         if (food.id === executableID) {
             let objKeys = Object.keys(food).slice(1)
             let nutrKeys = Object.keys(food["nutrition-per-100g"])
-            console.log(nutrKeys)
             objKeys.forEach(key => {
                 if (key === "name") {
                     food[key] = document.getElementById(food.id + "_" + key + "_edit").value
                     document.getElementById(food.id + "_" + key + "_edit").value = null
                 } else if (key === "nutrition-per-100g") {
                     nutrKeys.forEach(key => {
-                        console.log(document.getElementById(food.id + "_" + key + "_edit"))
                         food["nutrition-per-100g"][key] = document.getElementById(food.id + "_" + key + "_edit").value
                         document.getElementById(food.id + "_" + key + "_edit").value = null
                     })
@@ -326,7 +324,6 @@ function saveEdit() {
                 } else {
                     nutrKeys.forEach(key => {
                         food["nutrition-per-100ml"][key] = document.getElementById(food.id + "_" + key + "_edit").value
-                        console.log(document.getElementById(food.id + "_" + key + "_edit"))
                         document.getElementById(food.id + "_" + key + "_edit").value = null
                     })
                 }
@@ -391,6 +388,10 @@ function deleteTags(number) {
 
 
 function displayAdd() {
+    if (modalActvie) {
+        return
+    }
+    modalActvie = true
     document.getElementById("modal").style.display = "flex"
     document.getElementById("add_content").style.display = "block"
     document.getElementById("save_add").style.display = "flex"
@@ -407,7 +408,7 @@ function displayAdd() {
 
 
     htmlString += `<li><div class="modal_label"><label><b>Name</b></label></div><div class="modal_input"><input type="text" value="" id="add_nutrition_name_${nutritionCounter}"></div>
-                   <div class="modal_label"><label><b>Value</b></label></div><div class="modal_input"><input type="text" value="" id="add_nutrition_name_${nutritionCounter}"></div>
+                   <div class="modal_label"><label><b>Value</b></label></div><div class="modal_input"><input type="text" value="" id="add_nutrition_value_${nutritionCounter}"></div>
                    <div class="modal_inner_buttons_container"><input type="button" value="+" class="modal_inner_buttons" onclick="addNutrition()">
                    </div></li>
                        `
@@ -450,14 +451,12 @@ function AddSave() {
 
     while (nutritionCounter > 0) {
         nutrition_name = document.getElementById(`add_nutrition_name_${i}`)
-
         if (nutrition_name !== null) {
             nutrition_value = document.getElementById(`add_nutrition_value_${i}`)
             dict_nutrition[nutrition_name.value] = nutrition_value.value
             nutrition_name.value = null
             nutrition_value.value = null
         }
-        console.log(i)
         i++
         nutritionCounter--
     }
@@ -465,7 +464,6 @@ function AddSave() {
     while (tagsCounter !== 0) {
 
         tag = document.getElementById(`add_food_tag_${i}`)
-        console.log(tag)
         if (tag !== null) {
             tags.push(tag.value)
             tag.value = null
@@ -486,8 +484,6 @@ function AddSave() {
     if (tags.length !== 0) {
         food["tags"] = tags
     }
-    console.log(food)
-    console.log(foods)
 
     foods.push(food)
     name.value = null
