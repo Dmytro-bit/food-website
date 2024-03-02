@@ -276,7 +276,7 @@ function editModal(food) {
                     content += `<ul class="modal_content inner_ul">`
 
                     for (let tag of tags) {
-                        content += `<li><select >`
+                        content += `<li><select id="${food.id}_tag_${tag}">`
                         for (let tag_list of tagsAvailable) {
                             if (tag === tag_list) {
                                 content += `<option value="${tag_list}" selected="selected">${tag_list}</option>`
@@ -307,7 +307,7 @@ function saveEdit() {
             let nutrKeys = Object.keys(food["nutrition-per-100g"])
             console.log(nutrKeys)
             objKeys.forEach(key => {
-                if (key !== "nutrition-per-100g" && key !== "nutrition-per-100ml") {
+                if (key === "name") {
                     food[key] = document.getElementById(food.id + "_" + key + "_edit").value
                     document.getElementById(food.id + "_" + key + "_edit").value = null
                 } else if (key === "nutrition-per-100g") {
@@ -315,6 +315,13 @@ function saveEdit() {
                         console.log(document.getElementById(food.id + "_" + key + "_edit"))
                         food["nutrition-per-100g"][key] = document.getElementById(food.id + "_" + key + "_edit").value
                         document.getElementById(food.id + "_" + key + "_edit").value = null
+                    })
+                } else if (key === "tags") {
+                    let i = 0
+                    food.tags.forEach(tag => {
+                        food["tags"][i] = document.getElementById(food.id + "_tag_" + tag).value
+                        i++
+                        document.getElementById(food.id + "_tag_" + tag).value = null
                     })
                 } else {
                     nutrKeys.forEach(key => {
