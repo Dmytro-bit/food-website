@@ -42,21 +42,18 @@ function main() {
     })
     unique_nutrition_values = [...new Set(nutrition_values)].sort()
 
-    console.log(nutrition_values)
-    console.log(unique_nutrition_values)
 
     let filter_content = ``
     tagCheckBoxes.forEach(checkbox => {
 
         filter_content += `<li><input type="checkbox" class="filter_option" id="${checkbox}" oninput="displayTable()">${checkbox}</li>`
-        // console.log(htmlString)
 
         document.getElementById("filter_list").innerHTML = filter_content
     })
 
     let sort_content = ``
     unique_nutrition_values.forEach(checkbox => {
-        sort_content += `<li><div class="sort_option" id="${checkbox}" onclick="sortNutrition()">${checkbox}</div></li>`
+        sort_content += `<li><div class="sort_option" id="${checkbox}" onclick="sortNutrition('${checkbox}')">${checkbox}</div></li>`
         document.getElementById("sort_list").innerHTML = sort_content
     })
     displayTable()
@@ -76,7 +73,6 @@ function displayTable() {
     // Uncomment when tag Check Boxes will be done
     let filteredTags = tagCheckBoxes.filter(tag => document.getElementById(tag).checked)
     let final_foods = [...searched_foods]
-    console.log(filteredTags)
 
     if (filteredTags.length !== 0) {
         final_foods = []
@@ -84,7 +80,6 @@ function displayTable() {
             for (let tag of filteredTags) {
                 if (food.tags !== undefined && food.tags.includes(tag)) {
                     final_foods.push(food)
-                    console.log(food)
                 }
             }
         }
@@ -118,12 +113,16 @@ function displayTable() {
 }
 
 
-function sortNutrition() {
+function sortNutrition(value) {
+    foods.sort((a, b) => {
+        const aValue = (a["nutrition-per-100g"] && a["nutrition-per-100g"][value]) || 0;
+        const bValue = (b["nutrition-per-100g"] && b["nutrition-per-100g"][value]) || 0;
 
-    let ascendingOrder = unique_nutrition_values.sort((a, b) => (order === 1 ? a - b : b - a));
-    order *= -1
+        return order * (aValue - bValue);
+    });
 
-    displayTable()
+    order *= -1;
+    displayTable();
 }
 
 function elementDisplay() {
@@ -160,11 +159,7 @@ function displaySort() {
 
 
 function displayMenuButtons(id) {
-    console.log(last_menu_id_displayed)
-    console.log(id)
-
     executableID = id;
-
     if (menu_displayed === true && id !== last_menu_id_displayed) {
         if (document.getElementById(last_menu_id_displayed + "_buttons") !== null) {
             document.getElementById(last_menu_id_displayed + "_buttons").style.margin = `15vh 0 0 10rem`
@@ -215,17 +210,17 @@ function viewModal(food) {
     if(!modalActvie) {
         modalActvie = true
         document.getElementById("modal").style.display = 'flex'
-    
+
         let objKeys = Object.keys(food)
-        let nutrKeys = Object.keys(food["nutrition-per-100g"])
+        let nutrKeys = food["nutrition-per-100g"] !== undefined ? Object.keys(food["nutrition-per-100g"]) : Object.keys(food["nutrition-per-100ml"])
         let content = ``
-    
-        objKeys.forEach(key => 
+
+        objKeys.forEach(key =>
         {
             if(key === "nutrition-per-100g")
             {
                 content += `<ul>`
-                nutrKeys.forEach(key => 
+                nutrKeys.forEach(key =>
                 {
                     content += `<li><label><b>${key}</b></label><input type="text" value="${food["nutrition-per-100g"][key]}" readonly="readonly"></li>`
                 })
@@ -235,9 +230,9 @@ function viewModal(food) {
             {
                 content += `<li><label><b>${key}</b></label><input type="text" value="${food[key]}" readonly="readonly"></li>`
             }
-    
+
         })
-    
+
         document.getElementById("view_content").innerHTML = content
     }
 
@@ -248,17 +243,17 @@ function editModal(food) {
         document.getElementById("modal").style.display = "flex"
         document.getElementById("save_edit").style.display = "block"
         modalActvie = true
-    
+
         let objKeys = Object.keys(food)
-        let nutrKeys = Object.keys(food["nutrition-per-100g"])
+        let nutrKeys = food["nutrition-per-100g"] !== undefined ? Object.keys(food["nutrition-per-100g"]) : Object.keys(food["nutrition-per-100ml"])
         let content = ``
-    
-        objKeys.forEach(key => 
+
+        objKeys.forEach(key =>
         {
             if(key === "nutrition-per-100g" || key === "nutrition-per-100ml")
             {
                 content += `<ul>`
-                nutrKeys.forEach(key => 
+                nutrKeys.forEach(key =>
                 {
                     content += `<li><label><b>${key}</b></label><input type="text" id="${food.id}_${key}_edit" value="${food["nutrition-per-100g"][key]}"></li>`
                 })
@@ -269,46 +264,35 @@ function editModal(food) {
                 content += `<li><label><b>${key}</b></label><input type="text" id="${food.id}_${key}_edit" value="${food[key]}"></li>`
             }
         })
-        
-        document.getElementById("view_content").innerHTML = content      
+
+        document.getElementById("view_content").innerHTML = content
     }
 }   
 
-function saveEdit()
-{
+function saveEdit() {
 
-    foods.forEach(food =>
-    {
-        if(food.id === executableID)
-        {
+    foods.forEach(food => {
+        if (food.id === executableID) {
             let objKeys = Object.keys(food)
             let nutrKeys = Object.keys(food["nutrition-per-100g"])
             console.log(nutrKeys)
-            objKeys.forEach(key =>
-            {
-                    if(key !== "nutrition-per-100g" && key !== "nutrition-per-100ml")
-                    {
-                        food[key] = document.getElementById(food.id+"_"+key+"_edit").value
-                        document.getElementById(food.id+"_"+key+"_edit").value = null
-                    }
-                    else if(key === "nutrition-per-100g")
-                    {
-                        nutrKeys.forEach(key =>
-                        {
-                            console.log(document.getElementById(food.id+"_"+key+"_edit"))
-                            food["nutrition-per-100g"][key] = document.getElementById(food.id+"_"+key+"_edit").value
-                            document.getElementById(food.id+"_"+key+"_edit").value = null
-                        })
-                    }
-                    else
-                    {
-                        nutrKeys.forEach(key =>
-                        {
-                            food["nutrition-per-100ml"][key] = document.getElementById(food.id+"_"+key+"_edit").value
-                            console.log(document.getElementById(food.id+"_"+key+"_edit"))
-                            document.getElementById(food.id+"_"+key+"_edit").value = null
-                        })
-                    }
+            objKeys.forEach(key => {
+                if (key !== "nutrition-per-100g" && key !== "nutrition-per-100ml") {
+                    food[key] = document.getElementById(food.id + "_" + key + "_edit").value
+                    document.getElementById(food.id + "_" + key + "_edit").value = null
+                } else if (key === "nutrition-per-100g") {
+                    nutrKeys.forEach(key => {
+                        console.log(document.getElementById(food.id + "_" + key + "_edit"))
+                        food["nutrition-per-100g"][key] = document.getElementById(food.id + "_" + key + "_edit").value
+                        document.getElementById(food.id + "_" + key + "_edit").value = null
+                    })
+                } else {
+                    nutrKeys.forEach(key => {
+                        food["nutrition-per-100ml"][key] = document.getElementById(food.id + "_" + key + "_edit").value
+                        console.log(document.getElementById(food.id + "_" + key + "_edit"))
+                        document.getElementById(food.id + "_" + key + "_edit").value = null
+                    })
+                }
 
             })
         }
@@ -319,7 +303,6 @@ function saveEdit()
     displayTable()
 
 }
-
 function closeModal()
 {
     if(modalActvie)
@@ -328,4 +311,140 @@ function closeModal()
         document.getElementById("save_edit").style.display = "none"
     }
     modalActvie = false
+}
+
+function addNutrition() { // change list.children.length
+    let listItem = document.createElement("li");  //https://www.w3schools.com/jsref/dom_obj_li.asp or https://www.w3schools.com/jsref/tryit.asp?filename=tryjsref_li_create
+    let list = document.getElementById("nutrition_ul")
+    listItem.innerHTML = `
+        <li><label><b>Name</b></label><input type="text" value="" id="add_nutrition_name_${list.children.length}">
+                       <label><b>Value</b></label><input type="text" value="" id="add_nutrition_value_${list.children.length}">
+                       <input type="button" value="Add" onclick="addNutrition()">
+                       <input type="button" value="Delete" onclick="deleteNutrition()"></li>
+    `// https://www.w3schools.com/jsref/prop_element_childelementcount.asp
+    list.appendChild(listItem);
+}
+
+function deleteNutrition() { // https://www.w3schools.com/jsref/met_node_removechild.asp
+    let nutritionList = document.getElementById("nutrition_ul")
+
+    if (nutritionList.children.length > 0) {
+        nutritionList.removeChild(nutritionList.lastElementChild); //change when the ID is implemented
+    }
+}
+
+function addTags() {
+    let itemLIst = document.createElement("li")
+    let list = document.getElementById("tags_ul")
+    let tagsAvailable = ["None"]
+    tagCheckBoxes.forEach(tag => tagsAvailable.push(tag))
+
+    let htmlString = `<li><label><b>Choose tag: </b></label><select name="tags" id="add_food_tag_${list.children.length}">`
+
+    tagsAvailable.forEach(tag => htmlString += `<option value="${tag}">${tag}</option>`)
+
+    htmlString += `</select><input type="button" value="Add" onclick="addTags()"><input type="button" value="Delete" onclick="deleteTags()"></li>`
+    itemLIst.innerHTML = htmlString
+    list.appendChild(itemLIst)
+
+}
+
+function deleteTags() {
+    let tags = document.getElementById("tags_ul")
+    tags.removeChild(tags.lastElementChild)
+}
+
+
+function displayAdd() {
+    let tagsAvailable = ["None"]
+    tagCheckBoxes.forEach(tag => tagsAvailable.push(tag))
+    let htmlString = ``
+
+    htmlString += `<ul><li><label><b>Name</b></label><input type="text" id="add_food_name"></li></ul>`
+    htmlString += `<ul id="nutrition_ul"><b>Nutrition</b>`
+
+
+    htmlString += `<li><label><b>Name</b></label><input type="text" value="" id="add_nutrition_name_1">
+                       <label><b>Value</b></label><input type="text" value="" id="add_nutrition_value_1">
+                       <input type="button" value="Add" onclick="addNutrition()">
+                       <input type="button" value="Delete" onclick="deleteNutrition()"></li>
+                       `
+    htmlString += `</ul>`
+
+    htmlString += `<ul id="tags_ul"><b>Tags</b>`
+
+    // for (let i = 0; i < num_tags; i++) {
+    //     htmlString += `<li><label><b>Name</b></label><input type="text">
+    //                    <label><b>Value</b></label><input type="text">
+    //                    `
+    // }
+
+    htmlString += `<li><label><b>Choose tag: </b></label><select name="tags" id="add_food_tag_1">`
+
+    tagsAvailable.forEach(tag => htmlString += `<option value="${tag}">${tag}</option>`)
+
+    htmlString += `</select><input type="button" value="Add" onclick="addTags()"><input type="button" value="Delete" onclick="deleteTags()"></li></ul>`
+
+    htmlString += `<ul><li><label><b>Is liquid: </b></label><input type="checkbox" id="is_liquid"></li></ul>`
+
+    document.getElementById("add_content").innerHTML = htmlString
+}
+
+function AddSave() {
+    let name = document.getElementById("add_food_name")
+    let nutrition_type = document.getElementById("is_liquid")
+    let tags = []
+    let dict_nutrition = {}
+    let i = 1
+    let nutrition_name = ""
+    let nutrition_value = ""
+    let tag = ""
+    let food = {}
+
+    while (true) {
+        nutrition_name = document.getElementById(`add_nutrition_name_${i}`)
+
+        if (nutrition_name === null) {
+            break
+        }
+        nutrition_value = document.getElementById(`add_nutrition_value_${i}`)
+        dict_nutrition[nutrition_name.value] = nutrition_value.value
+        nutrition_name.value = null
+        nutrition_value.value = null
+        i++
+    }
+    i = 1
+    while (i <= 10) {
+
+        tag = document.getElementById(`add_food_tag_${i}`)
+        console.log(tag)
+        if (tag === null) {
+            console.log("Break")
+            break
+        }
+        tags.push(tag.value)
+        tag.value = null
+        i++
+    }
+
+    food["id"] = `${foods.length + 1}`
+    food["name"] = name.value
+
+    if (nutrition_type.checked === false) {
+        food["nutrition-per-100g"] = dict_nutrition
+    } else {
+        food["nutrition-per-100ml"] = dict_nutrition
+    }
+    if (tags.length !== 0) {
+        food["tags"] = tags
+    }
+    console.log(food)
+    console.log(foods)
+
+    foods.push(food)
+    name.value = null
+    nutrition_type.checked = false
+    displayTable()
+
+
 }
