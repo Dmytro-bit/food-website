@@ -95,8 +95,8 @@ function displayTable() {
         }
         htmlString += `<td>
                             <div class="element"><div class="element_buttons_menu" id="${food.id}_buttons">
-                                    <div class="element_button" id="view" onclick="viewModal(foodInfo('${food.id}'))"><img src="../icons/info.png" class="element_button_icon" alt="view"></div>
-                                    <div class="element_button" id="edit" onclick="editModal(foodInfo('${food.id}'))"><img src="../icons/pencil.png" class="element_button_icon" alt="edit"></div>
+                                    <div class="element_button" id="view" onclick="viewModal(foodInfo('${food.id}'))"><a href="#modal"><img src="../icons/info.png" class="element_button_icon" alt="view"></a></div>
+                                    <div class="element_button" id="edit" onclick="editModal(foodInfo('${food.id}'))"><a href="#modal"><img src="../icons/pencil.png" class="element_button_icon" alt="edit"></a></div>
                                     <div class="element_button" id="delete"><img src="../icons/bin.png" class="element_button_icon" alt="delete" onclick="deleteFood('${food.id}')"></div>
                                 </div>
                                 <div class="element_object" onclick="displayMenuButtons('${food.id}')">
@@ -228,13 +228,13 @@ function viewModal(food) {
 
         objKeys.forEach(key => {
             if (key === "nutrition-per-100g") {
-                content += `<ul class="modal_content inner_ul">`
+                content += `<li><div class="modal_label"><label><b>Nutrition: </b></label></div></li><ul class="modal_content inner_ul">`
                 nutrKeys.forEach(key => {
                     content += `<li><div class="modal_label"><label><b>${key}</b></label></div><div class="modal_input"><input type="text" value="${food["nutrition-per-100g"][key]}" readonly="readonly"></div></li>`
                 })
                 content += `</ul>`
             } else if (key === "nutrition-per-100ml") {
-                content += `<ul class="modal_content inner_ul">`
+                content += `<li><div class="modal_label"><label><b>Nutrition: </b></label></div></li><ul class="modal_content inner_ul">`
                 nutrKeys.forEach(key => {
                     content += `<li><div class="modal_label"><label><b>${key}</b></label></div><div class="modal_input"><input type="text" value="${food["nutrition-per-100ml"][key]}" readonly="readonly"></div></li>`
                 })
@@ -268,15 +268,15 @@ function editModal(food) {
                         content += `<li><div class="modal_label"><label><b>${key}</b></label></div><div class="modal_input"><input type="text" id="${food.id}_${key}_edit" value="${food["nutrition-per-100g"] !== undefined ? food["nutrition-per-100g"][key] : food["nutrition-per-100ml"][key]}"></div></li>`
                     })
                     content += `</ul>`
-                } else if (key === "tags") { //
+                } else if (key === "tags" || key === "contains") { //
                     let tags = food[key]
                     let tagsAvailable = ["None"]
                     tagCheckBoxes.forEach(tag => tagsAvailable.push(tag))
 
-                    content += `<ul class="modal_content inner_ul">`
+                    content += `<li><div class="modal_label"><label><b>Tags: </b></label></div></li><ul class="modal_content inner_ul">`
 
                     for (let tag of tags) {
-                        content += `<li><select id="${food.id}_tag_${tag}">`
+                        content += `<li><div class="modal_input"><select id="${food.id}_tag_${tag}">`
                         for (let tag_list of tagsAvailable) {
                             if (tag === tag_list) {
                                 content += `<option value="${tag_list}" selected="selected">${tag_list}</option>`
@@ -285,12 +285,13 @@ function editModal(food) {
                             }
                         }
                         // tagsAvailable.forEach(tag_list => htmlString += `<option value="${tag_list}" ${tag === tag_list ? "selected=\"selected\"" : ""}>${tag_list}</option>`)
-                        content += `</select></li>`
+                        content += `</select></div></li>`
                     }
                     content += `</ul>`
 
                 } else {
-                    content += `<li><div class="modal_label"><label><b>${key}</b></label></div><div class="modal_input"><input type="text" id="${food.id}_${key}_edit" value="${food[key]}"></div></li>`
+                    content += `<li><div class="modal_label"><label><b>${key}</b></label></div><div class="modal_input"><input type="text" id="${food.id}_${key}_edit" value="${food[key]}"></div></li>
+                                <li><div class="modal_label"><label><b>Nutrition: </b></label></div></li>`
                 }
             }
         )

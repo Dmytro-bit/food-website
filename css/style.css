@@ -441,14 +441,28 @@ table tr
     cursor: pointer;
 }
 
-select {
+select 
+{
     appearance: none;
     width: 100%;
-    background-color: #fff;
     border: 1px solid orange;
     border-radius: 25px;
     cursor: pointer;
     padding-left: 1rem;
+    box-shadow: none;
+    background-color: white;
+    transition: box-shadow .5s ease;
+}
+
+select:hover
+{
+    box-shadow: 0px 0px 15px rgba(255, 173, 20, 0.7);
+}
+
+#ascend_anchor
+{
+    position: absolute;
+    left: 50%;
 }
 
 #main
