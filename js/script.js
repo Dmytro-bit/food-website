@@ -16,6 +16,7 @@ let executableID
 let modalActvie = false;
 let tagsCounter = 1
 let nutritionCounter = 1
+let sortButtonName = ""
 
 window.onload = () => {
     let url = "../data/foods.json";
@@ -53,11 +54,11 @@ function main() {
         document.getElementById("filter_list").innerHTML = filter_content
     })
 
-    let sort_content = ``
+    let sort_content = `<li><div class="sort_option" id="name" onclick="sortNutrition('name')">Name</div></li>`
     unique_nutrition_values.forEach(checkbox => {
         sort_content += `<li><div class="sort_option" id="${checkbox}" onclick="sortNutrition('${checkbox}')">${checkbox}</div></li>`
-        document.getElementById("sort_list").innerHTML = sort_content
     })
+    document.getElementById("sort_list").innerHTML = sort_content
     displayTable()
 
 }
@@ -116,16 +117,23 @@ function displayTable() {
 
 
 function sortNutrition(value) {
-    foods.sort((a, b) => {
-        const aValue = (a["nutrition-per-100g"] && a["nutrition-per-100g"][value]) || 0;
-        const bValue = (b["nutrition-per-100g"] && b["nutrition-per-100g"][value]) || 0;
+    if (value === "name") {
+        foods.sort((a, b) => a["name"] < b["name"] ? -order : order)
+    } else {
+        foods.sort((a, b) => {
+            const aValue = (a["nutrition-per-100g"] && a["nutrition-per-100g"][value]) || 0;
+            const bValue = (b["nutrition-per-100g"] && b["nutrition-per-100g"][value]) || 0;
 
-        return order * (aValue - bValue);
-    });
-
+            return order * (aValue - bValue);
+        });
+    }
     order *= -1;
+    displaySort()
+    let arrow = order !== 1 ? "↑" : "↓"
+    document.getElementById("sort_button").value = value.toUpperCase() + arrow
     displayTable();
 }
+
 
 function elementDisplay() {
     if (window_width <= 480) {
@@ -254,16 +262,38 @@ function editModal(food) {
         let content = ``
 
         objKeys.forEach(key => {
-            if (key === "nutrition-per-100g" || key === "nutrition-per-100ml") {
-                content += `<ul class="modal_content inner_ul">`
-                nutrKeys.forEach(key => {
-                    content += `<li><div class="modal_label"><label><b>${key}</b></label></div><div class="modal_input"><input type="text" id="${food.id}_${key}_edit" value="${food["nutrition-per-100g"] !== undefined ? food["nutrition-per-100g"][key] : food["nutrition-per-100ml"][key]}"></div></li>`
-                })
-                content += `</ul>`
-            } else {
-                content += `<li><div class="modal_label"><label><b>${key}</b></label></div><div class="modal_input"><input type="text" id="${food.id}_${key}_edit" value="${food[key]}"></div></li>`
+                if (key === "nutrition-per-100g" || key === "nutrition-per-100ml") {
+                    content += `<ul class="modal_content inner_ul">`
+                    nutrKeys.forEach(key => {
+                        content += `<li><div class="modal_label"><label><b>${key}</b></label></div><div class="modal_input"><input type="text" id="${food.id}_${key}_edit" value="${food["nutrition-per-100g"] !== undefined ? food["nutrition-per-100g"][key] : food["nutrition-per-100ml"][key]}"></div></li>`
+                    })
+                    content += `</ul>`
+                } else if (key === "tags") { //
+                    let tags = food[key]
+                    let tagsAvailable = ["None"]
+                    tagCheckBoxes.forEach(tag => tagsAvailable.push(tag))
+
+                    content += `<ul class="modal_content inner_ul">`
+
+                    for (let tag of tags) {
+                        content += `<li><select >`
+                        for (let tag_list of tagsAvailable) {
+                            if (tag === tag_list) {
+                                content += `<option value="${tag_list}" selected="selected">${tag_list}</option>`
+                            } else {
+                                content += `<option value="${tag_list}">${tag_list}</option>`
+                            }
+                        }
+                        // tagsAvailable.forEach(tag_list => htmlString += `<option value="${tag_list}" ${tag === tag_list ? "selected=\"selected\"" : ""}>${tag_list}</option>`)
+                        content += `</select></li>`
+                    }
+                    content += `</ul>`
+
+                } else {
+                    content += `<li><div class="modal_label"><label><b>${key}</b></label></div><div class="modal_input"><input type="text" id="${food.id}_${key}_edit" value="${food[key]}"></div></li>`
+                }
             }
-        })
+        )
 
         document.getElementById("edit_content").innerHTML = content
     }
