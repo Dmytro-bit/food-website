@@ -312,10 +312,10 @@ function addNutrition() { // change list.children.length
     let listItem = document.createElement("li");  //https://www.w3schools.com/jsref/dom_obj_li.asp or https://www.w3schools.com/jsref/tryit.asp?filename=tryjsref_li_create
     let list = document.getElementById("nutrition_ul")
     listItem.innerHTML = `
-        <li><div class="modal_label"><label><b>Name</b></label></div><div class="modal_input"><input type="text" value="" id="add_nutrition_name_${list.children.length}"></div>
+        <div class="modal_label"><label><b>Name</b></label></div><div class="modal_input"><input type="text" value="" id="add_nutrition_name_${list.children.length}"></div>
                         <div class="modal_label"><label><b>Value</b></label></div><div class="modal_input"><input type="text" value="" id="add_nutrition_value_${list.children.length}"></div>
-                       <input type="button" value="Add" onclick="addNutrition()">
-                       <input type="button" value="Delete" onclick="deleteNutrition()"></li>
+                        <div class="modal_inner_buttons_container"><input type="button" value="+" class="modal_inner_buttons" onclick="addNutrition()">
+                        <input type="button" value="-" class="modal_inner_buttons" onclick="deleteNutrition()"></div></li>
     `// https://www.w3schools.com/jsref/prop_element_childelementcount.asp
     list.appendChild(listItem);
 }
@@ -334,11 +334,12 @@ function addTags() {
     let tagsAvailable = ["None"]
     tagCheckBoxes.forEach(tag => tagsAvailable.push(tag))
 
-    let htmlString = `<li><div class="modal_label"><label><b>Choose tag: </b></label></div><select name="tags" id="add_food_tag_${list.children.length}">`
+    let htmlString = `<div class="modal_label"><label><b>Choose tag: </b></label></div><select name="tags" id="add_food_tag_${list.children.length}">`
 
     tagsAvailable.forEach(tag => htmlString += `<option value="${tag}">${tag}</option>`)
 
-    htmlString += `</select><input type="button" value="Add" onclick="addTags()"><input type="button" value="Delete" onclick="deleteTags()"></li>`
+    htmlString += `</select><div class="modal_inner_buttons_container"><input type="button" value="+" class="modal_inner_buttons" onclick="addTags()">
+                                                                        <input type="button" value="-" class="modal_inner_buttons" onclick="deleteTags()"></div>`
     itemLIst.innerHTML = htmlString
     list.appendChild(itemLIst)
 
@@ -360,18 +361,19 @@ function displayAdd() {
     tagCheckBoxes.forEach(tag => tagsAvailable.push(tag))
     let htmlString = ``
 
-    htmlString += `<ul class="modal_content inner_ul"><li><div class="modal_label"><label><b>Name</b></label></div><div class="modal_input"><input type="text" id="add_food_name"><div></li></ul>`
-    htmlString += `<ul id="nutrition_ul" class="modal_content"><b>Nutrition</b>`
+    htmlString += `<li><div class="modal_label"><label><b>Name</b></label></div><div class="modal_input"><input type="text" id="add_food_name"></div></li>`
+    htmlString += `<li><div class="modal_label"><label><b>Nutrition :</b></label></div></li><ul id="nutrition_ul" class="modal_content inner_ul">`
 
 
     htmlString += `<li><div class="modal_label"><label><b>Name</b></label></div><div class="modal_input"><input type="text" value="" id="add_nutrition_name_1"></div>
                         <div class="modal_label"><label><b>Value</b></label></div><div class="modal_input"><input type="text" value="" id="add_nutrition_value_1"></div>
-                       <input type="button" value="Add" onclick="addNutrition()">
-                       <input type="button" value="Delete" onclick="deleteNutrition()"></li>
+                        <div class="modal_inner_buttons_container"><input type="button" value="+" class="modal_inner_buttons" onclick="addNutrition()">
+                        <input type="button" value="-" class="modal_inner_buttons" onclick="deleteNutrition()"></div></li>
                        `
     htmlString += `</ul>`
+    htmlString += `<li><div class="modal_label"><label><b>Tags :</b></label></div></li>`
 
-    htmlString += `<ul id="tags_ul" class="modal_content inner_ul"><b>Tags</b>`
+    htmlString += `<ul id="tags_ul" class="modal_content inner_ul">`
 
     // for (let i = 0; i < num_tags; i++) {
     //     htmlString += `<li><label><b>Name</b></label><input type="text">
@@ -383,9 +385,10 @@ function displayAdd() {
 
     tagsAvailable.forEach(tag => htmlString += `<option value="${tag}">${tag}</option>`)
 
-    htmlString += `</select><input type="button" value="Add" onclick="addTags()"><input type="button" value="Delete" onclick="deleteTags()"></li></ul>`
+    htmlString += `</select><div class="modal_inner_buttons_container"><input type="button" value="+" class="modal_inner_buttons" onclick="addTags()">
+                    <input type="button" value="-" class="modal_inner_buttons" onclick="deleteTags()"></div></li></ul>`
 
-    htmlString += `<div class="modal_label"><label><b>Is liquid: </b></label></div><input type="checkbox" id="is_liquid">`
+    htmlString += `<ul class="modal_content"><li><div class="modal_label"><label><b>Is liquid: </b></label></div><input type="checkbox" id="is_liquid"></li></ul>`
 
     document.getElementById("add_content").innerHTML = htmlString
 }
