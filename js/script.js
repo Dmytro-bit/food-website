@@ -227,13 +227,13 @@ function viewModal(food) {
                 content += `<ul>`
                 nutrKeys.forEach(key => 
                 {
-                    content += `<li><label><b>${key}</b></label><input type="text" value="${food["nutrition-per-100g"][key]}"></li>`
+                    content += `<li><label><b>${key}</b></label><input type="text" value="${food["nutrition-per-100g"][key]}" readonly="readonly"></li>`
                 })
                 content += `</ul>`
             }
             else
             {
-                content += `<li><label><b>${key}</b></label><input type="text" value="${food[key]}" ></li>`
+                content += `<li><label><b>${key}</b></label><input type="text" value="${food[key]}" readonly="readonly"></li>`
             }
     
         })
