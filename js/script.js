@@ -21,6 +21,7 @@ let newTagID = 0
 let tagListManager = []
 let newNutritionID = 0
 let nutritionListManager = []
+let tagSelectorID = 0
 
 window.onload = () => {
     let url = "../data/foods.json";
@@ -283,7 +284,7 @@ function editModal(food) {
                     let tagsAvailable = ["None"]
                     tagCheckBoxes.forEach(tag => tagsAvailable.push(tag))
 
-                    content += `<li><div class="modal_label"><label><b>Tags: </b></label></div></li><ul class="modal_content inner_ul">`
+                    content += `<li><div class="modal_label"><label><b>Tags: </b></label></div></li><ul class="modal_content inner_ul" id="inner_tags">`
 
                     tags.forEach(tag => {
                         content += `<li><div class="modal_input"><select id="${food.id}_tag_${tag}">`
@@ -348,6 +349,14 @@ function saveEdit() {
                         i++
                         document.getElementById(food.id + "_tag_" + tag).value = null
                     })
+
+                    for(let i = 0; i < tagSelectorID; i++)
+                    {
+                        if(!food["tags"].includes(document.getElementById(`new_tag_selector${i}`).value))
+                        {
+                            food["tags"].push(document.getElementById(`new_tag_selector${i}`).value)
+                        }
+                    }
                 } else if (key === "contains") {
                     let i = 0
                     food["contains"].forEach(contain => {
@@ -685,6 +694,23 @@ function saveNutrition() {
     document.getElementById("add_nutrition").style.display = "none"
 }
 
+function addTagEdit()
+{
+    let htmlString = ``
+
+    htmlString += `<li><div class="modal_input"><select id="new_tag_selector${tagSelectorID}">`
+
+    tagSelectorID += 1
+    
+    tagCheckBoxes.forEach(tag =>
+    {
+        htmlString += `<option value="${tag}">${tag}</option>`    
+    })
+    htmlString += `</select></div></li>`
+    document.getElementById("inner_tags").innerHTML += htmlString
+    
+}
+
 function closeModal() {
     if (modalActvie) {
         document.getElementById("modal").style.display = "none"
@@ -701,4 +727,5 @@ function closeModal() {
     }
     modalActvie = false
 }
+
 
