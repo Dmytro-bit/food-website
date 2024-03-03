@@ -288,7 +288,7 @@ function editModal(food) {
                         content += `</select></div>`
                         content += `</label></div><div class="modal_input"><input type="text" id="${newNutritionID}_edit_food" value="${food["nutrition-per-100g"] !== undefined ? food["nutrition-per-100g"][key] : food["nutrition-per-100ml"][key]}"></div>
                         <div class="modal_inner_buttons_container">
-                        <input type="button" value="-" class="modal_inner_buttons" onclick=""></div></li>`
+                        <input type="button" value="-" class="modal_inner_buttons" onclick="deleteNutritionEdit('edit_content_li${newNutritionID}')"></div></li>`
                         newNutritionID++
                     })
                     content += `<li><input type="button" value="+" class="modal_inner_buttons" id="add_nutrition_edit" onclick="addNutritionEdit('${food.id}')"></li></ul>`
@@ -346,15 +346,23 @@ function addNutritionEdit() {
     let htmlString = `<div class="modal_label"><label><select id="edit_nutrition_${newNutritionID}">`
     unique_nutrition_values.forEach(nutrition => htmlString += `<option value="${nutrition}">${nutrition}</option>`)
     htmlString += `</select></label></div><div class="modal_input"><input type="text" id="${newNutritionID}_edit_food" value=""></div>
-    <div class="modal_inner_buttons_container"><input type="button" value="-" class="modal_inner_buttons" onclick=""></div>`
-    newNutritionID++
-
+    <div class="modal_inner_buttons_container"><input type="button" value="-" class="modal_inner_buttons" onclick="deleteNutritionEdit('edit_content_li${newNutritionID}')"></div>`
     let list = document.getElementById("edit_content_ul")
     let listItem = document.createElement("li")
 
     listItem.innerHTML = htmlString
     listItem.id = `edit_content_li${newNutritionID}`
+    newNutritionID++
     list.appendChild(listItem)
+}
+
+function deleteNutritionEdit(id) {
+    let list = document.getElementById("edit_content_ul")
+    let object_for_delete = document.getElementById(id)
+    console.log(list)
+    console.log(object_for_delete)
+    console.log(id)
+    list.removeChild(object_for_delete)
 }
 
 function saveEdit() {
