@@ -507,7 +507,7 @@ function displayTagManager()
     tagCheckBoxes.forEach(tag =>
     {
         htmlString += `<li><div class="modal_label"><label>Tag ${i}: </label></div><div class="modal_input"><input type="text" value="${tag}" id="${tag}_edit"></div>
-        <input type="button" value="-" class="modal_inner_buttons" onclick="deleteTag(${tag}_edit)"></li>`
+        <input type="button" value="-" class="modal_inner_buttons" onclick="deleteTag('${tag}_edit')"></li>`
         i+=1
     })
 
@@ -539,8 +539,9 @@ function saveTags()
 
 function deleteTag(element)
 {
-    console.log(element.id)
-    let selectedTag = tagCheckBoxes.indexOf(document.getElementById(element.id).value)
+    console.log(element)
+    let selectedTag = tagCheckBoxes.indexOf(document.getElementById(element).value)
+    console.log(selectedTag)
     tagCheckBoxes.splice(selectedTag, 1)
     modalActvie = false
     displayTagManager()
