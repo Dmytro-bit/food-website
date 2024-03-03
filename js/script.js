@@ -5,6 +5,7 @@ let adaptive_padding = 2.5
 const window_width = window.screen.availWidth
 let searchValue = ""
 let tagCheckBoxes
+let contains
 let filter_displayed = false;
 let sort_displayed = false;
 let menu_displayed = false;
@@ -32,9 +33,11 @@ window.onload = () => {
 
 function main() {
     let all_tags = []
+    let all_contains = []
     foods.forEach(food => food[`tags`] !== undefined ? food[`tags`].forEach(tag => all_tags.push(tag)) : null)
     tagCheckBoxes = [...new Set(all_tags)].sort()
-
+    foods.forEach(food => food["contains"] !== undefined ? food["contains"].forEach(contain => all_contains.push(contain)) : null)
+    contains = [...new Set(all_contains)].sort()
     foods.forEach(element => {
         let nutrition_key_g = element["nutrition-per-100g"]
         if (nutrition_key_g) {
@@ -268,7 +271,7 @@ function editModal(food) {
                         content += `<li><div class="modal_label"><label><b>${key}</b></label></div><div class="modal_input"><input type="text" id="${food.id}_${key}_edit" value="${food["nutrition-per-100g"] !== undefined ? food["nutrition-per-100g"][key] : food["nutrition-per-100ml"][key]}"></div></li>`
                     })
                     content += `</ul>`
-                } else if (key === "tags" || key === "contains") { //
+                } else if (key === "tags") { //
                     let tags = food[key]
                     let tagsAvailable = ["None"]
                     tagCheckBoxes.forEach(tag => tagsAvailable.push(tag))
@@ -285,6 +288,22 @@ function editModal(food) {
                             }
                         }
                         // tagsAvailable.forEach(tag_list => htmlString += `<option value="${tag_list}" ${tag === tag_list ? "selected=\"selected\"" : ""}>${tag_list}</option>`)
+                        content += `</select></div></li>`
+                    }
+                    content += `</ul>`
+
+                } else if (key === "contains") {
+                    content += `<li><div class="modal_label"><label><b>Contains: </b></label></div></li><ul class="modal_content inner_ul">`
+
+                    for (let contain of food[key]) {
+                        content += `<li><div class="modal_input"><select id="${food.id}_tag_${contain}">`
+                        for (let contain_list of contains) {
+                            if (contain === contain_list) {
+                                content += `<option value="${contain_list}" selected="selected">${contain_list}</option>`
+                            } else {
+                                content += `<option value="${contain_list}">${contain_list}</option>`
+                            }
+                        }
                         content += `</select></div></li>`
                     }
                     content += `</ul>`
@@ -321,6 +340,13 @@ function saveEdit() {
                         food["tags"][i] = document.getElementById(food.id + "_tag_" + tag).value
                         i++
                         document.getElementById(food.id + "_tag_" + tag).value = null
+                    })
+                } else if (key === "contains") {
+                    let i = 0
+                    food["contains"].forEach(contain => {
+                        food["contains"][i] = document.getElementById(food.id + "_tag_" + contain).value
+                        i++
+                        document.getElementById(food.id + "_tag_" + contain).value = null
                     })
                 } else {
                     nutrKeys.forEach(key => {
