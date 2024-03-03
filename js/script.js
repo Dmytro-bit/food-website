@@ -301,7 +301,7 @@ function editModal(food) {
                     content += `<li><div class="modal_label"><label><b>Tags: </b></label></div></li><ul class="modal_content inner_ul" id="inner_tags">`
 
                     tags.forEach(tag => {
-                        content += `<li id="new_tag_selector${tagSelectorID}"><div class="modal_input"><select id="${food.id}_tag_${tag}">`
+                        content += `<li id="new_li_tag_selector${tagSelectorID}"><div class="modal_input"><select id="new_tag_selector${tagSelectorID}">`
                         tagsAvailable.forEach(tag_list => {
                             if (tag === tag_list) {
                                 content += `<option value="${tag_list}" selected="selected">${tag_list}</option>`
@@ -311,7 +311,7 @@ function editModal(food) {
                         })
                         // tagsAvailable.forEach(tag_list => htmlString += `<option value="${tag_list}" ${tag === tag_list ? "selected=\"selected\"" : ""}>${tag_list}</option>`)
                         content += `</select></div><div class="modal_inner_buttons_container">
-                        <input type="button" value="-" class="modal_inner_buttons" onclick="deleteTagEdit('new_tag_selector${tagSelectorID}')"></div></li>`
+                        <input type="button" value="-" class="modal_inner_buttons" onclick="deleteTagEdit('new_li_tag_selector${tagSelectorID}')"></div></li>`
 
                         tagSelectorID++
                     })
@@ -400,11 +400,12 @@ function saveEdit() {
                     let tempTags = []
 
                     for (let i = 0; i < tagSelectorID; i++) {
-                        if (document.getElementById(`new_tag_selector${i}`) !== null && !food["tags"].includes(document.getElementById(`new_tag_selector${i}`).value)) {
-                            tempTags.push(document.getElementById(`new_tag_selector${i}`).value)
+                        let tag = document.getElementById(`new_tag_selector${i}`)
+                        if (tag !== null) {
+                            tempTags.push(tag.value)
                         }
                     }
-                    food["tags"] = [... tempTags]
+                    food["tags"] = [...tempTags]
 
 
                 } else if (key === "contains") {
