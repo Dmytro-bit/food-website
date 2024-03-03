@@ -5,6 +5,7 @@ let adaptive_padding = 2.5
 const window_width = window.screen.availWidth
 let searchValue = ""
 let tagCheckBoxes
+let contains
 let filter_displayed = false;
 let sort_displayed = false;
 let menu_displayed = false;
@@ -16,8 +17,10 @@ let executableID
 let modalActvie = false;
 let tagsCounter = 1
 let nutritionCounter = 1
-let sortButtonName = ""
 let newTagID = 0
+let tagListManager = []
+let newNutritionID = 0
+let nutritionListManager = []
 
 window.onload = () => {
     let url = "../data/foods.json";
@@ -28,30 +31,34 @@ window.onload = () => {
 
             foods = jsonData
             let all_tags = []
+            let all_contains = []
             foods.forEach(food => food[`tags`] !== undefined ? food[`tags`].forEach(tag => all_tags.push(tag)) : null)
             tagCheckBoxes = [...new Set(all_tags)].sort()
+            foods.forEach(food => food["contains"] !== undefined ? food["contains"].forEach(contain => all_contains.push(contain)) : null)
+            contains = [...new Set(all_contains)].sort()
+
+            foods.forEach(element => {
+                let nutrition_key_g = element["nutrition-per-100g"]
+                if (nutrition_key_g) {
+                    Object.keys(nutrition_key_g).forEach(key => {
+                        nutrition_values.push(key)
+                    })
+                }
+            })
+            unique_nutrition_values = [...new Set(nutrition_values)].sort()
+
             main()
         })
 }
 
 function main() {
 
-    foods.forEach(element => {
-        let nutrition_key_g = element["nutrition-per-100g"]
-        if (nutrition_key_g) {
-            Object.keys(nutrition_key_g).forEach(key => {
-                nutrition_values.push(key)
-            })
-        }
-    })
-    unique_nutrition_values = [...new Set(nutrition_values)].sort()
-
 
     let filter_content = ``
     tagCheckBoxes.forEach(checkbox => {
 
         filter_content += `<li><input type="checkbox" class="filter_option" id="${checkbox}" oninput="displayTable()">${checkbox}</li>`
-    
+
     })
     filter_content += `<li><a href="#modal"><input type="button" id="display_tag_manager" value="Tag Manager" onclick="displayTagManager()"></a></li>`
     document.getElementById("filter_list").innerHTML = filter_content
@@ -60,6 +67,7 @@ function main() {
     unique_nutrition_values.forEach(checkbox => {
         sort_content += `<li><div class="sort_option" id="${checkbox}" onclick="sortNutrition('${checkbox}')">${checkbox}</div></li>`
     })
+    sort_content += `<li><a href="#modal"><input type="button" id="display_nutrition_manager" value="Nutrition Manager" onclick="displayNutritionManager()"></a></li>`
     document.getElementById("sort_list").innerHTML = sort_content
     displayTable()
 
@@ -270,7 +278,7 @@ function editModal(food) {
                         content += `<li><div class="modal_label"><label><b>${key}</b></label></div><div class="modal_input"><input type="text" id="${food.id}_${key}_edit" value="${food["nutrition-per-100g"] !== undefined ? food["nutrition-per-100g"][key] : food["nutrition-per-100ml"][key]}"></div></li>`
                     })
                     content += `</ul>`
-                } else if (key === "tags" || key === "contains") { //
+                } else if (key === "tags") { //
                     let tags = food[key]
                     let tagsAvailable = ["None"]
                     tagCheckBoxes.forEach(tag => tagsAvailable.push(tag))
@@ -287,6 +295,22 @@ function editModal(food) {
                             }
                         }
                         // tagsAvailable.forEach(tag_list => htmlString += `<option value="${tag_list}" ${tag === tag_list ? "selected=\"selected\"" : ""}>${tag_list}</option>`)
+                        content += `</select></div></li>`
+                    }
+                    content += `</ul>`
+
+                } else if (key === "contains") {
+                    content += `<li><div class="modal_label"><label><b>Contains: </b></label></div></li><ul class="modal_content inner_ul">`
+
+                    for (let contain of food[key]) {
+                        content += `<li><div class="modal_input"><select id="${food.id}_tag_${contain}">`
+                        for (let contain_list of contains) {
+                            if (contain === contain_list) {
+                                content += `<option value="${contain_list}" selected="selected">${contain_list}</option>`
+                            } else {
+                                content += `<option value="${contain_list}">${contain_list}</option>`
+                            }
+                        }
                         content += `</select></div></li>`
                     }
                     content += `</ul>`
@@ -323,6 +347,13 @@ function saveEdit() {
                         food["tags"][i] = document.getElementById(food.id + "_tag_" + tag).value
                         i++
                         document.getElementById(food.id + "_tag_" + tag).value = null
+                    })
+                } else if (key === "contains") {
+                    let i = 0
+                    food["contains"].forEach(contain => {
+                        food["contains"][i] = document.getElementById(food.id + "_tag_" + contain).value
+                        i++
+                        document.getElementById(food.id + "_tag_" + contain).value = null
                     })
                 } else {
                     nutrKeys.forEach(key => {
@@ -467,7 +498,7 @@ function AddSave() {
     while (tagsCounter !== 0) {
 
         tag = document.getElementById(`add_food_tag_${i}`)
-        if (tag !== null) {
+        if (tag !== null && tag.value !== "None") {
             tags.push(tag.value)
             tag.value = null
         }
@@ -495,20 +526,32 @@ function AddSave() {
 
 }
 
-function displayTagManager()
-{
-    if(modalActvie)
+
+function displayTagManager(tagListManager_local, newTagID_local) {
+    if (modalActvie)
         return
     modalActvie = true
 
+    if (tagListManager_local === undefined) {
+        tagListManager = [...tagCheckBoxes]
+    } else {
+        tagListManager = tagListManager_local
+    }
+
+    if (newTagID_local === undefined) {
+        newTagID = 0
+    } else {
+        newTagID = newTagID_local
+    }
+
     let htmlString = ``
     let i = 1
-    
-    tagCheckBoxes.forEach(tag =>
-    {
+
+    tagListManager.forEach(tag => {
         htmlString += `<li><div class="modal_label"><label>Tag ${i}: </label></div><div class="modal_input"><input type="text" value="${tag}" id="${tag}_edit"></div>
         <input type="button" value="-" class="modal_inner_buttons" onclick="deleteTag('${tag}_edit')"></li>`
-        i+=1
+
+        i += 1
     })
 
     htmlString += `<li><input type="button" value="+" class="modal_inner_buttons" id="add_tags" onclick="addNewTags()"></li>`
@@ -518,17 +561,26 @@ function displayTagManager()
     document.getElementById("modal").style.display = "flex"
     document.getElementById("tag_manager").style.display = "flex"
     document.getElementById("save_tags").style.display = "flex"
-    document.getElementById("add_tags").style.display = "flex"  
+    document.getElementById("add_tags").style.display = "flex"
 }
 
-function saveTags()
-{
+function saveTags() {
     let i = 0
-    tagCheckBoxes.forEach(tag =>
-    {
+    tagListManager.forEach(tag => {
         tagCheckBoxes[i] = document.getElementById(`${tag}_edit`).value
-        i+=1
+        i += 1
     })
+
+    for (let i = 0; i <= newTagID; i++) {
+        let tag = document.getElementById(`new_tag${i}`)
+        console.log(tag)
+        if (tag !== null) {
+            tagListManager.push(tag.value.toLowerCase())
+        }
+    }
+
+
+    tagCheckBoxes = tagListManager
     main()
     modalActvie = false
     document.getElementById("modal").style.display = "none"
@@ -537,32 +589,101 @@ function saveTags()
     document.getElementById("add_tags").style.display = "none"
 }
 
-function deleteTag(element)
-{
-    console.log(element)
-    let selectedTag = tagCheckBoxes.indexOf(document.getElementById(element).value)
-    console.log(selectedTag)
-    tagCheckBoxes.splice(selectedTag, 1)
+
+function deleteTag(element) {
+    let selectedTag = tagListManager.indexOf(document.getElementById(element).value)
+    tagListManager.splice(selectedTag, 1)
     modalActvie = false
-    displayTagManager()
+    displayTagManager(tagListManager, newTagID)
     main()
 }
 
-// function addNewTags()
-// {
-//     let htmlString = ``
+function addNewTags() {
+    let htmlString = ``
+
+    htmlString += `<li><div class="modal_label"><label>New Tag: </label></div><div class="modal_input"><input type="text" value="" id="new_tag${newTagID}"></div></li>`
+    newTagID += 1
+
+    document.getElementById("tag_manager").innerHTML += htmlString
+}
+
+function displayNutritionManager(nutritionListManager_local, newNutritionID_local) {
+    if (modalActvie)
+        return
+    modalActvie = true
+
+    if (nutritionListManager_local === undefined) {
+        nutritionListManager = [...unique_nutrition_values]
+    } else {
+        nutritionListManager = nutritionListManager_local
+    }
+
+    if (newNutritionID_local === undefined) {
+        newNutritionID = 0
+    } else {
+        newNutritionID = newNutritionID_local
+    }
+
+    let htmlString = ``
+    let i = 1
+
+    nutritionListManager.forEach(nutrition => {
+        htmlString += `<li><div class="modal_label"><label>Nutrition ${i}: </label></div><div class="modal_input"><input type="text" value="${nutrition}" id="${nutrition}_edit"></div>
+        <input type="button" value="-" class="modal_inner_buttons" onclick="deleteNutritionManager('${nutrition}_edit')"></li>`
+        i += 1
+    })
+
+    htmlString += `<li><input type="button" value="+" class="modal_inner_buttons" id="add_tags" onclick="addNewNutrition()"></li>`
+
+    document.getElementById("nutrition_manager").innerHTML = htmlString
+
+    document.getElementById("modal").style.display = "flex"
+    document.getElementById("nutrition_manager").style.display = "flex"
+    document.getElementById("save_nutrition").style.display = "flex"
+    document.getElementById("add_nutrition").style.display = "flex"
+}
+
+function addNewNutrition() {
+    let htmlString = ``
+
+    htmlString += `<li><div class="modal_label"><label>New Nutrition: </label></div><div class="modal_input"><input type="text" value="" id="new_nutrition${newNutritionID}"></div></li>`
+    newNutritionID += 1
+
+    document.getElementById("nutrition_manager").innerHTML += htmlString
+}
+
+function deleteNutritionManager(element) {
+    let selectedTag = nutritionListManager.indexOf(document.getElementById(element).value)
+    nutritionListManager.splice(selectedTag, 1)
+    modalActvie = false
+    displayTagManager(nutritionListManager, newNutritionID)
+    main()
+}
+
+function saveNutrition() {
+    let i = 0
+    nutritionListManager.forEach(nutrition => {
+        tagCheckBoxes[i] = document.getElementById(`${nutrition}_edit`).value
+        i += 1
+    })
+
+    for (let i = 0; i <= newNutritionID; i++) {
+        let nutrition = document.getElementById(`new_nutrition${i}`)
+        console.log(nutrition)
+        if (nutrition !== null) {
+            tagListManager.push(nutrition.value.toLowerCase())
+        }
+    }
 
 
-//     htmlString += `<li><div class="modal_label"><label>New Tag: </label></div><div class="modal_input"><input type="text" value="" id="new_tag${newTagID}"></div></li>`
-//     newTagID+=1
-
-//     document.getElementById("tag_manager").innerHTML += htmlString
-
-//     // tagCheckBoxes.push(document.getElementById(`new_tag${newTagID}`).value)
-
-//     console.log(htmlString)
-//     // main()
-// }
+    unique_nutrition_values = nutritionListManager
+    main()
+    modalActvie = false
+    document.getElementById("modal").style.display = "none"
+    document.getElementById("nutrition_manager").style.display = "none"
+    document.getElementById("save_nutrition").style.display = "none"
+    document.getElementById("add_nutrition").style.display = "none"
+}
 
 function closeModal() {
     if (modalActvie) {
@@ -574,6 +695,9 @@ function closeModal() {
         document.getElementById("add_content").style.display = "none"
         document.getElementById("save_add").style.display = "none"
         document.getElementById("tag_manager").style.display = "none"
+        document.getElementById("save_tags").style.display = "none"
+        document.getElementById("nutrition_manager").style.display = "none"
+        document.getElementById("save_nutrition").style.display = "none"
     }
     modalActvie = false
 }

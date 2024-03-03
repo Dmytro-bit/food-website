@@ -32,18 +32,18 @@
 }
 
 .account
-{  
+{
     font-family: "Montserrat", sans-serif;
     font-size: 2.5vh;
     max-width: 50%;
     background-color: transparent ;
-    border: 2px solid orange;  
+    border: 2px solid orange;
     color: orange;
     margin-right: 1vw;
     width: 20%;
     height: 8vh;
     /* height: auto; */
-    transition: background-color .7s ease, color .7s ease;  
+    transition: background-color .7s ease, color .7s ease;
 }
 
 .account:hover
@@ -105,11 +105,11 @@ table tr
 {
     position: relative;
     width: 14vw;
-    height: 14vw; 
+    height: 14vw;
     max-width: 18vw;
-    border-radius:50%; 
-    background:rgb(158, 158, 158);  
-    box-shadow: -5px 10px 15px rgba(122, 79, 0, 0.8); 
+    border-radius:50%;
+    background:rgb(158, 158, 158);
+    box-shadow: -5px 10px 15px rgba(122, 79, 0, 0.8);
     border: 2px solid orange;
     transition: width .7s ease, height .7s ease, box-shadow, 0.7s ease;
     z-index: 1;
@@ -125,7 +125,7 @@ table tr
     max-width: 18vw;
     text-align: center;
     background: rgb(233, 233, 233);
-    box-shadow: -5px 10px 15px rgba(122, 79, 0, 0.8); 
+    box-shadow: -5px 10px 15px rgba(122, 79, 0, 0.8);
     border: 2px solid orange;
     color: orange;
     transition: background-color .5s ease, color .5s ease, width .5s ease, height .5s ease, box-shadow, .5s ease;
@@ -179,7 +179,7 @@ table tr
     width: 100%;
     height: 5vh;
     font-size: 3vh;
-    border: 2px solid orange;  
+    border: 2px solid orange;
     border-radius: 25px;
     transition: box-shadow .7s ease;
     padding-left: 1rem;
@@ -208,7 +208,7 @@ table tr
     width: 100%;
     height: 5vh;
     font-size: 3vh;
-    border: 2px solid white;  
+    border: 2px solid white;
     background-color: orange;
     border-radius: 25px;
     color: white;
@@ -218,7 +218,7 @@ table tr
 #add_button:hover
 {
     background-color: white;
-    border: 2px solid orange; 
+    border: 2px solid orange;
     color: orange;
     box-shadow: -5px 5px 15px rgba(38, 37, 36, 0.7);
     cursor: pointer;
@@ -229,7 +229,7 @@ table tr
     width: 100%;
     height: 5vh;
     font-size: 3vh;
-    border: 2px solid orange;  
+    border: 2px solid orange;
     color: orange;
     background-color: transparent;
     border-radius: 25px;
@@ -285,9 +285,9 @@ table tr
     margin-bottom: 2vh;
     border-radius: 25px;
     background: transparent;
-    border: 1px solid orange;  
+    border: 1px solid orange;
     justify-content: center;
-    box-shadow: -5px 5px 10px rgba(87, 57, 0, 0.7); 
+    box-shadow: -5px 5px 10px rgba(87, 57, 0, 0.7);
 }
 
 .element_button:hover
@@ -321,7 +321,7 @@ table tr
     width: 50vw;
     background-color: white;
     border: 2px solid orange;
-    box-shadow: -5px 10px 15px rgba(122, 79, 0, 0.8); 
+    box-shadow: -5px 10px 15px rgba(122, 79, 0, 0.8);
     margin-bottom: 25vh;
     flex-direction: column;
     justify-content: center;
@@ -334,7 +334,7 @@ table tr
     margin: 1em 0 1em 0;
 }
 
-#save_edit, #save_add, #view_content, #tag_manager, #edit_content, #add_content
+#save_edit, #save_add, #view_content, #tag_manager, #edit_content, #add_content, #nutrition_manager, #save_nutrition
 {
     display: none;
     flex-direction: column;
@@ -352,7 +352,7 @@ table tr
     display: flex;
     width: 25%;
     font-size: 3vh;
-    border: 2px solid white;  
+    border: 2px solid white;
     background-color: orange;
     border-radius: 25px;
     color: white;
@@ -363,7 +363,7 @@ table tr
 .modal_buttons:hover
 {
     background-color: white;
-    border: 2px solid orange; 
+    border: 2px solid orange;
     color: orange;
     box-shadow: -5px 5px 15px rgba(38, 37, 36, 0.7);
     cursor: pointer;
@@ -376,7 +376,7 @@ table tr
 
 #modal ul li
 {
-    padding: .5em 1em .5em 1em; 
+    padding: .5em 1em .5em 1em;
     display: flex;
 }
 
@@ -389,7 +389,7 @@ table tr
 {
     width: 100%;
     height: 1.5rem;
-    border: 2px solid orange;  
+    border: 2px solid orange;
     border-radius: 25px;
     padding-left: 1rem;
     transition: box-shadow .3s ease;
@@ -410,7 +410,7 @@ table tr
     width: 100%;
     font-family: "Montserrat", sans-serif;
     color: orange;
-    font-size: 2vh;   
+    font-size: 2vh;
 }
 
 .modal_inner_buttons_container
@@ -427,7 +427,7 @@ table tr
     border-radius: 50%;
     margin: 0 .25rem 0 .25rem;
     background-color: orange;
-    border: 2px solid white;  
+    border: 2px solid white;
     color: white;
     transition: background-color .5s ease, color .5s ease, box-shadow .5s ease;
 }
@@ -435,13 +435,13 @@ table tr
 .modal_inner_buttons:hover
 {
     background-color: white;
-    border: 2px solid orange; 
+    border: 2px solid orange;
     color: orange;
     box-shadow: -5px 5px 15px rgba(38, 37, 36, 0.7);
     cursor: pointer;
 }
 
-select 
+select
 {
     appearance: none;
     width: 100%;
@@ -514,7 +514,7 @@ select:hover
     }
 
     .account
-    {  
+    {
         width: 40%;
         max-width: none;
     }
@@ -527,7 +527,7 @@ select:hover
     .element_photo
     {
         width: 50vw;
-        height: 50vw; 
+        height: 50vw;
         max-width: none;
     }
 
@@ -568,7 +568,7 @@ select:hover
     {
         width: 100%;
         display: flex;
-        margin-bottom: 1vh; 
+        margin-bottom: 1vh;
     }
 
     #sort, #filter
@@ -588,5 +588,5 @@ select:hover
         flex-direction: column;
     }
 
-  
+
 }
