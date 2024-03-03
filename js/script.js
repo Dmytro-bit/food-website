@@ -266,6 +266,7 @@ function editModal(food) {
         document.getElementById("edit_content").style.display = "block"
         document.getElementById("save_edit").style.display = "flex"
         modalActvie = true
+        newNutritionID = 0
 
         let objKeys = Object.keys(food).slice(1)
         let nutrKeys = food["nutrition-per-100g"] !== undefined ? Object.keys(food["nutrition-per-100g"]) : Object.keys(food["nutrition-per-100ml"])
@@ -273,11 +274,21 @@ function editModal(food) {
 
         objKeys.forEach(key => {
                 if (key === "nutrition-per-100g" || key === "nutrition-per-100ml") {
-                    content += `<ul class="modal_content inner_ul">`
+                    content += `<ul id="edit_content_ul" class="modal_content inner_ul">`
                     nutrKeys.forEach(key => {
-                        content += `<li><div class="modal_label"><label><b>${key}</b></label></div><div class="modal_input"><input type="text" id="${food.id}_${key}_edit" value="${food["nutrition-per-100g"] !== undefined ? food["nutrition-per-100g"][key] : food["nutrition-per-100ml"][key]}"></div></li>`
+                        content += `<li id="edit_content_li${newNutritionID}"><div class="modal_label"><label><select id="edit_nutrition_${newNutritionID}">`
+                        unique_nutrition_values.forEach(nutrition => {
+                            if (key === nutrition) {
+                                content += `<option value="${nutrition}" selected="selected">${nutrition}</option>`
+                            } else {
+                                content += `<option value="${nutrition}">${nutrition}</option>`
+                            }
+                        })
+                        content += `</select>`
+                        content += `</label></div><div class="modal_input"><input type="text" id="${newNutritionID}_edit_food" value="${food["nutrition-per-100g"] !== undefined ? food["nutrition-per-100g"][key] : food["nutrition-per-100ml"][key]}"></div></li>`
+                        newNutritionID++
                     })
-                    content += `<li><input type="button" value="+" class="modal_inner_buttons" id="add_nutrition_edit" onclick=""></li></ul>`
+                    content += `<li><input type="button" value="+" class="modal_inner_buttons" id="add_nutrition_edit" onclick="addNutritionEdit('${food.id}')"></li></ul>`
                 } else if (key === "tags") { //
                     let tags = food[key]
                     let tagsAvailable = ["None"]
@@ -326,6 +337,20 @@ function editModal(food) {
     }
 }
 
+function addNutritionEdit() {
+    let htmlString = `<li><div class="modal_label"><label><select id="edit_nutrition_${newNutritionID}">`
+    unique_nutrition_values.forEach(nutrition => htmlString += `<option value="${nutrition}">${nutrition}</option>`)
+    htmlString += `</select></label></div><div class="modal_input"><input type="text" id="${newNutritionID}_edit_food" value=""></div></li>`
+    newNutritionID++
+
+    let list = document.getElementById("edit_content_ul")
+    let listItem = document.createElement("li")
+
+    listItem.innerHTML = htmlString
+    listItem.id = `edit_content_li${newNutritionID}`
+    list.appendChild(listItem)
+}
+
 function saveEdit() {
 
     foods.forEach(food => {
@@ -337,10 +362,16 @@ function saveEdit() {
                     food[key] = document.getElementById(food.id + "_" + key + "_edit").value
                     document.getElementById(food.id + "_" + key + "_edit").value = null
                 } else if (key === "nutrition-per-100g") {
-                    nutrKeys.forEach(key => {
-                        food["nutrition-per-100g"][key] = document.getElementById(food.id + "_" + key + "_edit").value
-                        document.getElementById(food.id + "_" + key + "_edit").value = null
-                    })
+                    let nutrition_dict = {}
+
+                    for (let i = 0; i <= newNutritionID; i++) {
+                        let nutrition = document.getElementById(`edit_nutrition_${i}`)
+                        if (nutrition !== null) {
+                            let value = document.getElementById(`${food.id}_${i}_edit`)
+                            nutrition_dict[nutrition.value] = value.value
+                        }
+                    }
+                    food[key] = nutrition_dict
                 } else if (key === "tags") {
                     let i = 0
                     food.tags.forEach(tag => {
