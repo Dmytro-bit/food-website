@@ -24,6 +24,8 @@ let newNutritionID = 0
 let nutritionListManager = []
 let tagSelectorID = 0
 let deletedTag
+const regex = /^\d+(\.\d+)?$/
+let Errors = false
 
 window.onload = () => {
     let url = "../data/foods.json";
@@ -269,7 +271,7 @@ function editModal(food) {
         document.getElementById("edit_content").style.display = "block"
         document.getElementById("save_edit").style.display = "flex"
         modalActvie = true
-
+        Errors = false
         let objKeys = Object.keys(food).slice(1)
         let nutrKeys = food["nutrition-per-100g"] !== undefined ? Object.keys(food["nutrition-per-100g"]) : Object.keys(food["nutrition-per-100ml"])
         let content = ``
@@ -369,6 +371,30 @@ function deleteNutritionEdit(id) {
 }
 
 function saveEdit() {
+    let check_food = foodInfo(executableID)
+    let error_dict = {}
+    let check_name = document.getElementById(check_food.id + "_name_edit")
+
+
+    for (let i = 0; i <= newNutritionID; i++) {
+        let nutrition = document.getElementById(`edit_nutrition_${i}`)
+        if (nutrition !== null) {
+            let value = document.getElementById(`${i}_edit_food`)
+            if (regex.test(value.value) === false) {
+                error_dict[`${i}_edit_food`] = "Invalid integer"
+            }
+
+        }
+    }
+    if (check_name.length === 0) {
+        error_dict[check_food.id + "_name_edit"] = "Fields can not be empty"
+    }
+
+    if (Object.keys(error_dict).length !== 0) {
+        Errors = true
+        console.log(error_dict)
+        return // add error function
+    }
 
     foods.forEach(food => {
         if (food.id === executableID) {
@@ -439,11 +465,13 @@ function addNutrition() { // change list.children.length
     let list = document.getElementById("nutrition_ul")
     nutritionCounter++
     let number = nutritionCounter
-    listItem.innerHTML = `<div class="modal_label"><label><b>Name</b></label></div><div class="modal_input"><input type="text" value="" id="add_nutrition_name_${number}"></div>
-                          <div class="modal_label"><label><b>Value</b></label></div><div class="modal_input"><input type="text" value="" id="add_nutrition_value_${number}"></div>
-                          <div class="modal_inner_buttons_container"><input type="button" value="+" class="modal_inner_buttons" onclick="addNutrition()">
-                          <input type="button" value="-" class="modal_inner_buttons" onclick="deleteNutrition(${number})"></div>
-    `// https://www.w3schools.com/jsref/prop_element_childelementcount.asp
+    let htmlString = `<div class="modal_label"><label><b>Name</b></label></div><div class="modal_input"><select id="add_nutrition_name_${number}">`
+    unique_nutrition_values.forEach(nutrition => htmlString += `<option value="${nutrition}">${nutrition}</option>`)
+    htmlString += `</select></div><div class="modal_label"><label><b>Value</b></label></div><div class="modal_input"><input type="text" value="" id="add_nutrition_value_${number}"></div>
+                   <div class="modal_inner_buttons_container"><input type="button" value="+" class="modal_inner_buttons" onclick="addNutrition()">
+                   <input type="button" value="-" class="modal_inner_buttons" onclick="deleteNutrition(${number})"></div>
+    `
+    listItem.innerHTML = htmlString // https://www.w3schools.com/jsref/prop_element_childelementcount.asp
     listItem.id = `li_add_nutrition_name_${number}`
     list.appendChild(listItem);
 }
@@ -485,6 +513,7 @@ function displayAdd() {
     if (modalActvie) {
         return
     }
+    Errors = false
     modalActvie = true
     document.getElementById("modal").style.display = "flex"
     document.getElementById("add_content").style.display = "block"
@@ -501,8 +530,9 @@ function displayAdd() {
     htmlString += `<li><div class="modal_label"><label><b>Nutrition :</b></label></div></li><ul id="nutrition_ul" class="modal_content inner_ul">`
 
 
-    htmlString += `<li><div class="modal_label"><label><b>Name</b></label></div><div class="modal_input"><input type="text" value="" id="add_nutrition_name_${nutritionCounter}"></div>
-                   <div class="modal_label"><label><b>Value</b></label></div><div class="modal_input"><input type="text" value="" id="add_nutrition_value_${nutritionCounter}"></div>
+    htmlString += `<li><div class="modal_label"><label><b>Name</b></label></div><div class="modal_input"><select id="add_nutrition_name_${nutritionCounter}">`
+    unique_nutrition_values.forEach(nutrition => htmlString += `<option value="${nutrition}">${nutrition}</option>`)
+    htmlString += `</select></div><div class="modal_label"><label><b>Value</b></label></div><div class="modal_input"><input type="text" value="" id="add_nutrition_value_${nutritionCounter}"></div>
                    <div class="modal_inner_buttons_container"><input type="button" value="+" class="modal_inner_buttons" onclick="addNutrition()">
                    </div></li>
                        `
@@ -531,59 +561,70 @@ function displayAdd() {
 
 function AddSave() {
     modalActvie = false
-    document.getElementById("modal").style.display = "none"
-    document.getElementById("add_content").style.display = "none"
     let name = document.getElementById("add_food_name")
     let nutrition_type = document.getElementById("is_liquid")
     let tags = []
     let dict_nutrition = {}
-    let i = 1
     let nutrition_name = ""
     let nutrition_value = ""
     let tag = ""
     let food = {}
+    let error_dict = {}
+    let ID_list = []
 
-    while (nutritionCounter > 0) {
+    for (let i = 1; i <= nutritionCounter; i++) {
         nutrition_name = document.getElementById(`add_nutrition_name_${i}`)
         if (nutrition_name !== null) {
             nutrition_value = document.getElementById(`add_nutrition_value_${i}`)
-            dict_nutrition[nutrition_name.value] = nutrition_value.value
-            nutrition_name.value = null
-            nutrition_value.value = null
+            if (regex.test(nutrition_value.value)) {
+                dict_nutrition[nutrition_name.value] = nutrition_value.value
+                ID_list.push(`add_nutrition_name_${i}`)
+                ID_list.push(`add_nutrition_value_${i}`)
+            } else {
+                error_dict[`add_nutrition_value_${i}`] = "Invalid integer"
+            }
+
         }
-        i++
-        nutritionCounter--
     }
-    i = 1
-    while (tagsCounter !== 0) {
+    for (let i = 1; i <= tagsCounter; i++) {
 
         tag = document.getElementById(`add_food_tag_${i}`)
         if (tag !== null && tag.value !== "None") {
             tags.push(tag.value)
-            tag.value = null
+            ID_list.push(`add_food_tag_${i}`)
         }
-        i++
-        tagsCounter--
-
+    }
+    if (name.length === 0) {
+        error_dict[`add_food_name`] = "Provide name"
     }
 
-    food["id"] = `${foods.length + 1}`
-    food["name"] = name.value
 
-    if (nutrition_type.checked === false) {
-        food["nutrition-per-100g"] = dict_nutrition
+    if (Object.keys(error_dict).length !== 0) {
+        modalActvie = true
+        Errors = true
+        console.log(error_dict)
+        // write function to show errors
     } else {
-        food["nutrition-per-100ml"] = dict_nutrition
-    }
-    if (tags.length !== 0) {
-        food["tags"] = tags
-    }
+        document.getElementById("modal").style.display = "none"
+        document.getElementById("add_content").style.display = "none"
+        ID_list.forEach(id => document.getElementById(id).value = null)
+        food["id"] = `${foods.length + 1}`
+        food["name"] = name.value
 
-    foods.push(food)
-    name.value = null
-    nutrition_type.checked = false
-    displayTable()
+        if (nutrition_type.checked === false) {
+            food["nutrition-per-100g"] = dict_nutrition
+        } else {
+            food["nutrition-per-100ml"] = dict_nutrition
+        }
+        if (tags.length !== 0) {
+            food["tags"] = [...new Set(tags)]
+        }
 
+        foods.push(food)
+        name.value = null
+        nutrition_type.checked = false
+        displayTable()
+    }
 }
 
 
