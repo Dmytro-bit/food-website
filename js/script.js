@@ -394,14 +394,23 @@ function saveEdit() {
 
         }
     }
-    if (check_name.length === 0) {
+    if (check_name.value.length === 0) {
         error_dict[check_food.id + "_name_edit"] = "Fields can not be empty"
     }
 
     if (Object.keys(error_dict).length !== 0) {
         Errors = true
         console.log(error_dict)
-        return // add error function
+        
+        let error_ids = Object.keys(error_dict)
+
+        error_ids.forEach(id => 
+        {
+            document.getElementById(id).style.border = '2px solid red'
+            document.getElementById(id).style.boxShadow= '0px 0px 20px rgb(255, 0, 0)'
+        })
+
+        return
     }
 
     foods.forEach(food => {
@@ -601,7 +610,7 @@ function AddSave() {
             ID_list.push(`add_food_tag_${i}`)
         }
     }
-    if (name.length === 0) {
+    if (name.value.length === 0) {
         error_dict[`add_food_name`] = "Provide name"
     }
 
@@ -610,7 +619,14 @@ function AddSave() {
         modalActvie = true
         Errors = true
         console.log(error_dict)
-        // write function to show errors
+        let error_ids = Object.keys(error_dict)
+
+        error_ids.forEach(id => 
+        {
+            document.getElementById(id).style.border = '2px solid red'
+            document.getElementById(id).style.boxShadow= '0px 0px 20px rgb(255, 0, 0)'
+            
+        })
     } else {
         document.getElementById("modal").style.display = "none"
         document.getElementById("add_content").style.display = "none"
