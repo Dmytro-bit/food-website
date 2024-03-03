@@ -16,6 +16,7 @@ let order = 1;
 let executableID
 let modalActvie = false;
 let tagsCounter = 1
+let tagsEditCounter = 1
 let nutritionCounter = 1
 let newTagID = 0
 let tagListManager = []
@@ -696,19 +697,31 @@ function saveNutrition() {
 
 function addTagEdit()
 {
-    let htmlString = ``
 
-    htmlString += `<li><div class="modal_input"><select id="new_tag_selector${tagSelectorID}">`
+    let listItem = document.createElement("li");  //https://www.w3schools.com/jsref/dom_obj_li.asp or https://www.w3schools.com/jsref/tryit.asp?filename=tryjsref_li_create
+    let list = document.getElementById("inner_tags")
+    listItem.id = `new_li_tag_selector${tagSelectorID}`
+    tagsEditCounter++
+    let number = tagsEditCounter
+    let htmlString = `<div class="modal_input"><select id="new_li_tag_selector${tagSelectorID}">`
+    tagCheckBoxes.forEach(tag =>
+        {
+            htmlString += `<option value="${tag}">${tag}</option>`    
+        })
+        htmlString += `</select></div><div class="modal_inner_buttons_container">
+                                <input type="button" value="-" class="modal_inner_buttons" onclick="deleteTagEdit('new_li_tag_selector${tagSelectorID}')"></div></li>`
 
+    listItem.innerHTML = htmlString
+    list.appendChild(listItem);
     tagSelectorID += 1
     
-    tagCheckBoxes.forEach(tag =>
-    {
-        htmlString += `<option value="${tag}">${tag}</option>`    
-    })
-    htmlString += `</select></div></li>`
-    document.getElementById("inner_tags").innerHTML += htmlString
-    
+}
+
+function deleteTagEdit(id)
+{
+    let list = document.getElementById("inner_tags")
+    let deleteElement = document.getElementById(id)
+    list.removeChild(deleteElement)
 }
 
 function closeModal() {
