@@ -482,7 +482,7 @@ select:hover
 {
     position: fixed;
     bottom: 5%;
-    left: 50%;
+    left: 97%;
     cursor: pointer;
     /* z-index: -1; */
 }
