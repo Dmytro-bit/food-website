@@ -353,7 +353,7 @@ function saveEdit() {
 
                     for(let i = 0; i < tagSelectorID; i++)
                     {
-                        if(!food["tags"].includes(document.getElementById(`new_tag_selector${i}`).value))
+                        if(document.getElementById(`new_tag_selector${i}`) !== null && !food["tags"].includes(document.getElementById(`new_tag_selector${i}`).value))
                         {
                             food["tags"].push(document.getElementById(`new_tag_selector${i}`).value)
                         }
@@ -701,9 +701,8 @@ function addTagEdit()
     let listItem = document.createElement("li");  //https://www.w3schools.com/jsref/dom_obj_li.asp or https://www.w3schools.com/jsref/tryit.asp?filename=tryjsref_li_create
     let list = document.getElementById("inner_tags")
     listItem.id = `new_li_tag_selector${tagSelectorID}`
-    tagsEditCounter++
-    let number = tagsEditCounter
-    let htmlString = `<div class="modal_input"><select id="new_li_tag_selector${tagSelectorID}">`
+    // tagsEditCounter++
+    let htmlString = `<div class="modal_input"><select id="new_tag_selector${tagSelectorID}">`
     tagCheckBoxes.forEach(tag =>
         {
             htmlString += `<option value="${tag}">${tag}</option>`    
