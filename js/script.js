@@ -569,6 +569,7 @@ function deleteTag(element)
     console.log(element.id)
     let selectedTag = tagCheckBoxes.indexOf(document.getElementById(element.id).value)
     tagCheckBoxes.splice(selectedTag, 1)
+    modalActvie = false
     displayTagManager()
     main()
 }
