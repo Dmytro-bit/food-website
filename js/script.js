@@ -285,8 +285,10 @@ function editModal(food) {
                                 content += `<option value="${nutrition}">${nutrition}</option>`
                             }
                         })
-                        content += `</select>`
-                        content += `</label></div><div class="modal_input"><input type="text" id="${newNutritionID}_edit_food" value="${food["nutrition-per-100g"] !== undefined ? food["nutrition-per-100g"][key] : food["nutrition-per-100ml"][key]}"></div></li>`
+                        content += `</select></div>`
+                        content += `</label></div><div class="modal_input"><input type="text" id="${newNutritionID}_edit_food" value="${food["nutrition-per-100g"] !== undefined ? food["nutrition-per-100g"][key] : food["nutrition-per-100ml"][key]}"></div>
+                        <div class="modal_inner_buttons_container">
+                        <input type="button" value="-" class="modal_inner_buttons" onclick=""></div></li>`
                         newNutritionID++
                     })
                     content += `<li><input type="button" value="+" class="modal_inner_buttons" id="add_nutrition_edit" onclick="addNutritionEdit('${food.id}')"></li></ul>`
@@ -307,7 +309,8 @@ function editModal(food) {
                             }
                         })
                         // tagsAvailable.forEach(tag_list => htmlString += `<option value="${tag_list}" ${tag === tag_list ? "selected=\"selected\"" : ""}>${tag_list}</option>`)
-                        content += `</select></div></li>`
+                        content += `</select></div><div class="modal_inner_buttons_container">
+                        <input type="button" value="-" class="modal_inner_buttons" onclick=""></div></li>`
                     })
                     content += `<li><input type="button" value="+" class="modal_inner_buttons" id="add_nutrition_edit" onclick="addTagEdit()"></li></ul>`
 
@@ -323,7 +326,8 @@ function editModal(food) {
                                 content += `<option value="${contain_list}">${contain_list}</option>`
                             }
                         })
-                        content += `</select></div></li>`
+                        content += `</select></div><div class="modal_inner_buttons_container">
+                        <input type="button" value="-" class="modal_inner_buttons" onclick=""></div></li>`
                     })
                     content += `<li><input type="button" value="+" class="modal_inner_buttons" id="add_nutrition_edit" onclick=""></li></ul>`
 
@@ -339,9 +343,10 @@ function editModal(food) {
 }
 
 function addNutritionEdit() {
-    let htmlString = `<li><div class="modal_label"><label><select id="edit_nutrition_${newNutritionID}">`
+    let htmlString = `<div class="modal_label"><label><select id="edit_nutrition_${newNutritionID}">`
     unique_nutrition_values.forEach(nutrition => htmlString += `<option value="${nutrition}">${nutrition}</option>`)
-    htmlString += `</select></label></div><div class="modal_input"><input type="text" id="${newNutritionID}_edit_food" value=""></div></li>`
+    htmlString += `</select></label></div><div class="modal_input"><input type="text" id="${newNutritionID}_edit_food" value=""></div>
+    <div class="modal_inner_buttons_container"><input type="button" value="-" class="modal_inner_buttons" onclick=""></div>`
     newNutritionID++
 
     let list = document.getElementById("edit_content_ul")
