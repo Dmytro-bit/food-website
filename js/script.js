@@ -17,8 +17,8 @@ let executableID
 let modalActvie = false;
 let tagsCounter = 1
 let nutritionCounter = 1
-let sortButtonName = ""
 let newTagID = 0
+let tagListManager = []
 
 window.onload = () => {
     let url = "../data/foods.json";
@@ -494,7 +494,7 @@ function AddSave() {
     while (tagsCounter !== 0) {
 
         tag = document.getElementById(`add_food_tag_${i}`)
-        if (tag !== null) {
+        if (tag !== null && tag.value !== "None") {
             tags.push(tag.value)
             tag.value = null
         }
@@ -522,20 +522,31 @@ function AddSave() {
 
 }
 
-function displayTagManager()
-{
-    if(modalActvie)
+
+function displayTagManager(tagListManager_local, newTagID_local) {
+    if (modalActvie)
         return
     modalActvie = true
+
+    if (tagListManager_local === undefined) {
+        tagListManager = [...tagCheckBoxes]
+    } else {
+        tagListManager = tagListManager_local
+    }
+
+    if (newTagID_local === undefined) {
+        newTagID = 0
+    } else {
+        newTagID = newTagID_local
+    }
 
     let htmlString = ``
     let i = 1
 
-    tagCheckBoxes.forEach(tag =>
-    {
+    tagListManager.forEach(tag => {
         htmlString += `<li><div class="modal_label"><label>Tag ${i}: </label></div><div class="modal_input"><input type="text" value="${tag}" id="${tag}_edit"></div>
-        <input type="button" value="-" class="modal_inner_buttons" onclick="deleteTag(${tag}_edit)"></li>`
-        i+=1
+        <input type="button" value="-" class="modal_inner_buttons" onclick="deleteTag('${tag}_edit')"></li>`
+        i += 1
     })
 
     htmlString += `<li><input type="button" value="+" class="modal_inner_buttons" id="add_tags" onclick="addNewTags()"></li>`
@@ -548,14 +559,23 @@ function displayTagManager()
     document.getElementById("add_tags").style.display = "flex"
 }
 
-function saveTags()
-{
+function saveTags() {
     let i = 0
-    tagCheckBoxes.forEach(tag =>
-    {
+    tagListManager.forEach(tag => {
         tagCheckBoxes[i] = document.getElementById(`${tag}_edit`).value
-        i+=1
+        i += 1
     })
+
+    for (let i = 0; i <= newTagID; i++) {
+        let tag = document.getElementById(`new_tag${i}`)
+        console.log(tag)
+        if (tag !== null) {
+            tagListManager.push(tag.value.toLowerCase())
+        }
+    }
+
+
+    tagCheckBoxes = tagListManager
     main()
     modalActvie = false
     document.getElementById("modal").style.display = "none"
@@ -564,31 +584,22 @@ function saveTags()
     document.getElementById("add_tags").style.display = "none"
 }
 
-function deleteTag(element)
-{
-    console.log(element.id)
-    let selectedTag = tagCheckBoxes.indexOf(document.getElementById(element.id).value)
-    tagCheckBoxes.splice(selectedTag, 1)
+function deleteTag(element) {
+    let selectedTag = tagListManager.indexOf(document.getElementById(element).value)
+    tagListManager.splice(selectedTag, 1)
     modalActvie = false
-    displayTagManager()
+    displayTagManager(tagListManager, newTagID)
     main()
 }
 
-// function addNewTags()
-// {
-//     let htmlString = ``
+function addNewTags() {
+    let htmlString = ``
 
+    htmlString += `<li><div class="modal_label"><label>New Tag: </label></div><div class="modal_input"><input type="text" value="" id="new_tag${newTagID}"></div></li>`
+    newTagID += 1
 
-//     htmlString += `<li><div class="modal_label"><label>New Tag: </label></div><div class="modal_input"><input type="text" value="" id="new_tag${newTagID}"></div></li>`
-//     newTagID+=1
-
-//     document.getElementById("tag_manager").innerHTML += htmlString
-
-//     // tagCheckBoxes.push(document.getElementById(`new_tag${newTagID}`).value)
-
-//     console.log(htmlString)
-//     // main()
-// }
+    document.getElementById("tag_manager").innerHTML += htmlString
+}
 
 function closeModal() {
     if (modalActvie) {
