@@ -277,7 +277,7 @@ function editModal(food) {
                     nutrKeys.forEach(key => {
                         content += `<li><div class="modal_label"><label><b>${key}</b></label></div><div class="modal_input"><input type="text" id="${food.id}_${key}_edit" value="${food["nutrition-per-100g"] !== undefined ? food["nutrition-per-100g"][key] : food["nutrition-per-100ml"][key]}"></div></li>`
                     })
-                    content += `</ul>`
+                    content += `<li><input type="button" value="+" class="modal_inner_buttons" id="add_nutrition_edit" onclick=""></li></ul>`
                 } else if (key === "tags") { //
                     let tags = food[key]
                     let tagsAvailable = ["None"]
@@ -297,7 +297,7 @@ function editModal(food) {
                         // tagsAvailable.forEach(tag_list => htmlString += `<option value="${tag_list}" ${tag === tag_list ? "selected=\"selected\"" : ""}>${tag_list}</option>`)
                         content += `</select></div></li>`
                     }
-                    content += `</ul>`
+                    content += `<li><input type="button" value="+" class="modal_inner_buttons" id="add_nutrition_edit" onclick=""></li></ul>`
 
                 } else if (key === "contains") {
                     content += `<li><div class="modal_label"><label><b>Contains: </b></label></div></li><ul class="modal_content inner_ul">`
@@ -313,7 +313,7 @@ function editModal(food) {
                         }
                         content += `</select></div></li>`
                     }
-                    content += `</ul>`
+                    content += `<li><input type="button" value="+" class="modal_inner_buttons" id="add_nutrition_edit" onclick=""></li></ul>`
 
                 } else {
                     content += `<li><div class="modal_label"><label><b>${key}</b></label></div><div class="modal_input"><input type="text" id="${food.id}_${key}_edit" value="${food[key]}"></div></li>

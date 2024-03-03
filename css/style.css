@@ -484,6 +484,7 @@ select:hover
     bottom: 5%;
     left: 50%;
     cursor: pointer;
+    /* z-index: -1; */
 }
 
 #main
