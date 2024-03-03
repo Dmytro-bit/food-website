@@ -351,6 +351,7 @@
     },
     {
         "id": "fruit-orange-navel-fresh-raw",
+        "img": "../image/Orange.jpeg",    
         "name": "Navel Orange",
         "nutrition-per-100g": {
             "energy": 192,
@@ -365,6 +366,7 @@
     },
     {
         "id": "fruit-avocado-fresh",
+        "img": "../image/Avocado.jpg",    
         "name": "Avocado",
         "nutrition-per-100g": {
             "energy": 670,
