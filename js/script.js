@@ -23,6 +23,7 @@ let tagListManager = []
 let newNutritionID = 0
 let nutritionListManager = []
 let tagSelectorID = 0
+let containsSelectorID = 0
 let deletedTag
 const regex = /^\d+(\.\d+)?$/
 let Errors = false
@@ -61,6 +62,11 @@ function main() {
 
     let filter_content = ``
     tagCheckBoxes.forEach(checkbox => {
+
+        filter_content += `<li><input type="checkbox" class="filter_option" id="${checkbox}" oninput="displayTable()">${checkbox}</li>`
+
+    })
+    contains.forEach(checkbox => {
 
         filter_content += `<li><input type="checkbox" class="filter_option" id="${checkbox}" oninput="displayTable()">${checkbox}</li>`
 
@@ -203,6 +209,8 @@ function displayMenuButtons(id) {
 
 
 function deleteFood(id) {
+    if(modalActvie)
+        return
     let selectedIndex
     let foodName
     foods.forEach((food, index) => {
@@ -320,10 +328,10 @@ function editModal(food) {
                     content += `<li><input type="button" value="+" class="modal_inner_buttons" id="add_nutrition_edit" onclick="addTagEdit()"></li></ul>`
 
                 } else if (key === "contains") {
-                    content += `<li><div class="modal_label"><label><b>Contains: </b></label></div></li><ul class="modal_content inner_ul">`
+                    content += `<li><div class="modal_label"><label><b>Contains: </b></label></div></li><ul class="modal_content inner_ul" id="inner_contains">`
 
                     food[key].forEach(contain => {
-                        content += `<li><div class="modal_input"><select id="${food.id}_tag_${contain}">`
+                        content += `<li id="new_li_contains_selector${containsSelectorID}"><div class="modal_input"><select id="new_contains_selector${containsSelectorID}">`
                         contains.forEach(contain_list => {
                             if (contain === contain_list) {
                                 content += `<option value="${contain_list}" selected="selected">${contain_list}</option>`
@@ -332,10 +340,10 @@ function editModal(food) {
                             }
                         })
                         content += `</select></div><div class="modal_inner_buttons_container">
-                        <input type="button" value="-" class="modal_inner_buttons" onclick=""></div></li>`
+                        <input type="button" value="-" class="modal_inner_buttons" onclick="deleteContainsEdit('new_li_contains_selector${containsSelectorID}')"></div></li>`
                     })
-                    content += `<li><input type="button" value="+" class="modal_inner_buttons" id="add_nutrition_edit" onclick=""></li></ul>`
-
+                    content += `<li><input type="button" value="+" class="modal_inner_buttons" id="add_nutrition_edit" onclick="addContainsEdit()"></li></ul>`
+                    containsSelectorID++
                 } else {
                     content += `<li><div class="modal_label"><label><b>${key}</b></label></div><div class="modal_input"><input type="text" id="${food.id}_${key}_edit" value="${food[key]}"></div></li>
                                 `
@@ -399,12 +407,12 @@ function saveEdit() {
     foods.forEach(food => {
         if (food.id === executableID) {
             let objKeys = Object.keys(food).slice(1)
-            let nutrKeys = Object.keys(food["nutrition-per-100g"])
+            let nutrKeys = food["nutrition-per-100g"] !== undefined ? Object.keys(food["nutrition-per-100g"]) : Object.keys(food["nutrition-per-100ml"])
             objKeys.forEach(key => {
                 if (key === "name") {
                     food[key] = document.getElementById(food.id + "_" + key + "_edit").value
                     document.getElementById(food.id + "_" + key + "_edit").value = null
-                } else if (key === "nutrition-per-100g") {
+                } else if (key === "nutrition-per-100g" || key === "nutrition-per-100ml") {
                     let nutrition_dict = {}
 
                     for (let i = 0; i <= newNutritionID; i++) {
@@ -417,12 +425,7 @@ function saveEdit() {
                     }
                     food[key] = nutrition_dict
                 } else if (key === "tags") {
-                    // let i = 0
-                    // food.tags.forEach(tag => {
-                    //     food["tags"][i] = document.getElementById(food.id + "_tag_" + tag).value
-                    //     i++
-                    //     document.getElementById(food.id + "_tag_" + tag).value = null
-                    // })
+ 
                     let tempTags = []
 
                     for (let i = 0; i < tagSelectorID; i++) {
@@ -431,16 +434,20 @@ function saveEdit() {
                             tempTags.push(tag.value)
                         }
                     }
-                    food["tags"] = [...tempTags]
+                    food["tags"] = [...new Set(tempTags)].sort()
 
 
                 } else if (key === "contains") {
-                    let i = 0
-                    food["contains"].forEach(contain => {
-                        food["contains"][i] = document.getElementById(food.id + "_tag_" + contain).value
-                        i++
-                        document.getElementById(food.id + "_tag_" + contain).value = null
-                    })
+                    let tempContains = []
+
+                    for (let i = 0; i < containsSelectorID; i++) {
+                        let contain = document.getElementById(`new_contains_selector${i}`)
+                        if (contain !== null) {
+                            tempContains.push(contain.value)
+                        }
+                    }
+                    food["contains"] = [...new Set(tempContains)].sort()
+
                 } else {
                     nutrKeys.forEach(key => {
                         food["nutrition-per-100ml"][key] = document.getElementById(food.id + "_" + key + "_edit").value
@@ -702,7 +709,8 @@ function deleteTag(element) {
 function addNewTags() {
     let htmlString = ``
 
-    htmlString += `<li><div class="modal_label"><label>New Tag: </label></div><div class="modal_input"><input type="text" value="" id="new_tag${newTagID}"></div></li>`
+    htmlString += `<li><div class="modal_label"><label>New Tag: </label></div><div class="modal_input"><input type="text" value="" id="new_tag${newTagID}"></div>
+    <div class="modal_inner_buttons_container"><input type="button" value="-" class="modal_inner_buttons" onclick=""></div></li>`
     newTagID += 1
 
     document.getElementById("tag_manager").innerHTML += htmlString
@@ -811,6 +819,29 @@ function deleteTagEdit(id) {
     list.removeChild(deleteElement)
 }
 
+function addContainsEdit()
+{
+    let listItem = document.createElement("li");  //https://www.w3schools.com/jsref/dom_obj_li.asp or https://www.w3schools.com/jsref/tryit.asp?filename=tryjsref_li_create
+    let list = document.getElementById("inner_contains")
+    listItem.id = `new_li_contains_selector${containsSelectorID}`
+    // tagsEditCounter++
+    let htmlString = `<div class="modal_input"><select id="new_contains_selector${containsSelectorID}">`
+    contains.forEach(tag => {
+        htmlString += `<option value="${tag}">${tag}</option>`
+    })
+    htmlString += `</select></div><div class="modal_inner_buttons_container">
+                                <input type="button" value="-" class="modal_inner_buttons" onclick="deleteContainsEdit('new_li_contains_selector${containsSelectorID}')"></div></li>`
+
+    listItem.innerHTML = htmlString
+    list.appendChild(listItem);
+    containsSelectorID++
+}
+
+function deleteContainsEdit(id) {
+    let list = document.getElementById("inner_contains")
+    let deleteElement = document.getElementById(id)
+    list.removeChild(deleteElement)
+}
 
 function closeModal() {
     if (modalActvie) {
