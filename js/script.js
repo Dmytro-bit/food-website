@@ -23,6 +23,7 @@ let tagListManager = []
 let newNutritionID = 0
 let nutritionListManager = []
 let tagSelectorID = 0
+let deletedTag
 
 window.onload = () => {
     let url = "../data/foods.json";
@@ -300,7 +301,7 @@ function editModal(food) {
                     content += `<li><div class="modal_label"><label><b>Tags: </b></label></div></li><ul class="modal_content inner_ul" id="inner_tags">`
 
                     tags.forEach(tag => {
-                        content += `<li><div class="modal_input"><select id="${food.id}_tag_${tag}">`
+                        content += `<li id="new_tag_selector${tagSelectorID}"><div class="modal_input"><select id="${food.id}_tag_${tag}">`
                         tagsAvailable.forEach(tag_list => {
                             if (tag === tag_list) {
                                 content += `<option value="${tag_list}" selected="selected">${tag_list}</option>`
@@ -310,7 +311,9 @@ function editModal(food) {
                         })
                         // tagsAvailable.forEach(tag_list => htmlString += `<option value="${tag_list}" ${tag === tag_list ? "selected=\"selected\"" : ""}>${tag_list}</option>`)
                         content += `</select></div><div class="modal_inner_buttons_container">
-                        <input type="button" value="-" class="modal_inner_buttons" onclick=""></div></li>`
+                        <input type="button" value="-" class="modal_inner_buttons" onclick="deleteTagEdit('new_tag_selector${tagSelectorID}')"></div></li>`
+
+                        tagSelectorID++
                     })
                     content += `<li><input type="button" value="+" class="modal_inner_buttons" id="add_nutrition_edit" onclick="addTagEdit()"></li></ul>`
 
@@ -380,18 +383,22 @@ function saveEdit() {
                     }
                     food[key] = nutrition_dict
                 } else if (key === "tags") {
-                    let i = 0
-                    food.tags.forEach(tag => {
-                        food["tags"][i] = document.getElementById(food.id + "_tag_" + tag).value
-                        i++
-                        document.getElementById(food.id + "_tag_" + tag).value = null
-                    })
+                    // let i = 0
+                    // food.tags.forEach(tag => {
+                    //     food["tags"][i] = document.getElementById(food.id + "_tag_" + tag).value
+                    //     i++
+                    //     document.getElementById(food.id + "_tag_" + tag).value = null
+                    // })
+                    let tempTags = []
 
                     for (let i = 0; i < tagSelectorID; i++) {
                         if (document.getElementById(`new_tag_selector${i}`) !== null && !food["tags"].includes(document.getElementById(`new_tag_selector${i}`).value)) {
-                            food["tags"].push(document.getElementById(`new_tag_selector${i}`).value)
+                            tempTags.push(document.getElementById(`new_tag_selector${i}`).value)
                         }
                     }
+                    food["tags"] = [... tempTags]
+
+
                 } else if (key === "contains") {
                     let i = 0
                     food["contains"].forEach(contain => {
@@ -744,7 +751,7 @@ function addTagEdit() {
 
     listItem.innerHTML = htmlString
     list.appendChild(listItem);
-    tagSelectorID += 1
+    tagSelectorID++
 
 }
 
@@ -753,6 +760,7 @@ function deleteTagEdit(id) {
     let deleteElement = document.getElementById(id)
     list.removeChild(deleteElement)
 }
+
 
 function closeModal() {
     if (modalActvie) {
