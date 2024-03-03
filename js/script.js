@@ -18,6 +18,7 @@ let modalActvie = false;
 let tagsCounter = 1
 let nutritionCounter = 1
 let sortButtonName = ""
+let newTagID = 0
 
 window.onload = () => {
     let url = "../data/foods.json";
@@ -27,17 +28,18 @@ window.onload = () => {
         .then(jsonData => {
 
             foods = jsonData
+            let all_tags = []
+            let all_contains = []
+            foods.forEach(food => food[`tags`] !== undefined ? food[`tags`].forEach(tag => all_tags.push(tag)) : null)
+            tagCheckBoxes = [...new Set(all_tags)].sort()
+            foods.forEach(food => food["contains"] !== undefined ? food["contains"].forEach(contain => all_contains.push(contain)) : null)
+            contains = [...new Set(all_contains)].sort()
             main()
-        });
-};
+        })
+}
 
 function main() {
-    let all_tags = []
-    let all_contains = []
-    foods.forEach(food => food[`tags`] !== undefined ? food[`tags`].forEach(tag => all_tags.push(tag)) : null)
-    tagCheckBoxes = [...new Set(all_tags)].sort()
-    foods.forEach(food => food["contains"] !== undefined ? food["contains"].forEach(contain => all_contains.push(contain)) : null)
-    contains = [...new Set(all_contains)].sort()
+
     foods.forEach(element => {
         let nutrition_key_g = element["nutrition-per-100g"]
         if (nutrition_key_g) {
@@ -54,8 +56,9 @@ function main() {
 
         filter_content += `<li><input type="checkbox" class="filter_option" id="${checkbox}" oninput="displayTable()">${checkbox}</li>`
 
-        document.getElementById("filter_list").innerHTML = filter_content
     })
+    filter_content += `<li><a href="#modal"><input type="button" id="display_tag_manager" value="Tag Manager" onclick="displayTagManager()"></a></li>`
+    document.getElementById("filter_list").innerHTML = filter_content
 
     let sort_content = `<li><div class="sort_option" id="name" onclick="sortNutrition('name')">Name</div></li>`
     unique_nutrition_values.forEach(checkbox => {
@@ -519,6 +522,73 @@ function AddSave() {
 
 }
 
+function displayTagManager()
+{
+    if(modalActvie)
+        return
+    modalActvie = true
+
+    let htmlString = ``
+    let i = 1
+
+    tagCheckBoxes.forEach(tag =>
+    {
+        htmlString += `<li><div class="modal_label"><label>Tag ${i}: </label></div><div class="modal_input"><input type="text" value="${tag}" id="${tag}_edit"></div>
+        <input type="button" value="-" class="modal_inner_buttons" onclick="deleteTag(${tag}_edit)"></li>`
+        i+=1
+    })
+
+    htmlString += `<li><input type="button" value="+" class="modal_inner_buttons" id="add_tags" onclick="addNewTags()"></li>`
+
+    document.getElementById("tag_manager").innerHTML = htmlString
+
+    document.getElementById("modal").style.display = "flex"
+    document.getElementById("tag_manager").style.display = "flex"
+    document.getElementById("save_tags").style.display = "flex"
+    document.getElementById("add_tags").style.display = "flex"
+}
+
+function saveTags()
+{
+    let i = 0
+    tagCheckBoxes.forEach(tag =>
+    {
+        tagCheckBoxes[i] = document.getElementById(`${tag}_edit`).value
+        i+=1
+    })
+    main()
+    modalActvie = false
+    document.getElementById("modal").style.display = "none"
+    document.getElementById("tag_manager").style.display = "none"
+    document.getElementById("save_tags").style.display = "none"
+    document.getElementById("add_tags").style.display = "none"
+}
+
+function deleteTag(element)
+{
+    console.log(element.id)
+    let selectedTag = tagCheckBoxes.indexOf(document.getElementById(element.id).value)
+    tagCheckBoxes.splice(selectedTag, 1)
+    displayTagManager()
+    main()
+}
+
+// function addNewTags()
+// {
+//     let htmlString = ``
+
+
+//     htmlString += `<li><div class="modal_label"><label>New Tag: </label></div><div class="modal_input"><input type="text" value="" id="new_tag${newTagID}"></div></li>`
+//     newTagID+=1
+
+//     document.getElementById("tag_manager").innerHTML += htmlString
+
+//     // tagCheckBoxes.push(document.getElementById(`new_tag${newTagID}`).value)
+
+//     console.log(htmlString)
+//     // main()
+// }
+
 function closeModal() {
     if (modalActvie) {
         document.getElementById("modal").style.display = "none"
@@ -528,6 +598,7 @@ function closeModal() {
         document.getElementById("save_edit").style.display = "none"
         document.getElementById("add_content").style.display = "none"
         document.getElementById("save_add").style.display = "none"
+        document.getElementById("tag_manager").style.display = "none"
     }
     modalActvie = false
 }
