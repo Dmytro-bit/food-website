@@ -268,7 +268,6 @@ function editModal(food) {
         document.getElementById("edit_content").style.display = "block"
         document.getElementById("save_edit").style.display = "flex"
         modalActvie = true
-        newNutritionID = 0
 
         let objKeys = Object.keys(food).slice(1)
         let nutrKeys = food["nutrition-per-100g"] !== undefined ? Object.keys(food["nutrition-per-100g"]) : Object.keys(food["nutrition-per-100ml"])
@@ -382,8 +381,10 @@ function saveEdit() {
                         document.getElementById(food.id + "_tag_" + tag).value = null
                     })
 
-                    for (let i = 0; i < tagSelectorID; i++) {
-                        if (!food["tags"].includes(document.getElementById(`new_tag_selector${i}`).value)) {
+                    for(let i = 0; i < tagSelectorID; i++)
+                    {
+                        if(document.getElementById(`new_tag_selector${i}`) !== null && !food["tags"].includes(document.getElementById(`new_tag_selector${i}`).value))
+                        {
                             food["tags"].push(document.getElementById(`new_tag_selector${i}`).value)
                         }
                     }
@@ -724,26 +725,29 @@ function saveNutrition() {
     document.getElementById("add_nutrition").style.display = "none"
 }
 
-function addTagEdit() {
+function addTagEdit()
+{
 
     let listItem = document.createElement("li");  //https://www.w3schools.com/jsref/dom_obj_li.asp or https://www.w3schools.com/jsref/tryit.asp?filename=tryjsref_li_create
     let list = document.getElementById("inner_tags")
     listItem.id = `new_li_tag_selector${tagSelectorID}`
-    tagsEditCounter++
-    let htmlString = `<div class="modal_input"><select id="new_li_tag_selector${tagSelectorID}">`
-    tagCheckBoxes.forEach(tag => {
-        htmlString += `<option value="${tag}">${tag}</option>`
-    })
-    htmlString += `</select></div><div class="modal_inner_buttons_container">
+    // tagsEditCounter++
+    let htmlString = `<div class="modal_input"><select id="new_tag_selector${tagSelectorID}">`
+    tagCheckBoxes.forEach(tag =>
+        {
+            htmlString += `<option value="${tag}">${tag}</option>`    
+        })
+        htmlString += `</select></div><div class="modal_inner_buttons_container">
                                 <input type="button" value="-" class="modal_inner_buttons" onclick="deleteTagEdit('new_li_tag_selector${tagSelectorID}')"></div></li>`
 
     listItem.innerHTML = htmlString
     list.appendChild(listItem);
     tagSelectorID += 1
-
+    
 }
 
-function deleteTagEdit(id) {
+function deleteTagEdit(id)
+{
     let list = document.getElementById("inner_tags")
     let deleteElement = document.getElementById(id)
     list.removeChild(deleteElement)
