@@ -19,6 +19,8 @@ let tagsCounter = 1
 let nutritionCounter = 1
 let newTagID = 0
 let tagListManager = []
+let newNutritionID = 0
+let nutritionListManager = []
 
 window.onload = () => {
     let url = "../data/foods.json";
@@ -34,21 +36,22 @@ window.onload = () => {
             tagCheckBoxes = [...new Set(all_tags)].sort()
             foods.forEach(food => food["contains"] !== undefined ? food["contains"].forEach(contain => all_contains.push(contain)) : null)
             contains = [...new Set(all_contains)].sort()
+
+            foods.forEach(element => {
+                let nutrition_key_g = element["nutrition-per-100g"]
+                if (nutrition_key_g) {
+                    Object.keys(nutrition_key_g).forEach(key => {
+                        nutrition_values.push(key)
+                    })
+                }
+            })
+            unique_nutrition_values = [...new Set(nutrition_values)].sort()
+
             main()
         })
 }
 
 function main() {
-
-    foods.forEach(element => {
-        let nutrition_key_g = element["nutrition-per-100g"]
-        if (nutrition_key_g) {
-            Object.keys(nutrition_key_g).forEach(key => {
-                nutrition_values.push(key)
-            })
-        }
-    })
-    unique_nutrition_values = [...new Set(nutrition_values)].sort()
 
 
     let filter_content = ``
@@ -64,6 +67,7 @@ function main() {
     unique_nutrition_values.forEach(checkbox => {
         sort_content += `<li><div class="sort_option" id="${checkbox}" onclick="sortNutrition('${checkbox}')">${checkbox}</div></li>`
     })
+    sort_content += `<li><a href="#modal"><input type="button" id="display_nutrition_manager" value="Nutrition Manager" onclick="displayNutritionManager()"></a></li>`
     document.getElementById("sort_list").innerHTML = sort_content
     displayTable()
 
@@ -601,6 +605,84 @@ function addNewTags() {
     document.getElementById("tag_manager").innerHTML += htmlString
 }
 
+function displayNutritionManager(nutritionListManager_local, newNutritionID_local) {
+    if (modalActvie)
+        return
+    modalActvie = true
+
+    if (nutritionListManager_local === undefined) {
+        nutritionListManager = [...unique_nutrition_values]
+    } else {
+        nutritionListManager = nutritionListManager_local
+    }
+
+    if (newNutritionID_local === undefined) {
+        newNutritionID = 0
+    } else {
+        newNutritionID = newNutritionID_local
+    }
+
+    let htmlString = ``
+    let i = 1
+
+    nutritionListManager.forEach(nutrition => {
+        htmlString += `<li><div class="modal_label"><label>Nutrition ${i}: </label></div><div class="modal_input"><input type="text" value="${nutrition}" id="${nutrition}_edit"></div>
+        <input type="button" value="-" class="modal_inner_buttons" onclick="deleteNutritionManager('${nutrition}_edit')"></li>`
+        i += 1
+    })
+
+    htmlString += `<li><input type="button" value="+" class="modal_inner_buttons" id="add_tags" onclick="addNewNutrition()"></li>`
+
+    document.getElementById("nutrition_manager").innerHTML = htmlString
+
+    document.getElementById("modal").style.display = "flex"
+    document.getElementById("nutrition_manager").style.display = "flex"
+    document.getElementById("save_nutrition").style.display = "flex"
+    document.getElementById("add_nutrition").style.display = "flex"
+}
+
+function addNewNutrition() {
+    let htmlString = ``
+
+    htmlString += `<li><div class="modal_label"><label>New Nutrition: </label></div><div class="modal_input"><input type="text" value="" id="new_nutrition${newNutritionID}"></div></li>`
+    newNutritionID += 1
+
+    document.getElementById("nutrition_manager").innerHTML += htmlString
+}
+
+function deleteNutritionManager(element) {
+    let selectedTag = nutritionListManager.indexOf(document.getElementById(element).value)
+    nutritionListManager.splice(selectedTag, 1)
+    modalActvie = false
+    displayTagManager(nutritionListManager, newNutritionID)
+    main()
+}
+
+function saveNutrition() {
+    let i = 0
+    nutritionListManager.forEach(nutrition => {
+        tagCheckBoxes[i] = document.getElementById(`${nutrition}_edit`).value
+        i += 1
+    })
+
+    for (let i = 0; i <= newNutritionID; i++) {
+        let nutrition = document.getElementById(`new_nutrition${i}`)
+        console.log(nutrition)
+        if (nutrition !== null) {
+            tagListManager.push(nutrition.value.toLowerCase())
+        }
+    }
+
+
+    unique_nutrition_values = nutritionListManager
+    main()
+    modalActvie = false
+    document.getElementById("modal").style.display = "none"
+    document.getElementById("nutrition_manager").style.display = "none"
+    document.getElementById("save_nutrition").style.display = "none"
+    document.getElementById("add_nutrition").style.display = "none"
+}
+
 function closeModal() {
     if (modalActvie) {
         document.getElementById("modal").style.display = "none"
@@ -611,6 +693,9 @@ function closeModal() {
         document.getElementById("add_content").style.display = "none"
         document.getElementById("save_add").style.display = "none"
         document.getElementById("tag_manager").style.display = "none"
+        document.getElementById("save_tags").style.display = "none"
+        document.getElementById("nutrition_manager").style.display = "none"
+        document.getElementById("save_nutrition").style.display = "none"
     }
     modalActvie = false
 }

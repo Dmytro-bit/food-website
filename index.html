@@ -30,7 +30,8 @@
                 <div id="sbar"><input type="search" id="search" oninput="search(this.value)" placeholder="Search...">
                 </div>
                 <div id="sort">
-                    <input type="button" class="functional_button" id="sort_button" value="SORT" onclick="displaySort()">
+                    <input type="button" class="functional_button" id="sort_button" value="SORT"
+                           onclick="displaySort()">
                     <div>
                         <ul id="sort_list">
 
@@ -57,16 +58,18 @@
                     <ul id="edit_content" class="modal_content"></ul>
                     <ul id="add_content" class="modal_content"></ul>
                     <ul id="tag_manager" class="modal_content inner_ul"></ul>
+                    <ul id="nutrition_manager" class="modal_content inner_ul"></ul>
                     <div id="modal_buttons_container">
                         <input type="submit" value="Save" id="save_edit" class="modal_buttons" onclick="saveEdit()">
                         <input type="submit" value="Add" id="save_add" class="modal_buttons" onclick="AddSave()">
                         <input type="button" value="Close" id="close_view" class="modal_buttons" onclick="closeModal()">
                         <input type="submit" value="Save" id="save_tags" class="modal_buttons" onclick="saveTags()">
+                        <input type="submit" value="Save" id="save_nutrition" class="modal_buttons" onclick="saveNutrition()">
                         <!-- <input type="submit" value="Add" id="add_tags" class="modal_buttons" onclick="addNewTags()"> -->
                     </div>
                 </div>
             </div>
-            <div id="ascend_anchor"><a href="#main"><img src="./icons/up-arrow.png"></a></div>
+            <div id="ascend_anchor"><a href="#main"><img src="./icons/up-arrow.png" alt=""></a></div>
         </div>
     </section>
 </div>
