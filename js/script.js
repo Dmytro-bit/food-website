@@ -60,14 +60,14 @@ function main() {
         filter_content += `<li><input type="checkbox" class="filter_option" id="${checkbox}" oninput="displayTable()">${checkbox}</li>`
 
     })
-    filter_content += `<li><a href="#modal"><input type="button" id="display_tag_manager" value="Tag Manager" onclick="displayTagManager()"></a></li>`
+    filter_content += `<li><a href="#modal"><input type="button" class="manager_buttons" value="Tag Manager" onclick="displayTagManager()"></a></li>`
     document.getElementById("filter_list").innerHTML = filter_content
 
     let sort_content = `<li><div class="sort_option" id="name" onclick="sortNutrition('name')">Name</div></li>`
     unique_nutrition_values.forEach(checkbox => {
         sort_content += `<li><div class="sort_option" id="${checkbox}" onclick="sortNutrition('${checkbox}')">${checkbox}</div></li>`
     })
-    sort_content += `<li><a href="#modal"><input type="button" id="display_nutrition_manager" value="Nutrition Manager" onclick="displayNutritionManager()"></a></li>`
+    sort_content += `<li><a href="#modal"><input type="button" class="manager_buttons" value="Nutrition Manager" onclick="displayNutritionManager()"></a></li>`
     document.getElementById("sort_list").innerHTML = sort_content
     displayTable()
 

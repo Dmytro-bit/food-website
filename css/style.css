@@ -270,6 +270,25 @@ table tr
     box-shadow: 0px 0px 15px rgba(255, 173, 20, 0.7);
 }
 
+.manager_buttons
+{
+    width: 100%;
+    border: 1px solid;
+    border-radius: 25px;
+    font-size: 3vh;
+    color: white;
+    background-color: orange;
+    font-family: "Montserrat", sans-serif;
+    transition: background-color .5s ease, color .5s ease, box-shadow .7s ease;
+}
+
+.manager_buttons:hover
+{
+    background-color: white;
+    color: orange;
+    box-shadow: 0px 0px 15px rgba(255, 173, 20, 0.7);
+}
+
 .element_buttons_menu
 {
     position: absolute;
