@@ -1,7 +1,6 @@
 [
     {
         "id": "coles-muslie-almond",
-        "img": "../image/Muesli(Almond).png",
         "name": "Muesli (Almond)",
         "nutrition-per-100g": {
             "energy": 1560,
@@ -17,7 +16,6 @@
     },
     {
         "id": "coles-rolled-oats-wholegrain",
-        "img": "../image/Wholegrain Rolled Oats.png",
         "name": "Wholegrain Rolled Oats",
         "nutrition-per-100g": {
             "energy": 1680,
@@ -34,7 +32,6 @@
     },
     {
         "id": "sanitarium-almond-milk",
-        "img": "../image/Almond Milk.png",
         "name": "Almond Milk",
         "nutrition-per-100ml": {
             "energy": 130,
@@ -56,7 +53,6 @@
     },
     {
         "id": "coles-soy-milk-regular",
-        "img": "../image/Soy Milk.jpg",
         "name": "Soy Milk",
         "nutrition-per-100ml": {
             "energy": 244,
@@ -78,7 +74,6 @@
     },
     {
         "id": "simply-better-organic-tofu-plain-firm",
-        "img": "../image/Firm Tofu.jpg",
         "name": "Firm Tofu",
         "nutrition-per-100g": {
             "energy": 615,
@@ -95,7 +90,6 @@
     },
     {
         "id": "sss-hummus-dip",
-        "img": "../image/sss-hummus-dip.jpeg",
         "name": "Hummus",
         "nutrition-per-100g": {
             "energy": 709,
@@ -111,7 +105,6 @@
     },
     {
         "id": "coles-hummus-lite",
-        "img": "../image/coles-hummus-lite.jpeg",
         "name": "Hummus (Lite)",
         "nutrition-per-100g": {
             "energy": 696,
@@ -126,7 +119,6 @@
     },
     {
         "id": "coles-hummus",
-        "img": "../image/coles-hummus.jpg",
         "name": "Hummus",
         "nutrition-per-100g": {
             "energy": 1091,
@@ -141,7 +133,6 @@
     },
     {
         "id": "sanitarium-natural-peanut-butter-crunchy",
-        "img": "",
         "name": "Peanut Butter",
         "nutrition-per-100g": {
             "energy": 2580,
@@ -163,7 +154,6 @@
     },
     {
         "id": "macro-organic-peanut-butter-crunchy",
-        "img": "../image/macro-organic-peanut-butter.jpg",
         "name": "Peanut Butter",
         "nutrition-per-100g": {
             "energy": 2670,
@@ -181,7 +171,6 @@
     },
     {
         "id": "macro-organic-tahini-unhulled",
-        "img": "../image/Tahini.jpg",
         "name": "Tahini",
         "nutrition-per-100g": {
             "energy": 2760,
@@ -199,7 +188,6 @@
     },
     {
         "id": "coles-butter-beans-organic",
-        "img": "../image/Butter beans.jpg",
         "name": "Butter Beans",
         "nutrition-per-100g": {
             "energy": 384,
@@ -215,7 +203,6 @@
     },
     {
         "id": "coles-red-kidney-beans-organic",
-        "img": "../image/red-kidney-beans.jpg",
         "name": "Kidney Beans",
         "nutrition-per-100g": {
             "energy": 370,
@@ -231,7 +218,6 @@
     },
     {
         "id": "coles-chick-peas-organic",
-        "img": "../image/Chickpeas.jpg",
         "name": "Chickpeas",
         "nutrition-per-100g": {
             "energy": 391,
@@ -247,7 +233,6 @@
     },
     {
         "id": "coles-lentils",
-        "img": "../image/Lentils.jpg",
         "name": "Lentils",
         "nutrition-per-100g": {
             "energy": 290,
@@ -263,7 +248,6 @@
     },
     {
         "id": "edgell-cannellini-beans",
-        "img": "../image/Cannelini Beans.jpg",
         "name": "Cannellini Beans",
         "nutrition-per-100g": {
             "energy": 438,
@@ -279,7 +263,6 @@
     },
     {
         "id": "fruit-kiwifruit-fresh-raw",
-        "img": "../image/Kiwifruit.jpg",
         "name": "Kiwifruit",
         "nutrition-per-100g": {
             "energy": 61,
@@ -293,7 +276,6 @@
     },
     {
         "id": "fruit-apple-granny-smith-fresh-raw",
-        "img": "../image/Apples Granny Smith.jpg",
         "name": "Apple (Granny Smith)",
         "nutrition-per-100g": {
             "energy": 218,
@@ -320,7 +302,6 @@
     },
     {
         "id": "fruit-apple-pink-lady-fresh-raw",
-        "img": "../image/Pink Lady.png",
         "name": "Apple (Pink Lady)",
         "nutrition-per-100g": {
             "energy": 218,
@@ -334,7 +315,6 @@
     },
     {
         "id": "fruit-banana-fresh-raw",
-        "img": "../image/Banana.jpeg",    
         "name": "Banana",
         "nutrition-per-100g": {
             "energy": 371,
@@ -351,7 +331,6 @@
     },
     {
         "id": "fruit-orange-navel-fresh-raw",
-        "img": "../image/Orange.jpeg",    
         "name": "Navel Orange",
         "nutrition-per-100g": {
             "energy": 192,
@@ -366,7 +345,6 @@
     },
     {
         "id": "fruit-avocado-fresh",
-        "img": "../image/Avocado.jpg",    
         "name": "Avocado",
         "nutrition-per-100g": {
             "energy": 670,
