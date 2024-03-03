@@ -56,14 +56,17 @@
                     <ul id="view_content" class="modal_content"></ul>
                     <ul id="edit_content" class="modal_content"></ul>
                     <ul id="add_content" class="modal_content"></ul>
+                    <ul id="tag_manager" class="modal_content inner_ul"></ul>
                     <div id="modal_buttons_container">
                         <input type="submit" value="Save" id="save_edit" class="modal_buttons" onclick="saveEdit()">
                         <input type="submit" value="Add" id="save_add" class="modal_buttons" onclick="AddSave()">
                         <input type="button" value="Close" id="close_view" class="modal_buttons" onclick="closeModal()">
+                        <input type="submit" value="Save" id="save_tags" class="modal_buttons" onclick="saveTags()">
+                        <!-- <input type="submit" value="Add" id="add_tags" class="modal_buttons" onclick="addNewTags()"> -->
                     </div>
                 </div>
             </div>
-            <div id="ascend_anchor"><img src="./icons/up-arrow.png"></div>
+            <div id="ascend_anchor"><a href="#main"><img src="./icons/up-arrow.png"></a></div>
         </div>
     </section>
 </div>

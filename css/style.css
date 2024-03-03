@@ -334,7 +334,7 @@ table tr
     margin: 1em 0 1em 0;
 }
 
-#save_edit, #save_add, #view_content, #edit_content, #add_content
+#save_edit, #save_add, #view_content, #tag_manager, #edit_content, #add_content
 {
     display: none;
     flex-direction: column;
@@ -461,8 +461,10 @@ select:hover
 
 #ascend_anchor
 {
-    position: absolute;
+    position: fixed;
+    bottom: 5%;
     left: 50%;
+    cursor: pointer;
 }
 
 #main
