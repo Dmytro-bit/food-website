@@ -285,19 +285,19 @@ function editModal(food) {
 
                     content += `<li><div class="modal_label"><label><b>Tags: </b></label></div></li><ul class="modal_content inner_ul">`
 
-                    for (let tag of tags) {
+                    tags.forEach(tag => {
                         content += `<li><div class="modal_input"><select id="${food.id}_tag_${tag}">`
-                        for (let tag_list of tagsAvailable) {
+                        tagsAvailable.forEach(tag_list =>{
                             if (tag === tag_list) {
                                 content += `<option value="${tag_list}" selected="selected">${tag_list}</option>`
                             } else {
                                 content += `<option value="${tag_list}">${tag_list}</option>`
                             }
-                        }
+                        })
                         // tagsAvailable.forEach(tag_list => htmlString += `<option value="${tag_list}" ${tag === tag_list ? "selected=\"selected\"" : ""}>${tag_list}</option>`)
                         content += `</select></div></li>`
-                    }
-                    content += `<li><input type="button" value="+" class="modal_inner_buttons" id="add_nutrition_edit" onclick=""></li></ul>`
+                    })
+                    content += `<li><input type="button" value="+" class="modal_inner_buttons" id="add_nutrition_edit" onclick="addTagEdit()"></li></ul>`
 
                 } else if (key === "contains") {
                     content += `<li><div class="modal_label"><label><b>Contains: </b></label></div></li><ul class="modal_content inner_ul">`
@@ -317,7 +317,7 @@ function editModal(food) {
 
                 } else {
                     content += `<li><div class="modal_label"><label><b>${key}</b></label></div><div class="modal_input"><input type="text" id="${food.id}_${key}_edit" value="${food[key]}"></div></li>
-                                <li><div class="modal_label"><label><b>Nutrition: </b></label></div></li>`
+                                `
                 }
             }
         )
@@ -701,3 +701,4 @@ function closeModal() {
     }
     modalActvie = false
 }
+
