@@ -301,18 +301,18 @@ function editModal(food) {
 
                 } else if (key === "contains") {
                     content += `<li><div class="modal_label"><label><b>Contains: </b></label></div></li><ul class="modal_content inner_ul">`
-
-                    for (let contain of food[key]) {
+                    
+                    food[key].forEach(contain=> {
                         content += `<li><div class="modal_input"><select id="${food.id}_tag_${contain}">`
-                        for (let contain_list of contains) {
+                        contains.forEach(contain_list=> {
                             if (contain === contain_list) {
                                 content += `<option value="${contain_list}" selected="selected">${contain_list}</option>`
                             } else {
                                 content += `<option value="${contain_list}">${contain_list}</option>`
                             }
-                        }
+                        })
                         content += `</select></div></li>`
-                    }
+                    })
                     content += `<li><input type="button" value="+" class="modal_inner_buttons" id="add_nutrition_edit" onclick=""></li></ul>`
 
                 } else {
