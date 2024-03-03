@@ -582,11 +582,11 @@ function saveTags() {
 
     tagCheckBoxes = tagListManager
     main()
-    modalActvie = false
     document.getElementById("modal").style.display = "none"
     document.getElementById("tag_manager").style.display = "none"
     document.getElementById("save_tags").style.display = "none"
     document.getElementById("add_tags").style.display = "none"
+    modalActvie = false
 }
 
 
@@ -656,7 +656,7 @@ function deleteNutritionManager(element) {
     let selectedTag = nutritionListManager.indexOf(document.getElementById(element).value)
     nutritionListManager.splice(selectedTag, 1)
     modalActvie = false
-    displayTagManager(nutritionListManager, newNutritionID)
+    displayNutritionManager(nutritionListManager, newNutritionID)
     main()
 }
 

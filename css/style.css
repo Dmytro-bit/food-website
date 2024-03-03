@@ -334,7 +334,7 @@ table tr
     margin: 1em 0 1em 0;
 }
 
-#save_edit, #save_add, #view_content, #tag_manager, #edit_content, #add_content, #nutrition_manager, #save_nutrition
+#save_edit, #save_add, #view_content, #tag_manager, #edit_content, #add_content, #nutrition_manager, #save_nutrition, #save_tags
 {
     display: none;
     flex-direction: column;
