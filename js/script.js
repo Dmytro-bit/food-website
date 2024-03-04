@@ -209,7 +209,7 @@ function displayMenuButtons(id) {
 
 
 function deleteFood(id) {
-    if(modalActvie)
+    if (modalActvie)
         return
     let selectedIndex
     let foodName
@@ -401,13 +401,12 @@ function saveEdit() {
     if (Object.keys(error_dict).length !== 0) {
         Errors = true
         console.log(error_dict)
-        
+
         let error_ids = Object.keys(error_dict)
 
-        error_ids.forEach(id => 
-        {
+        error_ids.forEach(id => {
             document.getElementById(id).style.border = '2px solid red'
-            document.getElementById(id).style.boxShadow= '0px 0px 20px rgb(255, 0, 0)'
+            document.getElementById(id).style.boxShadow = '0px 0px 20px rgb(255, 0, 0)'
         })
 
         return
@@ -434,7 +433,7 @@ function saveEdit() {
                     }
                     food[key] = nutrition_dict
                 } else if (key === "tags") {
- 
+
                     let tempTags = []
 
                     for (let i = 0; i < tagSelectorID; i++) {
@@ -621,11 +620,10 @@ function AddSave() {
         console.log(error_dict)
         let error_ids = Object.keys(error_dict)
 
-        error_ids.forEach(id => 
-        {
+        error_ids.forEach(id => {
             document.getElementById(id).style.border = '2px solid red'
-            document.getElementById(id).style.boxShadow= '0px 0px 20px rgb(255, 0, 0)'
-            
+            document.getElementById(id).style.boxShadow = '0px 0px 20px rgb(255, 0, 0)'
+
         })
     } else {
         document.getElementById("modal").style.display = "none"
@@ -765,7 +763,7 @@ function displayNutritionManager(nutritionListManager_local, newNutritionID_loca
     document.getElementById("modal").style.display = "flex"
     document.getElementById("nutrition_manager").style.display = "flex"
     document.getElementById("save_nutrition").style.display = "flex"
-    document.getElementById("add_nutrition").style.display = "flex"
+    // document.getElementById("add_nutrition").style.display = "flex"
 }
 
 function addNewNutrition() {
@@ -788,7 +786,7 @@ function deleteNutritionManager(element) {
 function saveNutrition() {
     let i = 0
     nutritionListManager.forEach(nutrition => {
-        tagCheckBoxes[i] = document.getElementById(`${nutrition}_edit`).value
+        nutritionListManager[i] = document.getElementById(`${nutrition}_edit`).value
         i += 1
     })
 
@@ -796,7 +794,7 @@ function saveNutrition() {
         let nutrition = document.getElementById(`new_nutrition${i}`)
         console.log(nutrition)
         if (nutrition !== null) {
-            tagListManager.push(nutrition.value.toLowerCase())
+            nutritionListManager.push(nutrition.value.toLowerCase())
         }
     }
 
@@ -807,7 +805,7 @@ function saveNutrition() {
     document.getElementById("modal").style.display = "none"
     document.getElementById("nutrition_manager").style.display = "none"
     document.getElementById("save_nutrition").style.display = "none"
-    document.getElementById("add_nutrition").style.display = "none"
+    // document.getElementById("add_nutrition").style.display = "none"
 }
 
 function addTagEdit() {
@@ -815,7 +813,7 @@ function addTagEdit() {
     let listItem = document.createElement("li");  //https://www.w3schools.com/jsref/dom_obj_li.asp or https://www.w3schools.com/jsref/tryit.asp?filename=tryjsref_li_create
     let list = document.getElementById("inner_tags")
     listItem.id = `new_li_tag_selector${tagSelectorID}`
-    // tagsEditCounter++
+    tagsEditCounter++
     let htmlString = `<div class="modal_input"><select id="new_tag_selector${tagSelectorID}">`
     tagCheckBoxes.forEach(tag => {
         htmlString += `<option value="${tag}">${tag}</option>`
@@ -835,8 +833,7 @@ function deleteTagEdit(id) {
     list.removeChild(deleteElement)
 }
 
-function addContainsEdit()
-{
+function addContainsEdit() {
     let listItem = document.createElement("li");  //https://www.w3schools.com/jsref/dom_obj_li.asp or https://www.w3schools.com/jsref/tryit.asp?filename=tryjsref_li_create
     let list = document.getElementById("inner_contains")
     listItem.id = `new_li_contains_selector${containsSelectorID}`
